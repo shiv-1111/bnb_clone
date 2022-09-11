@@ -24,6 +24,11 @@ router.get("/", (req, res) => {
   res.sendFile(root_path + "index.html");
 });
 
+router.get("/login", (req, res) => {
+    console.log("hey");
+    res.sendFile(root_path + "login.html");
+  });
+
 let userIDnum = 1;
 router.post("/signup", (req, res) => {
   console.log(req.body);
@@ -57,7 +62,8 @@ router.post("/signup", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  User.findOne({ username: req.body.username }, (err, user) => {
+  User.findOne({ userName: req.body.username }, (err, user) => {
+      console.log(user.userName)
     if (user.password === req.body.password) {
       const cookieData = {
         userID: user.userID,
