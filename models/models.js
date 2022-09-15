@@ -7,7 +7,7 @@ mongoose.connect(mongoURI).then(res => 'db connected').catch(err => 'db connecti
 
 // user schema 
 const userSchema = new mongoose.Schema({
-    userID:String,
+    userID:Number,
     userType:String,
     userName:String,
     email:String,
@@ -22,8 +22,8 @@ const userSchema = new mongoose.Schema({
 
 // property schema 
 const propertySchema = new mongoose.Schema({
-    propertyID:String,
-    name:String,
+    propertyID:Number,
+    propertyName:String,
     owner:String,
     city:String,
     country:String,
@@ -32,7 +32,7 @@ const propertySchema = new mongoose.Schema({
     rating:String,
     images:{
         profile:String,
-        gallery:[String]
+        gallery:String
     },
     bedroom:Number,
     bathroom:Number,
@@ -50,7 +50,7 @@ const propertySchema = new mongoose.Schema({
         smokeAlarm:Boolean,
         petsAllowed:Boolean
     },
-    propertyTAgs:[String]
+    propertyTAgs:String
 })
 
 const bookingSchema = new mongoose.Schema({
@@ -77,7 +77,7 @@ const reviewSchema = new mongoose.Schema({
 })
 
 const contactUsSchema = new mongoose.Schema({
-    contactID:String,
+    contactID:Number,
     userEmail:String,
     query:String,
     userName:String,

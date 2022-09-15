@@ -57,12 +57,6 @@
                             <select name="destination" id="destination">
                                 <option selected disabled>Search Destination</option>
                                 <option value="all">Point me anywhere</option>
-                                <option value="shimla">Shimla</option>
-                                <option value="dehradun">Dehradun</option>
-                                <option value="goa">Goa</option>
-                                <option value="auli">Auli</option>
-                                <option value="lonavala">Lonavala</option>
-                                <option value="kodaikanal">Kodaikanal</option>
                             </select>
                         </div>
                         <div id="bottom_middle1_header"><span>Check in</span><span id="check_in_date"><input type="date"
@@ -112,8 +106,9 @@
 
     <!-- main feed  -->
     <div class="container-fluid col-md-10 col-12 mx-auto">
-        <div class="row">
-            <div class="col-md-3 card mx-auto">
+        <div class="row" id="property_div">
+
+            <!-- <div class="col-md-3 card mx-auto">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
@@ -125,105 +120,12 @@
                     <li class="list-group-item">A second item</li>
                 </ul>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
+            </div> -->
+            
         </div>
     </div>
 
-    <div class="container-fluid col-md-10 col-12 mx-auto">
-        <div class="row">
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- footer  -->
 
@@ -266,6 +168,37 @@
             if (document.getElementById('guest_count').value != 0)
                 document.getElementById('guest_count').value--;
         }
+
+        
+        const fetchData = async () => {
+            try{
+                const url = "http://localhost:3000/property/all"
+                const response = await fetch(url);
+                const data = await response.json();
+                console.log(data)
+                for (let i = 0; i<data.length;i++){
+                    document.getElementById('property_div').innerHTML += `<div class="col-md-3 card mx-auto">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${data[i].propertyID}</h5>
+                    <p class="card-text">${data[i].description}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Max guests: ${data[i].maxGuests}</li>
+                    <li class="list-group-item">${data[i].city}, ${data[i].country}</li>
+                </ul>
+                <a href="#" class="btn btn-primary">Rs. ${data[i].price} night</a>
+            </div>`;
+
+            document.getElementById('destination').innerHTML += ` <option value="${data[i].city}">${data[i].city.charAt(0).toUpperCase()+data[i].city.slice(1)}</option>`;
+                }
+            }
+            catch{
+                console.log("error fetching")
+            }
+            
+        }
+        window.onload = fetchData()
     </script>
 </body>
 

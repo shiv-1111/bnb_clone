@@ -317,18 +317,18 @@ select{
 
 /* footer  */
 footer{
-    /* this will always keep footer at the bottom  */
-    /* margin-top: auto; */
-   
+    
     line-height: 3rem;
     /* box-shadow: 0 -0.2rem 0.3rem  var(--main-shadow); */
     display: flex;
     border-top: 0.05rem ridge var(--main-shadow);
     justify-content: space-between;
+    /* this will always keep footer at the bottom  */
+    /* margin-top: auto; */
 }
 
 .footer_container{
-    position: sticky;
+    position: fixed;
     bottom: 0;
     background-color: #fff;
 }
