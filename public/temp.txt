@@ -17,73 +17,6 @@
 </head>
 
 <body>
-
-    <!-- login modal -->
-
-    <div id="login_modal_container" class="modal_container hidden">
-        <div class="modal_content">
-            <div class="form px-4 pt-5">
-
-                <form action="/user/login" method="post">
-                    <div>
-                        <h2 style="color: #fff;">Login to your account:-</h2>
-                    </div>
-                    <input type="text" name="username" class="form-control" placeholder="Username" required>
-
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
-                    <button class="btn btn-primary btn-block" type="submit">Login</button>
-                </form>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- signup modal -->
-
-    <div id="signup_modal_container" class="modal_container hidden">
-        <div class="modal_content">
-            <div class="form px-4">
-                <form action="/user/signup" method="post" enctype="multipart/form-data">
-                    <div><h2>User Registration:-</h2></div>
-
-                    <input type="text" name="username" class="form-control" placeholder="Username" required>
-
-                    <input type="text" name="name" class="form-control" placeholder="Full name" required>
-
-                    <label for="usertype">User type:</label>
-                    <select name="usertype" id="usertype" required>
-                        <option value="guest" selected>Guest</option>
-                        <option value="host">Host</option>
-                    </select>
-
-                    <input type="text" name="country" class="form-control" placeholder="Country" required>
-
-                    <input type="text" name="city" class="form-control" placeholder="City" required>
-                    <label>Please select your gender:</label><br>
-                    <input type="radio" name="gender" id="male" value="Male"  required>
-                    <label for="male">Male</label>
-
-                    <input type="radio" name="gender" id="female" value="Female"  required>
-                    <label for="female">Female</label>
-                    <input type="radio" name="gender" id="others" value="Others"  required>
-                    <label for="others">Others</label>
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
-
-                    <input type="number" name="phone" class="form-control" placeholder="Phone" required>
-
-                    <label for="profile_img">Upload your picture</label>
-                    <input type="file" name="profile_img" id="profile_img" required>
-
-                    <input name="password" class="form-control" type="text" placeholder="Password" required>
-
-                    <button class="btn btn-primary btn-block" type="submit">Signup</button>
-
-                </form>
-
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid mb-2" id="header_container_wrapper">
         <div class="row">
             <div class="col-md-10 col-12 mx-auto rounded">
@@ -94,12 +27,11 @@
 
                         <div id="top_front_header"><span class="material-symbols-outlined main_icon">
                                 luggage
-                            </span><a href="/">
-                                <h2>airbnb</h2>
-                            </a></div>
+                            </span><a href="/">airbnb</a></div>
                         <div id="top_middle_header" onclick="toggleSearchContainer()">
                             <div><span>Search your destination</span></div>
-                            <div><button class="submit"><span class="material-symbols-outlined search_icon">
+                            <div><button class="submit"><span
+                                        class="material-symbols-outlined search_icon">
                                         search
                                     </span></button></div>
                         </div>
@@ -109,20 +41,12 @@
                                     Become a host
                                 </a>
                             </div>
-                            <div id="dropdown_container">
-                                <div id="top_header_dropdown_container"><span
-                                        class="material-symbols-outlined dropdown_icon">
-                                        menu
-                                    </span><span class="material-symbols-outlined account_icon">
-                                        account_circle
-                                    </span>
-                                </div>
-                                <div id="dropdown_button_container">
-                                    <input type="button" value="Log In">
-                                    <input type="button" value="Sign Up">
-                                    <input type="button" value="Host your home">
-                                </div>
-                            </div>
+                            <div id="top_header_dropdown_container"><span
+                                    class="material-symbols-outlined dropdown_icon">
+                                    menu
+                                </span><span class="material-symbols-outlined account_icon">
+                                    account_circle
+                                </span></div>
                         </div>
 
                     </div>
@@ -183,7 +107,7 @@
     <div class="container-fluid col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="property_div">
 
-
+            
             <!-- <div class="col-md-3 card mx-auto">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
@@ -224,7 +148,7 @@
     <!-- flatpickr cdn -->
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="js/main.js">
+    <script src="js/main.js"> 
     </script>
 </body>
 

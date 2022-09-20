@@ -1,4 +1,10 @@
 // import from models
+
+require('dotenv').config()
+
+// imports
+const jwt = require('jsonwebtoken')
+
 const {
   User,
   Booking,
@@ -7,7 +13,8 @@ const {
   Property,
 } = require("../models/models");
 
-// property route functions
+
+// property route functions =>
 
 // 1
 const getAllProperty = (req, res) => {
@@ -21,12 +28,12 @@ const getAllProperty = (req, res) => {
 };
 
 // 2
-const getPropertyById = (req, res) => {
-  Property.findById({ propertyName: req.params.id }, (err, property) => {
+const getPropertyById = (req, res) => { 
+  Property.findOne({ propertyID: parseInt(req.params.id) }, (err, property) => {
     if (err) {
       console.log(err);
     } else {
-      return res.json(docs);
+      res.json(property);
     }
   });
 };
@@ -43,7 +50,7 @@ const postBooking = async (req, res) => {
   const booking = new Booking({
     bookingID: tempId,
     bookingDate: Date.now(),
-    userID: req.cookie.userdata.userID,
+    userID: req.user.userID,
     propertyID: Property.findOne(
       { name: req.body.propertyname },
       (err, property) => property.propertyID
@@ -98,6 +105,7 @@ const postReview = async (req, res) => {
   });
   res.send("review added to database");
 };
+
 
 // export
 module.exports = { getAllProperty, getPropertyById, postBooking, postReview };

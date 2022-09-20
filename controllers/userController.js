@@ -1,4 +1,8 @@
+require('dotenv').config()
+
 // imports
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const { Collection } = require("mongoose");
 const {
   User,
@@ -8,11 +12,11 @@ const {
   Property,
 } = require("../models/models");
 
-// route request functions
+// user route request functions =>
 
 // 1
 const postUserSignup = async (req, res) => {
-  // let idCount = await User.count({});
+  try{// let idCount = await User.count({});
   let tempId;
   // checking if number of documents inside Collection is 0
   if ((await User.count({})) === 0) {
@@ -22,12 +26,15 @@ const postUserSignup = async (req, res) => {
     tempId = await User.findOne().sort("-_id");
     tempId = tempId.userID + 1;
   }
+  // const salt = await bcrypt.genSalt() 
+
+  const hashPassword = await bcrypt.hash(req.body.password, 15)
   const user = new User({
     userID: tempId,
     userType: req.body.usertype,
     userName: req.body.username,
     email: req.body.email,
-    password: req.body.password,
+    password: hashPassword,
     Name: req.body.name,
     Mobile: req.body.phone,
     country: req.body.country,
@@ -42,31 +49,50 @@ const postUserSignup = async (req, res) => {
       console.log("user added");
     }
   });
-  const cookieData = {
-    userID: tempId,
+  const tokenData = {
+    userID: user.userID,
+    userType: user.userType,
+    userName: user.userName,
   };
-  res.cookie("userData", cookieData);
-  res.send("user added in database");
+  const token = jwt.sign(tokenData, process.env.token_secret_key,{expiresIn:"15m"});
+      res.cookie("token", token, {
+        httpOnly: true,
+      });
+  res.status(201).send("user added in database");}catch(err){
+    res.status(401).send(err)
+  }
 };
 
 // 2
 const postUserLogin = (req, res) => {
-  User.findOne({ userName: req.body.username }, (err, user) => {
-    console.log(user.userName);
-    if (user.password === req.body.password) {
-      const cookieData = {
+  try {
+    User.findOne({ userName: req.body.username }, (err, user) => {
+    if (bcrypt.compare(req.body.password,user.password)) {
+
+      const tokenData = {
         userID: user.userID,
+        userType: user.userType,
+        userName: user.userName,
       };
-      res.cookie("userData", cookieData);
+
+      const token = jwt.sign(tokenData, process.env.token_secret_key,{expiresIn:"15m"});
+      // res.setHeader('authorization',token)
+      res.cookie("token", token, {
+        httpOnly: true,
+      });
       res.send("login successful");
     } else {
       res.send("Invalid login credentials. Please try again");
     }
   });
+}catch(err){
+  res.status(404).send(err)
+}
 };
 
 // 3
 const postProperty = async (req, res) => {
+  console.log(req.body);
   let tempId;
   if ((await Property.count({})) === 0) {
     tempId = 1;
@@ -142,6 +168,17 @@ const postContactUs = async (req, res) => {
   res.send("contact us added to database");
 };
 
+const validateJWT = (req,res,next) =>{
+  const token = req.cookies.token;
+  try {
+    const user = jwt.verify(token, process.env.token_secret_key);
+    req.user = user;
+    next();
+  } catch (error) {
+    res.clearCookie('token');
+    res.end()
+  }
+}
 
-// export 
-module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs };
+// export
+module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs,validateJWT };

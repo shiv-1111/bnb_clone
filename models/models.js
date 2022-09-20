@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// url 
 const mongoURI = "mongodb://127.0.0.1:27017/airbnb";
 
 // connecting to mongoDB
@@ -7,7 +8,7 @@ mongoose.connect(mongoURI).then(res => 'db connected').catch(err => 'db connecti
 
 // user schema 
 const userSchema = new mongoose.Schema({
-    userID:Number,
+    userID:{type:Number,required: true},
     userType:String,
     userName:String,
     email:String,
@@ -17,22 +18,22 @@ const userSchema = new mongoose.Schema({
     country:String,
     city:String,
     gender:String,
-    profilePicture:String
+    profilePicture:String,
 })
 
 // property schema 
 const propertySchema = new mongoose.Schema({
-    propertyID:Number,
+    propertyID:{type:Number,required: true},
     propertyName:String,
     owner:String,
     city:String,
     country:String,
     price:Number,
-    size:Number,
-    rating:String,
+    size:String,
+    rating:Number,
     images:{
         profile:String,
-        gallery:String
+        gallery:[String]
     },
     bedroom:Number,
     bathroom:Number,
@@ -50,14 +51,15 @@ const propertySchema = new mongoose.Schema({
         smokeAlarm:Boolean,
         petsAllowed:Boolean
     },
-    propertyTAgs:String
+    reviews:Number
 })
 
+// booking schema 
 const bookingSchema = new mongoose.Schema({
-    bookingID:String,
+    bookingID:{type:Number,required: true},
     bookingDate: Date,
-    userID:String,
-    propertyID:String,
+    userID:{type:Number,required: true},
+    propertyID:{type:Number,required: true},
     checkInDate:Date,
     checkOutDate:Date,
     totalPrice:Number,
@@ -66,29 +68,33 @@ const bookingSchema = new mongoose.Schema({
     numberOfNights:Number
 })
 
+//  review schema 
 const reviewSchema = new mongoose.Schema({
-    reviewID:String,
+    reviewID:{type:Number,required: true},
     heading:String,
-    userID:String,
-    propertyID:String,
+    userID:{type:Number,required: true},
+    propertyID:{type:Number,required: true},
     reviewDate:Date,
     rating:Number,
     description:String
 })
 
+// contact us schema 
 const contactUsSchema = new mongoose.Schema({
-    contactID:Number,
+    contactID:{type:Number,required: true},
     userEmail:String,
     query:String,
     userName:String,
     userPhone:Number
 })
 
-// creating collections
+// creating models
 const User = mongoose.model('user',userSchema);
 const Property = mongoose.model('propertie',propertySchema)
 const Booking = mongoose.model('booking',bookingSchema)
 const Review = mongoose.model('review',reviewSchema)
 const ContactUs = mongoose.model('contactuslist',contactUsSchema)
 
+
+// export 
 module.exports = {User,Property,Booking,Review,ContactUs};

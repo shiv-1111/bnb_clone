@@ -2,27 +2,31 @@
 // because these are middlewares executed before functions related to get,post and others
 // are executed
 
+
+
+// imports 
 const express = require("express");
 const multer = require("multer");
 const bodyParser = require("body-parser");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const jwt = require('jsonwebtoken')
+
 
 // creating an express router 
 const router = express.Router();
 
+
 // importing functions from controller 
-const {postUserSignup, postUserLogin, postProperty, postContactUs}= require('../controllers/userController')
+const {postUserSignup, postUserLogin, postProperty, postContactUs,validateJWT}= require('../controllers/userController')
+
 
 // middlewares
-router.use(bodyParser.json());
 router.use(cookieParser());
+router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 const { request } = require("https");
-// use this otherwise app won't know the path to static content like css
-const root_path = path.join(__dirname, "../public/");
-console.log(root_path);
-router.use(express.static(root_path));
+
 
 // multer code 
 const storage = multer.diskStorage({
@@ -42,62 +46,22 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// defining routes 
-
-router.get("/", (req, res) => {
-  res.sendFile(root_path + "index.html");
-});
-
-
-router.get("/login", (req, res) => {
-  console.log("hey");
-  res.sendFile(root_path + "login.html");
-});
+// defining routes =>
 
 // signup route 
 router.post("/signup", upload.single("profile_img"), postUserSignup);
 
-// login route
+// login post route
 router.post("/login", postUserLogin);
 
+
 // register new property route 
-router.post("/registerproperty", postProperty);
+router.post("/registerproperty",validateJWT, postProperty);
 
 //   contact us route
 router.post("/contactus", postContactUs);
 
-// review post request and endpoint
 
-router.post("/review", async (req, res) => {
-  let tempId;
-    if (await Review.count({}) === 0){
-        tempId = 1;
-    } else {
-        tempId = await Review.findOne().sort('-_id');
-        tempId = tempId.reviewID + 1;
-    }
-  const review = new Review({
-    reviewID: tempId,
-    heading: req.body.heading,
-    rating: req.body.rating,
-    description: req.body.description,
-    userID: req.cookie.userdata.userID,
-    propertyID: Booking.findOne(
-      { userID: req.cookie.userdata.userID },
-      (err, booking) => {
-        return booking.propertyID;
-      }
-    ),
-  });
 
-  review.save((err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("review added");
-    }
-  });
-  res.send("review added to database");
-});
-
+// export 
 module.exports = router;

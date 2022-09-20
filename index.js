@@ -10,13 +10,9 @@ const app = express();
 
 
 // middlewares =>
-
-// route middleware
 app.use("/user", userRoute);
 app.use("/property", propertyRoute);
-
-// static path
-// if undefined, app won't know the path to static content like css
+// static path, if undefined, app won't know the path to static content like css
 const root_path = path.join(__dirname, "./public/");
 console.log(root_path);
 app.use(express.static(root_path));
@@ -32,6 +28,9 @@ const port = process.env.PORT || '3000';
 app.get("/", (req, res) => {
   res.sendFile(root_path + "index.html");
 });
+app.get('/host',(req,res)=>{
+  res.sendFile(root_path+ "host.html")
+})
 
 // login/signup page 
 app.get("/login", (req, res) => {
