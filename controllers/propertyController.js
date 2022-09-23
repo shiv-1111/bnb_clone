@@ -40,6 +40,7 @@ const getPropertyById = (req, res) => {
 
 // 3
 const postBooking = async (req, res) => {
+  console.log(req.body);
   let tempId;
   if ((await Booking.count({})) === 0) {
     tempId = 1;
@@ -50,11 +51,12 @@ const postBooking = async (req, res) => {
   const booking = new Booking({
     bookingID: tempId,
     bookingDate: Date.now(),
-    userID: req.user.userID,
-    propertyID: Property.findOne(
-      { name: req.body.propertyname },
-      (err, property) => property.propertyID
-    ),
+    userID: 16,
+    // propertyID: Property.findOne(
+    //   { name: req.body.propertyname },
+    //   (err, property) => property.propertyID
+    // ),
+    propertyID: req.body.propertyID,
     checkInDate: req.body.checkInDate,
     checkOutDate: req.body.checkOutDate,
     totalPrice: req.body.totalPrice,
@@ -87,9 +89,9 @@ const postReview = async (req, res) => {
     heading: req.body.heading,
     rating: req.body.rating,
     description: req.body.description,
-    userID: req.cookie.userdata.userID,
-    propertyID: Booking.findOne(
-      { userID: req.cookie.userdata.userID },
+    userID: req.user.userID,
+    propertyID: await Booking.findOne(
+      { userID: req.user.userID },
       (err, booking) => {
         return booking.propertyID;
       }

@@ -1,0 +1,115 @@
+
+
+    <div class="modal_container hidden">
+
+        <!-- signup modal -->
+        <div class="modal_content hidden" id="property_registration_modal_container">
+            <div class="form px-4">
+                <form action="/user/registerproperty" id="signup_form" method="post" enctype="multipart/form-data">
+                    <div>
+                        <h2>Property Registration:-</h2>
+                    </div>
+                    <input type="text" name="propertyname" placeholder="Enter Property Name" class="form-control">
+                    <input type="text" name="city" placeholder="City" class="form-control">
+                    <input type="text" name="country" placeholder="Country" class="form-control">
+                    <input type="text" name="price" placeholder="Enter price/night" class="form-control">
+                    <input type="text" name="area" placeholder="Enter property area in sq.ft." class="form-control">
+                    <input type="number" name="bedroom" placeholder="Number of bedroom available" class="form-control">
+                    <input type="number" name="bathroom" placeholder="Number of bathrooms" class="form-control">
+                    <input type="number" name="maxguests" placeholder="Maximum guest capacity" class="form-control">
+                    <textarea name="description" rows="5" placeholder="Describe your property"
+                        class="form-control"></textarea>
+                    <div id="amenities">
+                        <h3>Please check available amenities</h3>
+                        <label for="parking">Parking</label>
+                        <select name="Parking" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="wifi">WIFI</label>
+                        <select name="wifi" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="breakfast">Breakfast included</label>
+                        <select name="breakfast" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="ac">Air Conditioning</label>
+                        <select name="ac" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="tv">Television</label>
+                        <select name="tv" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="fridge">Fridge</label>
+                        <select name="fridge" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="laundry">Laundry</label>
+                        <select name="laundry" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="kitchen">Kitchen</label>
+                        <select name="kitchen" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="smokealarm">Smoke Alarm</label>
+                        <select name="smokealarm" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <label for="pets">Pets allowed</label>
+                        <select name="pets" class="form-control">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <label for="gallery_img">Upload at least five property images</label>
+                    <input type="file" name="gallery_img" class="form-control" multiple>
+                    <button class="btn btn-primary btn-block" type="submit">Register Property</button>
+
+                </form>
+
+            </div>
+        </div>
+        <!-- contact us modal  -->
+
+        <div class="modal_content hidden" id="contact_modal_container">
+            <div class="form px-4 pt-5">
+
+                <form action="/user/contactus" method="post">
+                    <div>
+                        <h2 style="color: #fff;">Contact Us:-</h2>
+                    </div>
+                    <input type="text" name="name" class="form-control" placeholder="Name" required>
+
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+
+                    <input type="text" name="phone" class="form-control" placeholder="Phone" required>
+                    <label for="query">Write to us - </label>
+                    <textarea name="query" id="contactus_textarea" rows="10" class="form-control"></textarea>
+
+                    <button class="btn btn-primary btn-block" type="submit">Login</button>
+                </form>
+
+            </div>
+        </div>
+    </div>

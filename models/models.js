@@ -31,10 +31,7 @@ const propertySchema = new mongoose.Schema({
     price:Number,
     size:String,
     rating:Number,
-    images:{
-        profile:String,
-        gallery:[String]
-    },
+    images:[String],
     bedroom:Number,
     bathroom:Number,
     maxGuests:Number,

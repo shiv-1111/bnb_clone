@@ -18,8 +18,8 @@ const router = express.Router();
 
 
 // importing functions from controller 
-const {postUserSignup, postUserLogin, postProperty, postContactUs,validateJWT}= require('../controllers/userController')
-
+const {postUserSignup, postUserLogin, postProperty, postContactUs}= require('../controllers/userController')
+const {validateJWT} = require('../auth.js')
 
 // middlewares
 router.use(cookieParser());
@@ -54,9 +54,19 @@ router.post("/signup", upload.single("profile_img"), postUserSignup);
 // login post route
 router.post("/login", postUserLogin);
 
+//render user dashboard page
+router.get('/:id',(req,res)=>{
+  res.render('dashboard',{name:req.params.id})
+})
+
+//render user account page
+router.get('/:id/dashboard',(req,res)=>{
+  res.render('myaccount')
+})
+
 
 // register new property route 
-router.post("/registerproperty",validateJWT, postProperty);
+router.post("/registerproperty",validateJWT,upload.array("gallery_img",5), postProperty);
 
 //   contact us route
 router.post("/contactus", postContactUs);

@@ -58,7 +58,10 @@ const postUserSignup = async (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
       });
-  res.status(201).send("user added in database");}catch(err){
+  // res.status(201).send("user added in database");
+  res.status(201).redirect(`/user/${user.userName}`);
+}
+catch(err){
     res.status(401).send(err)
   }
 };
@@ -75,12 +78,13 @@ const postUserLogin = (req, res) => {
         userName: user.userName,
       };
 
-      const token = jwt.sign(tokenData, process.env.token_secret_key,{expiresIn:"15m"});
+      const token = jwt.sign(tokenData, process.env.token_secret_key);
       // res.setHeader('authorization',token)
       res.cookie("token", token, {
         httpOnly: true,
       });
-      res.send("login successful");
+      res.redirect(`/user/${user.userName}`)
+      // res.render('dashboard',{name:user.userName})
     } else {
       res.send("Invalid login credentials. Please try again");
     }
@@ -92,7 +96,8 @@ const postUserLogin = (req, res) => {
 
 // 3
 const postProperty = async (req, res) => {
-  console.log(req.body);
+  const images = req.files.map(index=>{return index.filename})
+  console.log("this is" + images);
   let tempId;
   if ((await Property.count({})) === 0) {
     tempId = 1;
@@ -108,11 +113,8 @@ const postProperty = async (req, res) => {
     country: req.body.country,
     price: req.body.price,
     size: req.body.size,
-    rating: "no ratings yet",
-    images: {
-      profile: req.body.profile_img,
-      gallery: req.body.gallery_img,
-    },
+    rating: null,
+    images: images,
     bedroom: req.body.bedroom,
     bathroom: req.body.bathroom,
     maxGuests: req.body.maxguests,
@@ -128,8 +130,7 @@ const postProperty = async (req, res) => {
       kitchen: req.body.kitchen,
       smokeAlarm: req.body.smokealarm,
       petsAllowed: req.body.pets,
-    },
-    propertyTAgs: req.body.tags,
+    }
   });
   property.save((err, result) => {
     if (err) {
@@ -168,17 +169,7 @@ const postContactUs = async (req, res) => {
   res.send("contact us added to database");
 };
 
-const validateJWT = (req,res,next) =>{
-  const token = req.cookies.token;
-  try {
-    const user = jwt.verify(token, process.env.token_secret_key);
-    req.user = user;
-    next();
-  } catch (error) {
-    res.clearCookie('token');
-    res.end()
-  }
-}
+
 
 // export
-module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs,validateJWT };
+module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs};
