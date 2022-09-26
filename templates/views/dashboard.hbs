@@ -44,23 +44,26 @@
                                     </span></button></div>
                         </div>
                         <div id="top_end_header">
-                            <div id="host_div">
+                            <div id="host_div" data-name = {{name}}>
                                 <a href="http://localhost:3000/user/myaccount" id="user_info">
                                     Hey {{name}}
                                 </a>
                             </div>
-                            <div id="dropdown_container">
-                                <div id="top_header_dropdown_container"><span
-                                        class="material-symbols-outlined dropdown_icon">
-                                        menu
-                                    </span><span class="material-symbols-outlined account_icon">
-                                        account_circle
-                                    </span>
-                                </div>
-                                <div id="dropdown_button_container" class="hidden">
-                                    <input type="button" value="My Account" class="header_dropdown_btn">
-                                    <input type="button" value="Register Home" class="header_dropdown_btn">
-                                    <input type="button" value="Log Out" class="header_dropdown_btn">
+                            <div id="dropdown_wrapper">
+
+                                <div id="dropdown_container">
+                                    <div id="top_header_dropdown_container"><span
+                                            class="material-symbols-outlined dropdown_icon">
+                                            menu
+                                        </span><span class="material-symbols-outlined account_icon">
+                                            account_circle
+                                        </span>
+                                    </div>
+                                    <div id="dropdown_button_container" class="hidden">
+                                        <input type="button" value="My Account" class="header_dropdown_btn">
+                                        <input type="button" value="Register Home" class="header_dropdown_btn">
+                                        <input type="button" value="Log Out" class="header_dropdown_btn">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -123,9 +126,9 @@
 
     {{>footer}}
 
-
-    <script src="/js/index.js" type="module">
+    <script src="/js/index.js">
     </script>
+    <script src="/js/headerscript.js"></script>
 </body>
 
 </html>

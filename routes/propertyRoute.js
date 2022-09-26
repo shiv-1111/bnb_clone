@@ -3,7 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 // Note:- sequence of how we require modules is important here  
 //        i.e., if this is imported before importing express, the code won't work.
-const {getAllProperty, getPropertyById, postBooking, postReview}=require('../controllers/propertyController');  
+const {getAllProperty, getPropertyById, postBooking, postReview,getPropertyPage}=require('../controllers/propertyController');  
 const { validateJWT } = require('../auth.js');
 
 
@@ -22,10 +22,12 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/all', getAllProperty);
 
 // get property by id api
-router.get('/:id',getPropertyById);
+router.get('/id/:id',validateJWT, getPropertyPage);
+
+router.get('/fetchproperty',validateJWT, getPropertyById)
 
 // booking request route
-router.post("/booking",postBooking);
+router.post("/booking",validateJWT, postBooking);
 
 // review post request
 router.post("/review",validateJWT, postReview);

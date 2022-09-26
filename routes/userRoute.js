@@ -18,7 +18,7 @@ const router = express.Router();
 
 
 // importing functions from controller 
-const {postUserSignup, postUserLogin, postProperty, postContactUs}= require('../controllers/userController')
+const {postUserSignup, postUserLogin, postProperty, postContactUs, getDashboardPage, getDetails}= require('../controllers/userController')
 const {validateJWT} = require('../auth.js')
 
 // middlewares
@@ -55,15 +55,19 @@ router.post("/signup", upload.single("profile_img"), postUserSignup);
 router.post("/login", postUserLogin);
 
 //render user dashboard page
-router.get('/:id',(req,res)=>{
-  res.render('dashboard',{name:req.params.id})
-})
+router.get('/account/:id',validateJWT,getDashboardPage)
 
 //render user account page
-router.get('/:id/dashboard',(req,res)=>{
-  res.render('myaccount')
+router.get('/account/:id/dashboard',validateJWT,(req,res)=>{
+  if(req.user && req.user.userName === req.params.id){
+    res.render('userdashboard',{name:req.user.userName})
+  }else{
+    res.status(401).end()
+  }
 })
 
+// user details api
+router.get('/details',validateJWT, getDetails)
 
 // register new property route 
 router.post("/registerproperty",validateJWT,upload.array("gallery_img",5), postProperty);
@@ -71,7 +75,26 @@ router.post("/registerproperty",validateJWT,upload.array("gallery_img",5), postP
 //   contact us route
 router.post("/contactus", postContactUs);
 
+// router.get('/token/validate',validateJWT,(req,res)=>{
+//   console.log("tried");
+//   console.log(req.user);
+//   if(req.user){
+//     res.send('validated')
+//   }
+//   res.send("not validated")
+// })
 
+router.get('/logout',(req,res)=>{
+  res.clearCookie("token");
+  if (!res.cookie.token) {
+    res.status(200).json({status:"success",
+  message:"Logged out"})
+    
+  }
+  else{
+    res.status(404).end()
+  }
+})
 
 // export 
 module.exports = router;

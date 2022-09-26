@@ -28,19 +28,20 @@ const getAllProperty = (req, res) => {
 };
 
 // 2
-const getPropertyById = (req, res) => { 
-  Property.findOne({ propertyID: parseInt(req.params.id) }, (err, property) => {
+const getPropertyById = (req, res) => {
+  Property.findOne({ propertyID: parseInt(req.cookies.tempID)}, (err, doc) => {
+    res.clearCookie("tempID");
     if (err) {
       console.log(err);
     } else {
-      res.json(property);
+      res.json(doc);
     }
   });
 };
 
 // 3
 const postBooking = async (req, res) => {
-  console.log(req.body);
+    console.log(req.body);
   let tempId;
   if ((await Booking.count({})) === 0) {
     tempId = 1;
@@ -48,10 +49,10 @@ const postBooking = async (req, res) => {
     tempId = await Booking.findOne().sort("-_id");
     tempId = tempId.bookingID + 1;
   }
-  const booking = new Booking({
+  const booking = new Booking({    
     bookingID: tempId,
     bookingDate: Date.now(),
-    userID: 16,
+    userID: req.user.userID,
     // propertyID: Property.findOne(
     //   { name: req.body.propertyname },
     //   (err, property) => property.propertyID
@@ -61,18 +62,19 @@ const postBooking = async (req, res) => {
     checkOutDate: req.body.checkOutDate,
     totalPrice: req.body.totalPrice,
     paymentMethod: req.body.paymentMethod,
-    numberOfRooms: req.body.rooms,
+    numberOfRooms: req.body.numberOfRooms,
     numberOfNights: req.body.nights,
   });
 
   booking.save((err, result) => {
     if (err) {
+      res.status(404).end()
       console.log(err);
     } else {
       console.log("booking saved");
     }
   });
-  res.send("booking successful");
+  res.redirect(`../user/account/${req.user.userName}/dashboard`);
 };
 
 //   4
@@ -92,8 +94,10 @@ const postReview = async (req, res) => {
     userID: req.user.userID,
     propertyID: await Booking.findOne(
       { userID: req.user.userID },
-      (err, booking) => {
-        return booking.propertyID;
+      (err, doc) => {
+        doc.rating = toString((parseInt(doc.rating) + parseInt(req.body.rating))/(doc.review + 1))
+        doc.save();
+        return doc.propertyID;
       }
     ),
   });
@@ -108,6 +112,19 @@ const postReview = async (req, res) => {
   res.send("review added to database");
 };
 
+// 5
+const getPropertyPage = (req,res) =>{
+  console.log(req.params.id)
+  
+  if(req.user){
+    res.cookie("tempID",req.params.id)
+    res.render('verifiedproperty',{name:req.user.userName})
+  }else{
+    res.cookie("tempID",req.params.id)
+    res.render('property')
+
+  }
+}
 
 // export
-module.exports = { getAllProperty, getPropertyById, postBooking, postReview };
+module.exports = { getAllProperty, getPropertyById, postBooking, postReview, getPropertyPage };

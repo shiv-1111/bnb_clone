@@ -59,7 +59,7 @@ const postUserSignup = async (req, res) => {
         httpOnly: true,
       });
   // res.status(201).send("user added in database");
-  res.status(201).redirect(`/user/${user.userName}`);
+  res.status(201).redirect(`/user/account/${user.userName}`);
 }
 catch(err){
     res.status(401).send(err)
@@ -83,7 +83,7 @@ const postUserLogin = (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
       });
-      res.redirect(`/user/${user.userName}`)
+      res.redirect(`/user/account/${user.userName}`)
       // res.render('dashboard',{name:user.userName})
     } else {
       res.send("Invalid login credentials. Please try again");
@@ -107,29 +107,31 @@ const postProperty = async (req, res) => {
   }
   const property = new Property({
     propertyID: tempId,
+    userID:req.user.userID,
     propertyName: req.body.propertyname,
     owner: req.body.fullname,
     city: req.body.city,
     country: req.body.country,
     price: req.body.price,
     size: req.body.size,
-    rating: null,
+    rating: "New",
+    reviews: 0,
     images: images,
     bedroom: req.body.bedroom,
     bathroom: req.body.bathroom,
     maxGuests: req.body.maxguests,
     description: req.body.description,
     amenities: {
-      parking: req.body.parking,
-      wifi: req.body.wifi,
-      breakfast: req.body.breakfast,
-      ac: req.body.ac,
-      tv: req.body.tv,
-      fridge: req.body.fridge,
-      laundry: req.body.laundry,
-      kitchen: req.body.kitchen,
-      smokeAlarm: req.body.smokealarm,
-      petsAllowed: req.body.pets,
+      Parking: req.body.parking,
+      WiFi: req.body.wifi,
+      Breakfast: req.body.breakfast,
+      AC: req.body.ac,
+      TV: req.body.tv,
+      Fridge: req.body.fridge,
+      Laundry: req.body.laundry,
+      Kitchen: req.body.kitchen,
+      "Smoke Alarm": req.body.smokealarm,
+      "Pets Allowed": req.body.pets,
     }
   });
   property.save((err, result) => {
@@ -139,7 +141,7 @@ const postProperty = async (req, res) => {
       console.log("property added");
     }
   });
-  res.send("property added to database");
+  res.redirect(`../property/id/${property.propertyID}`);
 };
 
 // 4
@@ -169,7 +171,34 @@ const postContactUs = async (req, res) => {
   res.send("contact us added to database");
 };
 
+// 5
 
+const getDashboardPage = (req,res)=>{
+  // checking if jwt is available 
+  if(req.user && req.user.userName==req.params.id){
+    res.render('dashboard',{name:req.user.userName})
+  }else{
+    res.redirect('../home');
+  }
+}
+
+//6 
+
+const getDetails = async (req,res) => {
+  try{
+    console.log(req.user.userID);
+    let data = {
+      properties:"",
+      bookings:""
+    }
+    data.properties = await Property.find({userID:parseInt(req.user.userID)});
+    data.bookings = await Booking.find({userID:parseInt(req.user.userID)})
+    console.log(data);
+    res.json(data)
+  } catch(err) {
+    res.status(401).end(err)
+  }
+}
 
 // export
-module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs};
+module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs, getDashboardPage, getDetails};

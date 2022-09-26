@@ -4,14 +4,14 @@
     <div class="modal_content hidden" id="login_modal_container">
         <div class="form px-4 pt-5">
 
-            <form action="/user/login" method="post">
+            <form action="/user/login" class="modal-form" method="post">
                 <div>
                     <h2 style="color: #fff;">Login to your account:-</h2>
                 </div>
-                <input type="text" name="username" class="form-control" placeholder="Username" required>
+                <input type="text" name="username" class="form-control" placeholder="Username" autocomplete="off" required>
 
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
-                <button class="btn btn-primary btn-block" type="submit">Login</button>
+                <button class="btn" type="submit">Login</button>
             </form>
 
         </div>
@@ -20,7 +20,7 @@
     <!-- signup modal -->
     <div class="modal_content hidden" id="signup_modal_container">
         <div class="form px-4">
-            <form action="/user/signup" id="signup_form" method="post" enctype="multipart/form-data">
+            <form action="/user/signup" id="signup_form" class="modal-form" method="post" enctype="multipart/form-data">
                 <div>
                     <h2>User Registration:-</h2>
                 </div>
@@ -55,7 +55,7 @@
 
                 <input name="password" class="form-control" type="text" placeholder="Password" required>
 
-                <button class="btn btn-primary btn-block" type="submit">Signup</button>
+                <button class="btn btn-block" type="submit">Signup</button>
 
             </form>
 
@@ -63,8 +63,15 @@
 
     </div>
     <!-- alert message for sign in prompt -->
-    <div id="alert_modal_container" class="modal_content hidden">
+    <div id="signinAlert_modal_container" class="modal_content hidden alert_modal_container">
         <h2>Sign in / Register to add property.</h2>
+    </div>
+
+    {{!-- log out modal  --}}
+
+    <div id="logout_modal_container" class="modal_content hidden alert_modal_container">
+        <h2>Successfully logged out.</h2>
+        <p>Click anywhere to go to homepage.</p>
     </div>
 
     <!-- contact us modal  -->
@@ -72,9 +79,9 @@
     <div class="modal_content hidden" id="contact_modal_container">
         <div class="form px-4 pt-5">
 
-            <form action="/user/contactus" method="post">
+            <form action="/user/contactus" method="post" class="modal-form" id="contact_modal_form">
                 <div>
-                    <h2 style="color: #fff;">Contact Us:-</h2>
+                    <h2>Contact Us</h2>
                 </div>
                 <input type="text" name="name" class="form-control" placeholder="Name" required>
 
@@ -84,7 +91,7 @@
                 <textarea name="query" id="contactus_textarea" rows="5" placeholder="Write your query"
                     class="form-control" required></textarea>
 
-                <button class="btn btn-primary btn-block" type="submit">Login</button>
+                <button class="btn btn-block" type="submit">Contact Us</button>
             </form>
 
         </div>

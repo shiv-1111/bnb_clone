@@ -7,6 +7,7 @@ const userRoute = require("./routes/userRoute");
 const propertyRoute = require("./routes/propertyRoute");
 const cookieParser = require('cookie-parser')
 const hbs = require('hbs')
+const {validateJWT} = require('./auth')
 
 // express app instance 
 const app = express();
@@ -35,18 +36,18 @@ const port = process.env.PORT || '3000';
 // routes =>
 
 // homepage 
-app.get("/", (req, res) => {
+app.get("/",validateJWT, async (req, res) => {
   // res.sendFile(root_path + "index.html");
   try {
-    const token = req.cookies.token
-    const user = jwt.verify(token, process.env.token_secret_key);
-    console.log(user)
-    // res.render('dashboard',{name:user.userName})
-    res.redirect(`/user/${user.userName}`)
+      res.redirect(`/user/account/${req.user.userName}`)
   } catch (error) {
-    res.render('index')
-  }
+    res.redirect('/home')
+}
 });
+
+app.get('/home',(req,res)=>{
+  res.render('index')
+})
 
 app.get('/fetchImage/:id',(req,res)=>{
   res.sendFile(__dirname + `/upload/${req.params.id}`)
