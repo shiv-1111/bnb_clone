@@ -1085,6 +1085,7 @@ visibility: hidden;
     background-color: var(--main-bg);
     border-radius: 1rem !important;
 }
+
 #my-bookings-container{
     display: flex;
     flex-direction: column;
@@ -1098,20 +1099,22 @@ visibility: hidden;
 
 .booking-card{
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
     column-gap: 2rem;
     background-color: var(--main-bg);
-    align-items: center;
     padding: 1rem;
 }
 
 .booking-card div:first-child{
-    padding: 1rem;
+    padding: 0.3rem;
+    display: flex;
+    align-items: center;
+    background-color: var(--main-shadow);
 }
 
 .booking-card div:first-child img{
-    border-radius: 1rem;
+    border-radius: 0.5rem;
 }
 
 .booking-card div:last-child{
@@ -1126,5 +1129,9 @@ visibility: hidden;
 
 #booking-header{
     font-family: 'Aref Ruqaa Ink', serif;
-    font-size: 3rem;
+    font-size: 2.5rem;
+}
+
+.cancel-booking-btn{
+    float: right;
 }

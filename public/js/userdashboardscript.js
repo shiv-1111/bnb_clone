@@ -57,6 +57,18 @@ const getDetails = async () => {
             const appendData = document.createRange().createContextualFragment(tempData)
             myPropertyContainer.appendChild(appendData)
         })
+
+        let btnText = "";
+        const btnClass = (checkIn) => {
+            // const tempDate = checkOut.toISOString();
+            if (new Date(checkIn).getTime() >= new Date(Date.now()).getTime()) {
+                btnText = "Cancel";
+                return "danger";
+            } else {
+                btnText = "Add Review";
+                return "success";
+            }
+        }
         if(data.bookings !== ""){
             toggleHide(document.getElementById('no-booking-div'));
             data.bookings.forEach((booking,i)=>{
@@ -70,6 +82,7 @@ const getDetails = async () => {
                 <p>Check-Out-Date<span>${booking.checkOutDate.slice(0,10)}</span></p> 
                 <p>Booking Date<span>${booking.bookingDate.slice(0,10)}</span></p>
                 <p>Total Price<span>₹ ${booking.totalPrice}</span></p>
+                <button type="submit" class="btn btn-${btnClass(booking.checkInDate)} cancel-booking-btn">${btnText}</button>
                 </div>
             </div>`;
 
