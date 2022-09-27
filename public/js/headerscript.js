@@ -69,6 +69,7 @@ const openModals = (e) => {
   } else if (e.target.value === "Register Home") {
     toggleHide(modal_container);
     toggleHide(registerPropertyModal);
+    
   } else if(e.target.value === "Log Out"){
     (async function() {
       try {

@@ -15,11 +15,12 @@
 
 :root {
     --main-color: #ff385c;
-    --main-shadow: rgb(198, 196, 196);
+    /* --main-shadow: rgb(198, 196, 196); */
     --main-bg: #41464b;
     --main-card-color:#ff385d48;
     --text-black: #000;
     --text-white: #fff;
+    --main-shadow:#fff;
 }
 
 #showPriceDays{
@@ -879,7 +880,11 @@ img{
 
 #booking-form-wrapper div{
     padding: 0.5rem;
-    overflow: scroll;
+}
+
+input:disabled{
+    background-color: inherit !important;
+    border: none;
 }
 
 #booking-form{
@@ -950,7 +955,7 @@ img{
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
 }
 #user_info_wrapper div{
     color: var(--main-bg);
@@ -958,12 +963,33 @@ img{
 }
 
 #user_info_wrapper div h2{
-    background-color: var(--main-shadow);
+    color: var(--main-shadow);
     font-family: 'Cookie', cursive;
     font-size: 4rem;
     padding: 0.5rem;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    /* text-align: center; */
     border-radius: 0.5rem !important;
+    text-shadow: 0.1rem 0.1rem 0.2rem var(--main-shadow) !important;
+    /* width: 80%;
+    float: right; */
+}
+
+.btn-danger{
+    display: flex;
+    align-items: center;
+    color: var(--main-shadow);
+    font-weight: bold;
+}
+
+.delete_btn{
+    justify-content: space-between !important;
+}
+
+#delete-acc-btn{
+    font-size: 1.7rem !important;
+    font-family: 'Montserrat', sans-serif;
 }
 #user_info_wrapper div h5{
     /* background-color: var(--main-shadow); */
@@ -972,7 +998,7 @@ img{
     padding: 0.5rem;
     border-radius: 0.5rem !important;
 }
-#edit-btn,#add-property-btn{
+#add-property-btn{
     color: var(--main-color);
     font-weight: bold;
     font-family: monospace;
@@ -984,7 +1010,7 @@ img{
 }
 #user_info_wrapper div h5 span{
     font-family: 'Cookie', cursive !important;
-    font-size: 2.5rem !important;
+    font-size: 3rem !important;
     color: var(--main-shadow);
 }
 #user_info_wrapper form
@@ -993,18 +1019,49 @@ img{
     border-radius: 0.5rem !important;
     padding: 4rem;
     display: flex;
+    width: 80%;
     flex-direction: column;
+    float: right;
     gap: 1rem;
 }
 
 #user_info_wrapper form button{
     background-color: var(--main-color);
     max-width: fit-content;
+    border: none;
+    padding: 0.5rem;
+    font-weight: bold;
+    border-radius: 0.3rem;
+    outline: none;
 }
 
 #user_info_wrapper form input{
+    background-color: var(--main-shadow);
+    color: var(--text-black);
+    border: 0.1rem solid var(--main-bg);
+    width: 80%;
+    float: right;
+    /* margin-right: none; */
+}
+
+#edit-account-form form div{
     background-color: var(--main-bg);
     color: var(--main-shadow);
+    padding: 1rem;
+}
+
+#edit-account-form form div input:disabled{
+visibility: hidden;
+}
+
+#user_info_wrapper form label{
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+    border-radius: 0.3rem;
+    padding: 0.2rem;
 }
 
 .no-data-container{
@@ -1012,11 +1069,62 @@ img{
     font-size: 1.5rem;
     padding: 4rem;
     font-weight: bold;
+    width: 80%;
+    float: right;
 }
 
-#my-property-container,#my-boookings-container{
+#my-property-container{
+    background-color: var(--main-shadow);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 1rem;
+    column-gap: 2rem;
+    width: 80%;
+    float: right;
+}
+#my-property-container .card{
+    background-color: var(--main-bg);
+    border-radius: 1rem !important;
+}
+#my-bookings-container{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    background-color: var(--main-shadow);
+    float: right;
+    gap: 2rem;
+    padding: 1rem;
+    border-radius: 1rem !important;
 }
 
+.booking-card{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr;
+    column-gap: 2rem;
+    background-color: var(--main-bg);
+    align-items: center;
+    padding: 1rem;
+}
+
+.booking-card div:first-child{
+    padding: 1rem;
+}
+
+.booking-card div:first-child img{
+    border-radius: 1rem;
+}
+
+.booking-card div:last-child{
+    color: var(--main-shadow) !important;
+}
+
+.booking-card div:last-child p{
+    display: flex; 
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+#booking-header{
+    font-family: 'Aref Ruqaa Ink', serif;
+    font-size: 3rem;
+}

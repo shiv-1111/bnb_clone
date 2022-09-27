@@ -120,37 +120,37 @@
     <!-- main feed  -->
     <div class="col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="user_info_wrapper">
-            <div><h2>Welcome to your dashboard, {{name}}</h2></div>
+            <div><h2>Welcome to your dashboard, {{name}} <button class="btn btn-danger" id="delete-acc-btn">Delete Account</button> </h2></div>
             <div id="edit-account-form">
-                <h5><span>Edit Account Details-</span> <button id="edit-btn" class="btn">Edit</button></h5>
-                <form action="#" method="post" class="hidden">
+                <h5><span>Edit Account Details-</span></h5>
+                <form action="#" method="post">
                     <div>
-                        <label for="email" class="form-label">Change Email-id</label>
-                    <input type="email" name="email" class="form-control" disabled value="">
+                        <label for="email" class="form-label">Change Email-id<button class="edit-btn" class="btn">Edit</button></label>
+                    <input type="email" id="change-email" name="email" class="form-control" disabled value="" placeholder="Enter new email">
                     </div>
                     <div>
-                        <label for="phone" class="form-label">Change Phone No.</label>
-                    <input type="text" name="phone" class="form-control" disabled value="">
+                        <label for="phone" class="form-label">Change Phone No.<button class="edit-btn" class="btn">Edit</button></label>
+                    <input type="text" name="phone" class="form-control" disabled value="" placeholder="Enter new number">
                     </div>
                     <div>
-                        <label for="npassword" class="form-label">Change Password</label>
-                    <input type="password" name="npassword" class="form-control" disabled>
+                        <label for="npassword" class="form-label" value="npassword">Change Password<button class="edit-btn" class="btn">Edit</button></label>
+                    <input type="password" name="npassword" class="form-control" disabled placeholder="Enter new password">
                     </div>
-                    <div>
+                    <div id="reenter-password" class="hidden">
                         <label for="cpassword" class="form-label">Confirm New Password</label>
-                    <input type="password" name="cpassword" class="form-control" disabled>
+                    <input type="password" id="cpassword" name="cpassword" class="form-control" disabled placeholder="Re-enter new password">
                     </div>
-                    <div>
-                        <label  for="password" class="form-label">Enter current password to confirm</label>
-                    <input type="password" name="password" class="form-control" disabled required>
+                    <div id="confirm-password" class="hidden">
+                        <label  for="password" class="form-label"><span>Enter Password <sup>*</sup></span></label>
+                    <input type="password" name="password" class="form-control" placeholder="Enter current password to confirm" required>
                     </div>
-                    <button type="submit" class="btn">Save Changes</button>
+                    <button type="submit" class="btn hidden" id="submit-changes">Save Changes</button>
                 </form>
             </div>
 
             <div id="user-added-properties">
                 <h5><span>My properties-</span></h5>
-                <div class="no-data-container">
+                <div class="no-data-container" id="no-property-div">
                     No properties added. <span><button class="btn" id="add-property-btn">Click </button></span>to add property.
                 </div>
                 <div id="my-property-container"></div>
@@ -158,12 +158,13 @@
 
             <div id="user-bookings">
                 <h5><span>My Bookings-</span></h5>
-                <div class="no-data-container">
+                <div class="no-data-container" id="no-booking-div">
                     No bookings yet.
                 </div>
                 <div id="my-bookings-container"></div>
             </div>
 
+            
         </div>
     </div>
 

@@ -1,9 +1,9 @@
-require('dotenv').config()
+require("dotenv").config();
 
 // imports
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
-const { Collection } = require("mongoose");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { Collection, Schema } = require("mongoose");
 const {
   User,
   Booking,
@@ -11,58 +11,61 @@ const {
   ContactUs,
   Property,
 } = require("../models/models");
+const e = require("express");
 
 // user route request functions =>
 
 // 1
 const postUserSignup = async (req, res) => {
-  try{// let idCount = await User.count({});
-  let tempId;
-  // checking if number of documents inside Collection is 0
-  if ((await User.count({})) === 0) {
-    tempId = 1;
-  } else {
-    // getting the last inserted document
-    tempId = await User.findOne().sort("-_id");
-    tempId = tempId.userID + 1;
-  }
-  // const salt = await bcrypt.genSalt() 
-
-  const hashPassword = await bcrypt.hash(req.body.password, 15)
-  const user = new User({
-    userID: tempId,
-    userType: req.body.usertype,
-    userName: req.body.username,
-    email: req.body.email,
-    password: hashPassword,
-    Name: req.body.name,
-    Mobile: req.body.phone,
-    country: req.body.country,
-    city: req.body.city,
-    gender: req.body.gender,
-    profilePicture: req.file.filename,
-  });
-  user.save((err, result) => {
-    if (err) {
-      console.log(err);
+  try {
+    // let idCount = await User.count({});
+    let tempId;
+    // checking if number of documents inside Collection is 0
+    if ((await User.count({})) === 0) {
+      tempId = 1;
     } else {
-      console.log("user added");
+      // getting the last inserted document
+      tempId = await User.findOne().sort("-_id");
+      tempId = tempId.userID + 1;
     }
-  });
-  const tokenData = {
-    userID: user.userID,
-    userType: user.userType,
-    userName: user.userName,
-  };
-  const token = jwt.sign(tokenData, process.env.token_secret_key,{expiresIn:"15m"});
-      res.cookie("token", token, {
-        httpOnly: true,
-      });
-  // res.status(201).send("user added in database");
-  res.status(201).redirect(`/user/account/${user.userName}`);
-}
-catch(err){
-    res.status(401).send(err)
+    // const salt = await bcrypt.genSalt()
+
+    const hashPassword = await bcrypt.hash(req.body.password, 15);
+    const user = new User({
+      userID: tempId,
+      userType: req.body.usertype,
+      userName: req.body.username,
+      email: req.body.email,
+      password: hashPassword,
+      Name: req.body.name,
+      Mobile: req.body.phone,
+      country: req.body.country,
+      city: req.body.city,
+      gender: req.body.gender,
+      profilePicture: req.file.filename,
+    });
+    user.save((err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("user added");
+      }
+    });
+    const tokenData = {
+      userID: user.userID,
+      userType: user.userType,
+      userName: user.userName,
+    };
+    const token = jwt.sign(tokenData, process.env.token_secret_key, {
+      expiresIn: "15m",
+    });
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+    // res.status(201).send("user added in database");
+    res.status(201).redirect(`/user/account/${user.userName}`);
+  } catch (err) {
+    res.status(401).send(err);
   }
 };
 
@@ -70,33 +73,34 @@ catch(err){
 const postUserLogin = (req, res) => {
   try {
     User.findOne({ userName: req.body.username }, (err, user) => {
-    if (bcrypt.compare(req.body.password,user.password)) {
+      if (bcrypt.compare(req.body.password, user.password)) {
+        const tokenData = {
+          userID: user.userID,
+          userType: user.userType,
+          userName: user.userName,
+        };
 
-      const tokenData = {
-        userID: user.userID,
-        userType: user.userType,
-        userName: user.userName,
-      };
-
-      const token = jwt.sign(tokenData, process.env.token_secret_key);
-      // res.setHeader('authorization',token)
-      res.cookie("token", token, {
-        httpOnly: true,
-      });
-      res.redirect(`/user/account/${user.userName}`)
-      // res.render('dashboard',{name:user.userName})
-    } else {
-      res.send("Invalid login credentials. Please try again");
-    }
-  });
-}catch(err){
-  res.status(404).send(err)
-}
+        const token = jwt.sign(tokenData, process.env.token_secret_key);
+        // res.setHeader('authorization',token)
+        res.cookie("token", token, {
+          httpOnly: true,
+        });
+        res.redirect(`/user/account/${user.userName}`);
+        // res.render('dashboard',{name:user.userName})
+      } else {
+        res.send("Invalid login credentials. Please try again");
+      }
+    });
+  } catch (err) {
+    res.status(404).send(err);
+  }
 };
 
 // 3
 const postProperty = async (req, res) => {
-  const images = req.files.map(index=>{return index.filename})
+  const images = req.files.map((index) => {
+    return index.filename;
+  });
   console.log("this is" + images);
   let tempId;
   if ((await Property.count({})) === 0) {
@@ -107,7 +111,7 @@ const postProperty = async (req, res) => {
   }
   const property = new Property({
     propertyID: tempId,
-    userID:req.user.userID,
+    userID: req.user.userID,
     propertyName: req.body.propertyname,
     owner: req.body.fullname,
     city: req.body.city,
@@ -132,7 +136,7 @@ const postProperty = async (req, res) => {
       Kitchen: req.body.kitchen,
       "Smoke Alarm": req.body.smokealarm,
       "Pets Allowed": req.body.pets,
-    }
+    },
   });
   property.save((err, result) => {
     if (err) {
@@ -173,32 +177,86 @@ const postContactUs = async (req, res) => {
 
 // 5
 
-const getDashboardPage = (req,res)=>{
-  // checking if jwt is available 
-  if(req.user && req.user.userName==req.params.id){
-    res.render('dashboard',{name:req.user.userName})
-  }else{
-    res.redirect('../home');
+const getDashboardPage = (req, res) => {
+  // checking if jwt is available
+  if (req.user && req.user.userName == req.params.id) {
+    res.render("dashboard", { name: req.user.userName });
+  } else {
+    res.redirect("../home");
   }
-}
+};
 
-//6 
-
-const getDetails = async (req,res) => {
-  try{
+//6
+const getDetails = async (req, res) => {
+  try {
     console.log(req.user.userID);
     let data = {
-      properties:"",
-      bookings:""
-    }
-    data.properties = await Property.find({userID:parseInt(req.user.userID)});
-    data.bookings = await Booking.find({userID:parseInt(req.user.userID)})
-    console.log(data);
-    res.json(data)
-  } catch(err) {
-    res.status(401).end(err)
+      properties: "",
+      bookings: "",
+    };
+
+    data.properties = await Property.find({ userID: parseInt(req.user.userID) })
+      .then((result) => {
+        let tempData = [];
+        for (let i = 0; i < result.length; i++) {
+          tempData.push({
+            propertyID: result[i].propertyID,
+            image: result[i].images[0],
+            propertyName: result[i].propertyName,
+            city: result[i].city,
+            country: result[i].country,
+            rating: result[i].rating,
+          });
+        }
+        return tempData;
+      })
+      .catch((err) => {
+        console.log(err);
+        return "";
+      });
+
+    // Note :- using lean method here otherwise to get docs returned from query as pure objects
+    // otherwise will have to use
+    // let temp = JSON.parse(JSON.stringify(result[i]));
+    // or toObject() method or {strict:false} in Schema
+    // in order to add a new property to returned query doc
+
+    data.bookings = await Booking.find(
+      { userID: parseInt(req.user.userID) },
+      { _id: 0, __v: 0, userID: 0 }
+    )
+      .lean()
+      .then(async (result) => {
+        for (let i = 0; i < result.length; i++) {
+          // creating new properties in bookings object 
+          result[i].image = "";
+          result[i].propertyName = await Property.findOne(
+            { propertyID: result[i].propertyID },
+            { propertyName: 1, _id: 0,images:1 }
+          ).then((property) => {
+            result[i].image = property.images[0]
+            return property.propertyName
+          });
+        }
+        return result;
+      })
+      .catch((err) => {
+        console.log(err);
+        return "";
+      });
+
+    res.json(data);
+  } catch (err) {
+    res.status(401).end(err);
   }
-}
+};
 
 // export
-module.exports = { postUserSignup, postUserLogin, postProperty, postContactUs, getDashboardPage, getDetails};
+module.exports = {
+  postUserSignup,
+  postUserLogin,
+  postProperty,
+  postContactUs,
+  getDashboardPage,
+  getDetails,
+};

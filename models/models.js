@@ -73,7 +73,7 @@ const reviewSchema = new mongoose.Schema({
     userID:{type:Number,required: true},
     propertyID:{type:Number,required: true},
     reviewDate:Date,
-    rating:Number,
+    rating:String,
     description:String
 })
 
