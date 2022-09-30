@@ -26,6 +26,7 @@ const propertySchema = new mongoose.Schema({
     propertyID:{type:Number,required: true},
     propertyName:String,
     owner:String,
+    ownerImg:String,
     userID:{type:Number,required: true},
     city:String,
     country:String,

@@ -1,9 +1,47 @@
 const editBtn = document.getElementsByClassName("edit-btn");
 const submitChange = document.getElementById("submit-changes");
-const myPropertyContainer = document.getElementById('my-property-container')
+const myPropertyContainer = document.getElementById('my-property-container');
 
+
+// show add review modal 
+const reviewModal = () => {
+  toggleHide(modal_container);
+  toggleHide(document.getElementById('review_modal_container'))
+}
+
+// rating event listeners 
+// and function for adding and removing color from star
+let starCounter = -1;
+document.querySelectorAll('.star').forEach((star,i,arr)=>{
+  star.addEventListener('click',() => {
+    
+     if (i === starCounter) {
+      arr.forEach(ele => {
+        ele.style.color = '#fff';
+      })
+      starCounter = -1;
+     } else {
+      arr.forEach(ele => {
+        ele.style.color = '#fff';
+      })
+      arr.forEach((ele,j) =>{
+        if (j <= i) {
+          ele.style.color = '#ff385c';
+        }
+        starCounter = i;
+      });
+     }
+    document.getElementById('rating').value = i + 1;
+  })
+})
+
+const getPropertyById = (id) => {
+    const url = `http://localhost:3000/property/id/${id}`;
+    window.location.href = url;
+}
+
+// update form edit button event listeners
 let counter = 0;
-// update form event listener
 Array.from(editBtn).forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -31,6 +69,7 @@ Array.from(editBtn).forEach((btn) => {
 });
 
 
+// function to get user proper and booking details  
 const getDetails = async () => {
     try {
         const url = `http://localhost:3000/user/details`;
@@ -40,9 +79,9 @@ const getDetails = async () => {
     if (data.properties !== "") {
         toggleHide(document.getElementById('no-property-div'))
         data.properties.forEach((property,i)=>{
-            const tempData = `<div class="card ">
+            const tempData = `<div class="card">
+            <div class="card-body" onclick="getPropertyById(${property.propertyID})">
             <img src="http://localhost:3000/fetchImage/${property.image}" class="card-img-top" alt="img">
-            <div class="card-body">
                 <h5 class="card-title">${property.propertyName}</h5>
             </div>
             <ul class="list-group">
@@ -58,17 +97,21 @@ const getDetails = async () => {
             myPropertyContainer.appendChild(appendData)
         })
 
-        let btnText = "";
-        const btnClass = (checkIn) => {
-            // const tempDate = checkOut.toISOString();
-            if (new Date(checkIn).getTime() >= new Date(Date.now()).getTime()) {
-                btnText = "Cancel";
-                return "danger";
-            } else {
-                btnText = "Add Review";
-                return "success";
+
+        // function to determine which button to render, cancel or add review
+        const btnClass = (checkIn, bID, pID) => {
+          const twoDays = 2 * (24 * 60 * 60 * 1000);
+            if (new Date(checkIn).getTime() >= (new Date(Date.now()).getTime()) + twoDays) {
+                return `<p><button type="submit" class="btn btn-danger cancel-booking-btn" onclick="cancelBooking()" value="${bID}">Cancel</button></p>`;
+            } else if (new Date(checkIn).getTime() >= new Date(Date.now()).getTime() && new Date(checkIn).getTime() < (new Date(Date.now()).getTime()) + twoDays)
+            {
+              return `<p><button class="btn btn-light nocancel-booking-btn">Cancellation Not Allowed</button></p>`;
+            }
+            else {
+                return `<p><button type="submit" class="btn btn-success review-btn" onclick="reviewModal()" value="${pID}">Add Review</button></p>`;
             }
         }
+
         if(data.bookings !== ""){
             toggleHide(document.getElementById('no-booking-div'));
             data.bookings.forEach((booking,i)=>{
@@ -78,11 +121,13 @@ const getDetails = async () => {
                 </div>
                 <div id="booking-details">
                 <p id="booking-header">${booking.propertyName}</p>
-                <p>Check-In-Date <span>${booking.checkInDate.slice(0,10)}</span></p>
-                <p>Check-Out-Date<span>${booking.checkOutDate.slice(0,10)}</span></p> 
-                <p>Booking Date<span>${booking.bookingDate.slice(0,10)}</span></p>
-                <p>Total Price<span>₹ ${booking.totalPrice}</span></p>
-                <button type="submit" class="btn btn-${btnClass(booking.checkInDate)} cancel-booking-btn">${btnText}</button>
+                <p>Booking date:<span>${new Date(booking.bookingDate).toGMTString().slice(4,16)}</span></p>
+                <p>Check-in date:<span>${new Date(booking.checkInDate).toGMTString().slice(0,16)}</span></p>
+                <p>Check-out date:<span>${new Date(booking.checkOutDate).toGMTString().slice(0,16)}</span></p> 
+                <p>Rooms booked:<span>${booking.numberOfRooms} rooms</span></p>
+                <p>No. of nights:<span>${booking.numberOfNights} nights</span></p>
+                <p>Price:<span>₹ ${booking.totalPrice} total</span></p>
+                ${btnClass(booking.checkInDate, booking.bookingID, booking.propertyID)}
                 </div>
             </div>`;
 
@@ -97,5 +142,7 @@ const getDetails = async () => {
     alert("Error fetching data. Try Again.")
   }
 };
+
+
 
 window.onload = getDetails();

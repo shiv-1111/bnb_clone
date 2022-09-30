@@ -53,10 +53,6 @@ const postBooking = async (req, res) => {
     bookingID: tempId,
     bookingDate: Date.now(),
     userID: req.user.userID,
-    // propertyID: Property.findOne(
-    //   { name: req.body.propertyname },
-    //   (err, property) => property.propertyID
-    // ),
     propertyID: req.body.propertyID,
     checkInDate: req.body.checkInDate,
     checkOutDate: req.body.checkOutDate,
@@ -113,12 +109,13 @@ const postReview = async (req, res) => {
 };
 
 // 5
-const getPropertyPage = (req,res) =>{
+const getPropertyPage = async (req,res) =>{
   console.log(req.params.id)
   
   if(req.user){
     res.cookie("tempID",req.params.id)
-    res.render('verifiedproperty',{name:req.user.userName})
+    const picture =await User.findOne({userID:req.user.userID},{profilePicture:1,_id:0})
+    res.render('verifiedproperty',{name:req.user.userName,img:picture.profilePicture})
   }else{
     res.cookie("tempID",req.params.id)
     res.render('property')

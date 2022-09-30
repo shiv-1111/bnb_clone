@@ -18,7 +18,7 @@ const router = express.Router();
 
 
 // importing functions from controller 
-const {postUserSignup, postUserLogin, postProperty, postContactUs, getDashboardPage, getDetails}= require('../controllers/userController')
+const {postUserSignup, postUserLogin, postProperty, postContactUs, getDashboardPage, getDetails,getUserAccount}= require('../controllers/userController')
 const {validateJWT} = require('../auth.js')
 
 // middlewares
@@ -58,13 +58,7 @@ router.post("/login", postUserLogin);
 router.get('/account/:id',validateJWT,getDashboardPage)
 
 //render user account page
-router.get('/account/:id/dashboard',validateJWT,(req,res)=>{
-  if(req.user && req.user.userName === req.params.id){
-    res.render('userdashboard',{name:req.user.userName})
-  }else{
-    res.status(401).end()
-  }
-})
+router.get('/account/:id/dashboard',validateJWT,getUserAccount)
 
 // user details api
 router.get('/details',validateJWT, getDetails)

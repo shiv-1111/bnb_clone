@@ -35,11 +35,8 @@
                             </span><a href="http://localhost:3000/">
                                 <h2>airbnb</h2>
                             </a></div>
-                        <div id="top_middle_header" onclick="toggleSearchContainer()">
-                            <div id="search_text_container"><span>Search</span></div>
-                            <div><button class="submit"><span class="material-symbols-outlined search_icon">
-                                        search
-                                    </span></button></div>
+                        <div id="top_middle_header" class="header-booknow">
+                            <div><a href="#details-wrapper">Book Now</a></div>
                         </div>
                         <div id="top_end_header">
                             <div id="host_div">
@@ -64,49 +61,7 @@
                         </div>
 
                     </div>
-                    <!-- bottom header part -->
-                    <form id="bottom_header" class="hidden" target="/Homes" method="post">
-                        <div id="bottom_front_header"><label for="destination">Where</label>
-                            <select name="destination" id="destination">
-                                <option selected disabled>Search Destination</option>
-                                <option value="all">Point me anywhere</option>
-                            </select>
-                        </div>
-
-                        <div id="bottom_end_header">
-                            <div id="guests"><span>Who</span>
-                                <span onclick="selectGuests()" class="span_fade">Add guests</span>
-                            </div>
-                            <div id="guest_count_container" class="hidden">
-                                <div>
-                                    <div>Guests:</div>
-                                    <div>
-                                        <span class="material-symbols-outlined" id="minus_icon" onclick="minusOne()">
-                                            remove
-                                        </span>
-                                        <input type="text" name="guest_count" id="guest_count" placeholder="0"
-                                            value="0"><span class="material-symbols-outlined" id="plus_icon"
-                                            onclick="plusOne()">
-                                            add_circle
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label>Traveling with your pet?</label><br>
-                                    <input type="radio" name="pet_yes" id="pet_yes">
-                                    <label for="pet_yes">Yes</label>
-                                    <input type="radio" name="pet_no" id="pet_no">
-                                    <label for="pet_no">No</label>
-                                </div>
-                            </div>
-                            <div id="search">
-                                <button type="submit" id="search_submit_btn"><span
-                                        class="material-symbols-outlined search_icon">
-                                        search
-                                    </span></button>
-                            </div>
-                        </div>
-                    </form>
+                    
                 </header>
             </div>
         </div>
@@ -116,21 +71,8 @@
     <div class="container-fluid col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="property_div">
 
-
-            <!-- <div class="col-md-3 card mx-auto">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div> -->
-
+            {{!-- rendered content  --}}
+           
         </div>
     </div>
 

@@ -13,6 +13,8 @@ let priceIcon;
 // };
 
 
+
+
 function addBtn() {
   priceBtn = document.querySelectorAll(".price_btn");
   priceIcon = document.querySelectorAll(".price-icon");
@@ -31,7 +33,7 @@ const fetchData = async () => {
     for (let i = 0; i < data.length; i++) {
       // console.log('upload\1663856367737menu2.svg')
       const newdata = `<div class="col-md-3 card mx-auto">
-                <img src="http://localhost:3000/fetchImage/${data[i].images[0]}" class="card-img-top" alt="img">
+                <img src="http://localhost:3000/fetchImage/${data[i].images[Math.floor(Math.random() * 5)]}" class="card-img-top" alt="img">
                 <div class="card-body">
                     <h5 class="card-title">${data[i].propertyName}</h5>
                 </div>

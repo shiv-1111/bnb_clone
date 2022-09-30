@@ -101,7 +101,6 @@ const postProperty = async (req, res) => {
   const images = req.files.map((index) => {
     return index.filename;
   });
-  console.log("this is" + images);
   let tempId;
   if ((await Property.count({})) === 0) {
     tempId = 1;
@@ -120,6 +119,7 @@ const postProperty = async (req, res) => {
     size: req.body.size,
     rating: "New",
     reviews: 0,
+    // ownerImg:await User.findOne({userID:req.user.userID},{profilePicture:1}),
     images: images,
     bedroom: req.body.bedroom,
     bathroom: req.body.bathroom,
@@ -177,14 +177,16 @@ const postContactUs = async (req, res) => {
 
 // 5
 
-const getDashboardPage = (req, res) => {
+const getDashboardPage = async (req, res) => {
   // checking if jwt is available
   if (req.user && req.user.userName == req.params.id) {
-    res.render("dashboard", { name: req.user.userName });
+    const picture =await User.findOne({userID:req.user.userID},{profilePicture:1,_id:0})
+    res.render("dashboard", { name: req.user.userName,img:picture.profilePicture});
   } else {
     res.redirect("../home");
   }
 };
+
 
 //6
 const getDetails = async (req, res) => {
@@ -201,7 +203,7 @@ const getDetails = async (req, res) => {
         for (let i = 0; i < result.length; i++) {
           tempData.push({
             propertyID: result[i].propertyID,
-            image: result[i].images[0],
+            image: result[i].images[Math.floor(Math.random() * 5)],
             propertyName: result[i].propertyName,
             city: result[i].city,
             country: result[i].country,
@@ -215,7 +217,7 @@ const getDetails = async (req, res) => {
         return "";
       });
 
-    // Note :- using lean method here otherwise to get docs returned from query as pure objects
+    // Note :- using lean method here to get docs returned from query as pure objects
     // otherwise will have to use
     // let temp = JSON.parse(JSON.stringify(result[i]));
     // or toObject() method or {strict:false} in Schema
@@ -234,7 +236,7 @@ const getDetails = async (req, res) => {
             { propertyID: result[i].propertyID },
             { propertyName: 1, _id: 0,images:1 }
           ).then((property) => {
-            result[i].image = property.images[0]
+            result[i].image = property.images[Math.floor(Math.random() * 5)]
             return property.propertyName
           });
         }
@@ -251,6 +253,16 @@ const getDetails = async (req, res) => {
   }
 };
 
+// 7
+const getUserAccount = async (req,res)=>{
+  if(req.user && req.user.userName === req.params.id){
+    const picture =await User.findOne({userID:req.user.userID},{profilePicture:1,_id:0})
+    res.render('userdashboard',{name:req.user.userName,img:picture.profilePicture})
+  }else{
+    res.status(401).end()
+  }
+}
+
 // export
 module.exports = {
   postUserSignup,
@@ -259,4 +271,5 @@ module.exports = {
   postContactUs,
   getDashboardPage,
   getDetails,
+  getUserAccount
 };

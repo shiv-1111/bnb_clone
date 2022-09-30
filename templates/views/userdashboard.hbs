@@ -37,14 +37,14 @@
                             </span><a href="http://localhost:3000/">
                                 <h2>airbnb</h2>
                             </a></div>
-                        <div id="top_middle_header" onclick="toggleSearchContainer()">
-                            <div><span>Search</span></div>
-                            <div><button class="submit"><span class="material-symbols-outlined search_icon">
-                                        search
-                                    </span></button></div>
-                        </div>
+                        
+                            <div id="top_middle_header" class="dashboard-nav-links">
+                                <div><a href="#user-added-properties">Properties</a></div>
+                                <div>← | →</div>
+                                <div><a href="#user-bookings">Bookings</a></div>
+                            </div>
                         <div id="top_end_header">
-                            <div id="host_div" data-name = {{name}}>
+                            <div id="host_div" data-name={{name}}>
                                 <a href="http://localhost:3000/user/myaccount" id="user_info">
                                     Hello {{name}}
                                 </a>
@@ -55,12 +55,12 @@
                                     <div id="top_header_dropdown_container"><span
                                             class="material-symbols-outlined dropdown_icon">
                                             menu
-                                        </span><span class="material-symbols-outlined account_icon">
-                                            account_circle
+                                        </span>
+                                        <span id="account_icon_wrapper" style="background-image:url('http://localhost:3000/fetchImage/{{img}}')">
                                         </span>
                                     </div>
                                     <div id="dropdown_button_container" class="hidden">
-                                        <input type="button" value="My Account" class="header_dropdown_btn">
+                                        <input type="button" value="My Favourites" class="header_dropdown_btn">
                                         <input type="button" value="Register Home" class="header_dropdown_btn">
                                         <input type="button" value="Log Out" class="header_dropdown_btn">
                                     </div>
@@ -69,49 +69,7 @@
                         </div>
 
                     </div>
-                    <!-- bottom header part -->
-                    <form id="bottom_header" class="hidden" target="/Homes" method="post">
-                        <div id="bottom_front_header"><label for="destination">Where</label>
-                            <select name="destination" id="destination">
-                                <option selected disabled>Search Destination</option>
-                                <option value="all">Point me anywhere</option>
-                            </select>
-                        </div>
-
-                        <div id="bottom_end_header">
-                            <div id="guests"><span>Who</span>
-                                <span onclick="selectGuests()" class="span_fade">Add guests</span>
-                            </div>
-                            <div id="guest_count_container" class="hidden">
-                                <div>
-                                    <div>Guests:</div>
-                                    <div>
-                                        <span class="material-symbols-outlined" id="minus_icon" onclick="minusOne()">
-                                            remove
-                                        </span>
-                                        <input type="text" name="guest_count" id="guest_count" placeholder="0"
-                                            value="0"><span class="material-symbols-outlined" id="plus_icon"
-                                            onclick="plusOne()">
-                                            add_circle
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label>Traveling with your pet?</label><br>
-                                    <input type="radio" name="pet_yes" id="pet_yes">
-                                    <label for="pet_yes">Yes</label>
-                                    <input type="radio" name="pet_no" id="pet_no">
-                                    <label for="pet_no">No</label>
-                                </div>
-                            </div>
-                            <div id="search">
-                                <button type="submit" id="search_submit_btn"><span
-                                        class="material-symbols-outlined search_icon">
-                                        search
-                                    </span></button>
-                            </div>
-                        </div>
-                    </form>
+                    
                 </header>
             </div>
         </div>
@@ -120,29 +78,40 @@
     <!-- main feed  -->
     <div class="col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="user_info_wrapper">
-            <div><h2>Welcome to your dashboard, {{name}} <button class="btn btn-danger" id="delete-acc-btn">Delete Account</button> </h2></div>
+            <div>
+                <h2>Welcome to your dashboard, {{name}} <button class="btn btn-danger" id="delete-acc-btn">Delete
+                        Account</button> </h2>
+            </div>
             <div id="edit-account-form">
                 <h5><span>Edit Account Details-</span></h5>
                 <form action="#" method="post">
                     <div>
-                        <label for="email" class="form-label">Change Email-id<button class="edit-btn" class="btn">Edit</button></label>
-                    <input type="email" id="change-email" name="email" class="form-control" disabled value="" placeholder="Enter new email">
+                        <label for="email" class="form-label">Change Email-id<button class="edit-btn"
+                                class="btn">Edit</button></label>
+                        <input type="email" id="change-email" name="email" class="form-control" disabled value=""
+                            placeholder="Enter new email">
                     </div>
                     <div>
-                        <label for="phone" class="form-label">Change Phone No.<button class="edit-btn" class="btn">Edit</button></label>
-                    <input type="text" name="phone" class="form-control" disabled value="" placeholder="Enter new number">
+                        <label for="phone" class="form-label">Change Phone No.<button class="edit-btn"
+                                class="btn">Edit</button></label>
+                        <input type="text" name="phone" class="form-control" disabled value=""
+                            placeholder="Enter new number">
                     </div>
                     <div>
-                        <label for="npassword" class="form-label" value="npassword">Change Password<button class="edit-btn" class="btn">Edit</button></label>
-                    <input type="password" name="npassword" class="form-control" disabled placeholder="Enter new password">
+                        <label for="npassword" class="form-label" value="npassword">Change Password<button
+                                class="edit-btn" class="btn">Edit</button></label>
+                        <input type="password" name="npassword" class="form-control" disabled
+                            placeholder="Enter new password">
                     </div>
                     <div id="reenter-password" class="hidden">
                         <label for="cpassword" class="form-label">Confirm New Password</label>
-                    <input type="password" id="cpassword" name="cpassword" class="form-control" disabled placeholder="Re-enter new password">
+                        <input type="password" id="cpassword" name="cpassword" class="form-control" disabled
+                            placeholder="Re-enter new password">
                     </div>
                     <div id="confirm-password" class="hidden">
-                        <label  for="password" class="form-label"><span>Enter Password <sup>*</sup></span></label>
-                    <input type="password" name="password" class="form-control" placeholder="Enter current password to confirm" required>
+                        <label for="password" class="form-label"><span>Enter Password <sup>*</sup></span></label>
+                        <input type="password" name="password" class="form-control"
+                            placeholder="Enter current password to confirm" required>
                     </div>
                     <button type="submit" class="btn hidden" id="submit-changes">Save Changes</button>
                 </form>
@@ -151,7 +120,8 @@
             <div id="user-added-properties">
                 <h5><span>My properties-</span></h5>
                 <div class="no-data-container" id="no-property-div">
-                    No properties added. <span><button class="btn" id="add-property-btn">Click </button></span>to add property.
+                    No properties added. <span><button class="btn" id="add-property-btn">Click </button></span>to add
+                    property.
                 </div>
                 <div id="my-property-container"></div>
             </div>
@@ -164,7 +134,7 @@
                 <div id="my-bookings-container"></div>
             </div>
 
-            
+
         </div>
     </div>
 

@@ -44,7 +44,7 @@
                                     </span></button></div>
                         </div>
                         <div id="top_end_header">
-                            <div id="host_div" data-name = {{name}}>
+                            <div id="host_div" data-name={{name}}>
                                 <a href="http://localhost:3000/user/myaccount" id="user_info">
                                     Hey {{name}}
                                 </a>
@@ -52,11 +52,11 @@
                             <div id="dropdown_wrapper">
 
                                 <div id="dropdown_container">
-                                    <div id="top_header_dropdown_container"><span
-                                            class="material-symbols-outlined dropdown_icon">
+                                    <div id="top_header_dropdown_container">
+                                        <span class="material-symbols-outlined dropdown_icon">
                                             menu
-                                        </span><span class="material-symbols-outlined account_icon">
-                                            account_circle
+                                        </span>
+                                        <span id="account_icon_wrapper" style="background-image:url('http://localhost:3000/fetchImage/{{img}}')">
                                         </span>
                                     </div>
                                     <div id="dropdown_button_container" class="hidden">

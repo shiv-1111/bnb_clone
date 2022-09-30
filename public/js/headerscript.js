@@ -9,7 +9,7 @@ const modal_container = document.querySelector(".modal_container");
 const loginModal = document.querySelector("#login_modal_container");
 const signupModal = document.querySelector("#signup_modal_container");
 const signinAlertModal = document.querySelector("#signinAlert_modal_container");
-const logoutAlertModal = document.querySelector("#logout_modal_container")
+const logoutAlertModal = document.querySelector("#logout_modal_container");
 const registerPropertyModal = document.querySelector(
   "#property_registration_modal_container"
 );
@@ -21,6 +21,13 @@ const hostDiv = document.querySelector("#host_div");
 const contactUsModal = document.querySelector("#contact_modal_container");
 const contactBtn = document.querySelector("#contactBtn");
 
+const profileImg = document.getElementById('account_icon_wrapper');
+
+const getProfileImg = (id) => {
+  if(profileImg){
+    return profileImg.style.backgroundImage = `url(http://localhost:3000/fetchImage/${id})`;
+  }
+}
 
 const showContactModal = () => {
   toggleHide(modal_container);
@@ -36,14 +43,18 @@ const toggleHide = (ele) => {
 
 contactBtn.addEventListener("click", showContactModal);
 
-dropdownIcon.addEventListener("click", () => {
-  if (hostDiv.style.visibility === "hidden") {
-    hostDiv.style.visibility = "visible";
-  } else {
-    hostDiv.style.visibility = "hidden";
-  }
-  toggleHide(dropdown_button_container);
-});
+Array.from(dropdownIcon.children).forEach(child =>{
+  child.addEventListener("click", () => {
+    if (hostDiv.style.visibility === "hidden") {
+      hostDiv.style.visibility = "visible";
+    } else {
+      hostDiv.style.visibility = "hidden";
+    }
+    toggleHide(dropdown_button_container);
+  });
+})
+
+
 
 // open sign in and other modals
 
@@ -57,9 +68,9 @@ const openModals = (e) => {
     toggleHide(modal_container);
     toggleHide(loginModal);
   }
-    if (e.target.value === "My Account") {
-      console.log('account')
-      window.location.href = `http://localhost:3000/user/account/${hostDiv.dataset.name}/dashboard`
+  if (e.target.value === "My Account") {
+    console.log("account");
+    window.location.href = `http://localhost:3000/user/account/${hostDiv.dataset.name}/dashboard`;
   } else if (e.target.value === "Sign Up") {
     toggleHide(modal_container);
     toggleHide(signupModal);
@@ -69,21 +80,20 @@ const openModals = (e) => {
   } else if (e.target.value === "Register Home") {
     toggleHide(modal_container);
     toggleHide(registerPropertyModal);
-    
-  } else if(e.target.value === "Log Out"){
-    (async function() {
+  } else if (e.target.value === "Log Out") {
+    (async function () {
       try {
-       const url = "http://localhost:3000/user/logout";
-       const response = await fetch(url);
-       const data = await response.json();
-       console.log(data);
-       if (response.status === 200) {
-         toggleHide(modal_container);
-         toggleHide(logoutAlertModal);
-       }
+        const url = "http://localhost:3000/user/logout";
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+        if (response.status === 200) {
+          toggleHide(modal_container);
+          toggleHide(logoutAlertModal);
+        }
       } catch (error) {
-        alert("Error logging out")
-        console.log(error)
+        alert("Error logging out");
+        console.log(error);
       }
     })();
   }
@@ -93,7 +103,7 @@ const openModals = (e) => {
 window.onclick = (e) => {
   if (e.target === modal_container) {
     if (!logoutAlertModal.classList.contains("hidden")) {
-      window.location.href = "http://localhost:3000/"
+      window.location.href = "http://localhost:3000/";
     }
     toggleHide(modal_container);
 
@@ -106,9 +116,8 @@ window.onclick = (e) => {
 
   if (
     !dropdown_button_container.classList.contains("hidden") &&
-    !e.target.classList.contains("material-symbols-outlined")
+    e.target.parentElement != dropdownIcon
   ) {
-
     toggleHide(dropdown_button_container);
     hostDiv.style.visibility = "visible";
   }
