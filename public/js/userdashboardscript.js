@@ -3,8 +3,11 @@ const submitChange = document.getElementById("submit-changes");
 const myPropertyContainer = document.getElementById("my-property-container");
 
 // show add review modal
-const reviewModal = () => {
+const reviewModal = (id) => {
   toggleHide(modal_container);
+  console.log(id);
+  document.getElementById('review_property_id').value = id;
+  console.log(document.getElementById('review_property_id').value);
   toggleHide(document.getElementById("review_modal_container"));
 };
 
@@ -103,19 +106,20 @@ const getDetails = async () => {
           new Date(checkIn).getTime() >=
           new Date(Date.now()).getTime() + twoDays
         ) {
-          return `<p><button type="submit" class="btn btn-danger cancel-booking-btn" onclick="cancelBooking()" value="${bID}">Cancel</button></p>`;
+          return `<p><button class="btn btn-danger cancel-booking-btn" onclick="cancelBooking()" value="${bID}">Cancel</button></p>`;
         } else if (
           new Date(checkIn).getTime() >= new Date(Date.now()).getTime() &&
           new Date(checkIn).getTime() < new Date(Date.now()).getTime() + twoDays
         ) {
           return `<p><button class="btn btn-light nocancel-booking-btn">Cancellation Not Allowed</button></p>`;
         } else {
-          return `<p><button type="submit" class="btn btn-success review-btn" onclick="reviewModal()" value="${pID}">Add Review</button></p>`;
+          return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID})" value="${pID}">Add Review</button></p>`;
         }
       };
 
-      if (data.bookings !== "") {
+      if (data.bookings.length != 0) {
         toggleHide(document.getElementById("no-booking-div"));
+        toggleHide(document.getElementById('my-bookings-container'));
         data.bookings.forEach((booking, i) => {
           const tempData = `<div class="booking-card">
                 <div>

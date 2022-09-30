@@ -1114,6 +1114,7 @@ visibility: hidden;
     font-weight: bold;
     width: 80%;
     float: right;
+    color: var(--main-bg);
 }
 
 #my-property-container{

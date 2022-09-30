@@ -30,8 +30,8 @@ const fetchPropertyById = async () => {
       const url = `http://localhost:3000/property/fetchproperty`;
       console.log(url);
       const response = await fetch(url);
-      console.log(response);
       const data = await response.json();
+      console.log(data);
     //   while (main_feed_container.firstChild) {
     //     main_feed_container.removeChild(main_feed_container.firstChild);
     //     note:- we could also use main_feed_container.innerHTML=""; but not recommended
@@ -43,7 +43,6 @@ const fetchPropertyById = async () => {
       function getAmenities() {
         for (let keys in data.amenities) {
           if (data.amenities[keys] == true) {
-            console.log(keys);
             function iconSelector(keys) {
               switch (keys) {
                 case "Parking":

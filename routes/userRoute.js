@@ -18,7 +18,7 @@ const router = express.Router();
 
 
 // importing functions from controller 
-const {postUserSignup, postUserLogin, postProperty, postContactUs, getDashboardPage, getDetails,getUserAccount}= require('../controllers/userController')
+const {postUserSignup, postUserLogin, postProperty, postReview, postContactUs, getDashboardPage, getDetails,getUserAccount}= require('../controllers/userController')
 const {validateJWT} = require('../auth.js')
 
 // middlewares
@@ -69,15 +69,7 @@ router.post("/registerproperty",validateJWT,upload.array("gallery_img",5), postP
 //   contact us route
 router.post("/contactus", postContactUs);
 
-// router.get('/token/validate',validateJWT,(req,res)=>{
-//   console.log("tried");
-//   console.log(req.user);
-//   if(req.user){
-//     res.send('validated')
-//   }
-//   res.send("not validated")
-// })
-
+// logout route 
 router.get('/logout',(req,res)=>{
   res.clearCookie("token");
   if (!res.cookie.token) {
@@ -89,6 +81,11 @@ router.get('/logout',(req,res)=>{
     res.status(404).end()
   }
 })
+
+
+// add review
+
+router.post('/review',validateJWT, postReview)
 
 // export 
 module.exports = router;

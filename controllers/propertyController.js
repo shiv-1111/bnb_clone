@@ -2,6 +2,7 @@
 
 require('dotenv').config()
 
+const async = require('hbs/lib/async');
 // imports
 const jwt = require('jsonwebtoken')
 
@@ -28,15 +29,11 @@ const getAllProperty = (req, res) => {
 };
 
 // 2
-const getPropertyById = (req, res) => {
-  Property.findOne({ propertyID: parseInt(req.cookies.tempID)}, (err, doc) => {
-    res.clearCookie("tempID");
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(doc);
-    }
-  });
+const getPropertyById = async (req, res) => {
+  const propertById = await Property.findOne({ propertyID: parseInt(req.cookies.tempID)},{_id:0}).lean();
+  propertById.UserReviews = await Review.find({propertyID:req.cookies.tempID},{_id:0,userID:0})
+  res.clearCookie("tempID");
+  res.status(200).json(propertById)
 };
 
 // 3
@@ -119,7 +116,6 @@ const getPropertyPage = async (req,res) =>{
   }else{
     res.cookie("tempID",req.params.id)
     res.render('property')
-
   }
 }
 

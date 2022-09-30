@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema({
     userID:{type:Number,required: true},
     userType:String,
     userName:String,
+    fName:String,
+    mName: String,
+    lName: String,
     email:String,
     password:String,
     Name:String,
@@ -73,8 +76,10 @@ const reviewSchema = new mongoose.Schema({
     heading:String,
     userID:{type:Number,required: true},
     propertyID:{type:Number,required: true},
+    reviewerName:String,
+    reviewerImg:String,
     reviewDate:Date,
-    rating:String,
+    rating:Number,
     description:String
 })
 
@@ -85,6 +90,31 @@ const contactUsSchema = new mongoose.Schema({
     query:String,
     userName:String,
     userPhone:Number
+})
+
+// mongoose hooks 
+userSchema.pre('save', function (next) {
+    if (this.isNew) {
+        this.userType = 'user';
+        let fname = this.fName.trim().toLowerCase();
+        this.fName = fname.charAt(0).toUpperCase() + fname.slice(1);
+        
+        if (this.mName !== undefined) {
+            let mname = this.mName.trim().toLowerCase();
+            this.mName = mname.charAt(0).toUpperCase() + mname.slice(1);
+            }
+            let lname = this.lName.trim().toLowerCase();
+            this.lName = lname.charAt(0).toUpperCase() + lname.slice(1);
+        }
+    console.log('pre-saving');
+    next();
+})
+
+reviewSchema.post('save',async function () {
+    let propertyReviewed = await Property.findOne({propertyID:this.propertyID});
+    propertyReviewed.reviews++;
+    propertyReviewed.rating = ((propertyReviewed.rating == 'New' ? 0 : parseFloat(propertyReviewed.rating))*(propertyReviewed.reviews - 1)+this.rating) / propertyReviewed.reviews;
+    await propertyReviewed.save();
 })
 
 // creating models

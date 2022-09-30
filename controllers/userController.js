@@ -33,8 +33,11 @@ const postUserSignup = async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, 15);
     const user = new User({
       userID: tempId,
-      userType: req.body.usertype,
+      // userType: req.body.usertype,
       userName: req.body.username,
+      fName:req.body.fName,
+      mName: req.body.mName,
+      lName: req.body.lName,
       email: req.body.email,
       password: hashPassword,
       Name: req.body.name,
@@ -44,13 +47,7 @@ const postUserSignup = async (req, res) => {
       gender: req.body.gender,
       profilePicture: req.file.filename,
     });
-    user.save((err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("user added");
-      }
-    });
+    await user.save();
     const tokenData = {
       userID: user.userID,
       userType: user.userType,
@@ -77,7 +74,7 @@ const postUserLogin = (req, res) => {
         const tokenData = {
           userID: user.userID,
           userType: user.userType,
-          userName: user.userName,
+          userName: user.userName
         };
 
         const token = jwt.sign(tokenData, process.env.token_secret_key);
@@ -180,13 +177,18 @@ const postContactUs = async (req, res) => {
 const getDashboardPage = async (req, res) => {
   // checking if jwt is available
   if (req.user && req.user.userName == req.params.id) {
-    const picture =await User.findOne({userID:req.user.userID},{profilePicture:1,_id:0})
-    res.render("dashboard", { name: req.user.userName,img:picture.profilePicture});
+    const picture = await User.findOne(
+      { userID: req.user.userID },
+      { profilePicture: 1, _id: 0 }
+    );
+    res.render("dashboard", {
+      name: req.user.userName,
+      img: picture.profilePicture,
+    });
   } else {
     res.redirect("../home");
   }
 };
-
 
 //6
 const getDetails = async (req, res) => {
@@ -230,14 +232,14 @@ const getDetails = async (req, res) => {
       .lean()
       .then(async (result) => {
         for (let i = 0; i < result.length; i++) {
-          // creating new properties in bookings object 
+          // creating new properties in bookings object
           result[i].image = "";
           result[i].propertyName = await Property.findOne(
             { propertyID: result[i].propertyID },
-            { propertyName: 1, _id: 0,images:1 }
+            { propertyName: 1, _id: 0, images: 1 }
           ).then((property) => {
-            result[i].image = property.images[Math.floor(Math.random() * 5)]
-            return property.propertyName
+            result[i].image = property.images[Math.floor(Math.random() * 5)];
+            return property.propertyName;
           });
         }
         return result;
@@ -254,14 +256,47 @@ const getDetails = async (req, res) => {
 };
 
 // 7
-const getUserAccount = async (req,res)=>{
-  if(req.user && req.user.userName === req.params.id){
-    const picture =await User.findOne({userID:req.user.userID},{profilePicture:1,_id:0})
-    res.render('userdashboard',{name:req.user.userName,img:picture.profilePicture})
-  }else{
+const getUserAccount = async (req, res) => {
+  if (req.user && req.user.userName === req.params.id) {
+    const picture = await User.findOne(
+      { userID: req.user.userID },
+      { profilePicture: 1, _id: 0 }
+    );
+    res.render("userdashboard", {
+      name: req.user.userName,
+      img: picture.profilePicture,
+    });
+  } else {
+    res.status(401).end();
+  }
+};
+
+// 8
+const postReview = async (req, res) => {
+  let tempId = 1;
+  if ((await Review.count({})) !== 0) {
+    tempId = (await Review.findOne().sort("-_id"));
+    tempId = tempId.reviewID + 1;
+  }
+  if (req.user) {
+    console.log(req.body.propertyID);
+    const review = new Review({
+      reviewID: tempId,
+      heading: req.body.header,
+      userID: req.user.userID,
+      userName:'shiv',
+      propertyID: req.body.propertyID,
+      reviewDate: Date.now(),
+      rating: req.body.rating,
+      description: req.body.query,
+    });
+
+    await review.save();
+    res.status(200).end();
+  } else {
     res.status(401).end()
   }
-}
+};
 
 // export
 module.exports = {
@@ -271,5 +306,6 @@ module.exports = {
   postContactUs,
   getDashboardPage,
   getDetails,
-  getUserAccount
+  getUserAccount,
+  postReview,
 };
