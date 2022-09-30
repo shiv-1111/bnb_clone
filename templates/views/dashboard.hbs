@@ -74,7 +74,6 @@
                         <div id="bottom_front_header"><label for="destination">Where</label>
                             <select name="destination" id="destination">
                                 <option selected disabled>Search Destination</option>
-                                <option value="all">Point me anywhere</option>
                             </select>
                         </div>
 
@@ -82,26 +81,29 @@
                             <div id="guests"><span>Who</span>
                                 <span onclick="selectGuests()" class="span_fade">Add guests</span>
                             </div>
-                            <div id="guest_count_container" class="hidden">
+                            <div id="price_count_container" class="hidden">
                                 <div>
-                                    <div>Guests:</div>
+                                    <div>Price:</div>
                                     <div>
                                         <span class="material-symbols-outlined" id="minus_icon" onclick="minusOne()">
                                             remove
                                         </span>
-                                        <input type="text" name="guest_count" id="guest_count" placeholder="0"
-                                            value="0"><span class="material-symbols-outlined" id="plus_icon"
+                                        <input type="text" name="price_count" id="price_count" placeholder="0"
+                                            value="0">
+                                            <span class="material-symbols-outlined" id="plus_icon"
                                             onclick="plusOne()">
-                                            add_circle
+                                            add
                                         </span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label>Traveling with your pet?</label><br>
-                                    <input type="radio" name="pet_yes" id="pet_yes">
+                                    <label for="pet">Traveling with your pet?</label><br>
+                                    <div id="pet_radio_wrapper">
+                                        <input type="radio" name="pet" id="pet_yes" value="yes">
                                     <label for="pet_yes">Yes</label>
-                                    <input type="radio" name="pet_no" id="pet_no">
+                                    <input type="radio" name="pet" id="pet_no" value="no">
                                     <label for="pet_no">No</label>
+                                    </div>
                                 </div>
                             </div>
                             <div id="search">

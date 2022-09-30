@@ -30,6 +30,7 @@ const fetchData = async () => {
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);
+    const cities = [];
     for (let i = 0; i < data.length; i++) {
       // console.log('upload\1663856367737menu2.svg')
       const newdata = `<div class="col-md-3 card mx-auto">
@@ -51,14 +52,23 @@ const fetchData = async () => {
         .createContextualFragment(newdata);
       document.getElementById("property_div").appendChild(dataRangeFragment);
 
-      const cityData = `<option value="${data[i].city}">${
-        data[i].city.charAt(0).toUpperCase() + data[i].city.slice(1)
-      }</option>`;
-      const cityRangeFragment = document
-        .createRange()
-        .createContextualFragment(cityData);
-      document.getElementById("destination").appendChild(cityRangeFragment);
+      if (!cities.includes(data[i].city)) {
+        cities.push(data[i].city)
+      }
+
     }
+
+    // adding city name to search bar 
+    let cityData = ``;
+    cities.forEach(city => {
+      cityData += `<option value="${city}">${
+        city.charAt(0).toUpperCase() + city.slice(1)
+      }</option>`;
+    })
+    const cityRangeFragment = document
+      .createRange()
+      .createContextualFragment(cityData);
+    document.getElementById("destination").appendChild(cityRangeFragment);
     addBtn();
   } catch {
     console.log("error fetching");

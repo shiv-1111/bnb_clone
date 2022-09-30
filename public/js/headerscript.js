@@ -2,8 +2,8 @@
 
 // const user_info = document.querySelector("#user_info");
 const bottom_header = document.getElementById("bottom_header");
-const guest_count_container = document.getElementById("guest_count_container");
-const guest_count = document.getElementById("guest_count");
+const price_count_container = document.getElementById("price_count_container");
+const price_count = document.getElementById("price_count");
 const dropdownBtns = document.querySelectorAll(".header_dropdown_btn");
 const modal_container = document.querySelector(".modal_container");
 const loginModal = document.querySelector("#login_modal_container");
@@ -21,13 +21,6 @@ const hostDiv = document.querySelector("#host_div");
 const contactUsModal = document.querySelector("#contact_modal_container");
 const contactBtn = document.querySelector("#contactBtn");
 
-const profileImg = document.getElementById('account_icon_wrapper');
-
-const getProfileImg = (id) => {
-  if(profileImg){
-    return profileImg.style.backgroundImage = `url(http://localhost:3000/fetchImage/${id})`;
-  }
-}
 
 const showContactModal = () => {
   toggleHide(modal_container);
@@ -125,8 +118,8 @@ window.onclick = (e) => {
     if (!bottom_header.classList.contains("hidden")) {
       toggleHide(bottom_header);
     }
-    if (!guest_count_container.classList.contains("hidden")) {
-      toggleHide(guest_count_container);
+    if (!price_count_container.classList.contains("hidden")) {
+      toggleHide(price_count_container);
     }
   }
 };
@@ -141,12 +134,12 @@ const toggleSearchContainer = () => {
 
 // functions for adding guests in search bar
 const selectGuests = () => {
-  toggleHide(guest_count_container);
+  toggleHide(price_count_container);
 };
 
 const plusOne = () => {
-  guest_count.value++;
+  price_count.value = parseInt(price_count.value) + 500;
 };
 const minusOne = () => {
-  if (guest_count.value != 0) guest_count.value--;
+  if (price_count.value != 0) price_count.value = parseInt(price_count.value) - 500;
 };
