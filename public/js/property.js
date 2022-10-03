@@ -26,85 +26,106 @@ const addEventToBookingForm = () => {
 };
 
 const fetchPropertyById = async () => {
-    try {
-      const url = `http://localhost:3000/property/fetchproperty`;
-      console.log(url);
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
+  try {
+    const url = `http://localhost:3000/property/fetchproperty`;
+    console.log(url);
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
     //   while (main_feed_container.firstChild) {
     //     main_feed_container.removeChild(main_feed_container.firstChild);
     //     note:- we could also use main_feed_container.innerHTML=""; but not recommended
     //             because it doesn't remove event listeners and leads to memory leak
     //   }
-  
-      // creating amenities section
-      let amenitiesNode = ``;
-      function getAmenities() {
-        for (let keys in data.amenities) {
-          if (data.amenities[keys] == true) {
-            function iconSelector(keys) {
-              switch (keys) {
-                case "Parking":
-                  return "garage_home";
-                  break;
-                case "Breakfast":
-                  return "brunch_dining";
-                  break;
-                case "AC":
-                  return "heat_pump";
-                  break;
-                case "TV":
-                  return "live_tv";
-                  break;
-                case "Fridge":
-                  return "kitchen";
-                  break;
-                case "Laundry":
-                  return "local_laundry_service";
-                  break;
-                case "Kitchen":
-                  return "cooking";
-                  break;
-                case "Smoke Alarm":
-                  return "detector_smoke";
-                  break;
-                case "Pets Allowed":
-                  return "pets";
-                  break;
-                case "WiFi":
-                  return "wifi";
-                  break;
-                default:
-                  return "check_box";
-                  break;
-              }
+
+    // creating amenities section
+    let amenitiesNode = ``;
+    function getAmenities() {
+      for (let keys in data.amenities) {
+        if (data.amenities[keys] == true) {
+          function iconSelector(keys) {
+            switch (keys) {
+              case "Parking":
+                return "garage_home";
+                break;
+              case "Breakfast":
+                return "brunch_dining";
+                break;
+              case "AC":
+                return "heat_pump";
+                break;
+              case "TV":
+                return "live_tv";
+                break;
+              case "Fridge":
+                return "kitchen";
+                break;
+              case "Laundry":
+                return "local_laundry_service";
+                break;
+              case "Kitchen":
+                return "cooking";
+                break;
+              case "Smoke Alarm":
+                return "detector_smoke";
+                break;
+              case "Pets Allowed":
+                return "pets";
+                break;
+              case "WiFi":
+                return "wifi";
+                break;
+              default:
+                return "check_box";
+                break;
             }
-            amenitiesNode += `<p><span class="material-symbols-outlined">
+          }
+          amenitiesNode += `<p><span class="material-symbols-outlined">
               ${iconSelector(keys)}
               </span>${keys}</p>`;
-          }
-        }
-        return amenitiesNode;
-      }
-
-      let userReviews = ``;
-      function getReviews() {
-        if(data.reviews == 0){
-            return userReviews = `<p>No reviews yet.</p>`
-        } else {
-            console.log('yet to write')
         }
       }
+      return amenitiesNode;
+    }
 
-      let bookingFormNode = ``;
-      function renderBookingForm () {
-        console.log(user_info.innerHTML);
-        if (user_info.innerHTML == "Become a host") {
-          bookingFormNode = `<input type="button" value="Sign in to book property" class="btn" id="book-signin-btn" onclick="showLoginPage()">`;
-          return bookingFormNode;
-        } else {
-          bookingFormNode = `<form action="http://localhost:3000/property/booking" method="post" id="booking-form">
+    let userReviews = ``;
+    function getReviews() {
+      if (data.reviews == 0) {
+        return (userReviews = `<p>No reviews yet.</p>`);
+      } else {
+        let reviewNode = ``;
+        data.userReviews.forEach((review) => {
+          userReviews += `<div class="single-review-wrapper">
+              <div class="reviewer-details-wrapper">
+                <div>
+                  <div class="reviewer-img" style="background-image:url('http://localhost:3000/fetchImage/${review.reviewerImg}')"></div>
+                  <span>${review.reviewerName}</span><span>${new Date(review.reviewDate)
+                    .toGMTString()
+                    .slice(8, 16)}</span></div>
+                  <div class="review-rating-container"><span class="star-icon material-symbols-outlined">star</span>
+                      <span>${review.rating}</span>
+                  </div>
+              </div>
+              <div>
+                  <h5>${review.heading}</h5>
+                  <p>
+                      ${review.description}
+                  </p>
+              </div>
+          </div>`;
+        });
+        return userReviews;
+      }
+    }
+
+    let bookingFormNode = ``;
+    function renderBookingForm() {
+      console.log(user_info.innerHTML);
+      if (user_info.innerHTML == "Become a host") {
+        bookingFormNode = `<input type="button" value="Sign in to book property" class="btn" id="book-signin-btn" onclick="showLoginPage()">`;
+        return bookingFormNode;
+      } else {
+        bookingFormNode = `<form action="http://localhost:3000/property/booking" method="post" id="booking-form">
               <div class="mb-3" id="date-input-wrapper">
               <div>
               <label for="checkInDate" class="form-label">Check-in Date:</label><br>
@@ -133,24 +154,25 @@ const fetchPropertyById = async () => {
             </select>
               </div>
               <div className="mb-3" id="showPriceDays"></div>
-              <div class="mb-3">
+              <div class="mb-3 book-btn-container">
               <input type="submit" class="btn" id="book-btn" value="Book Now">
               </div>
             </form>`;
-          return bookingFormNode;
-        }
-      };
-  
-      let childNode = `
+        return bookingFormNode;
+      }
+    }
+
+    let childNode = `
             <div id="property-details-wrapper">
             <div class="row mb-3 gallery-wrapper">
             <h2>${data.propertyName}</h2>
             <p>
             <span>
               <span>
-                <span class="star-icon material-symbols-outlined">star</span>${
-                  data.rating
-                }
+                <span class="star-icon material-symbols-outlined">star</span>${data.rating.slice(
+                  0,
+                  3
+                )}
               </span>
               <span>
                 ${data.reviews} reviews
@@ -158,26 +180,27 @@ const fetchPropertyById = async () => {
             </span>
             <span>${data.city}, ${data.country}</span>  
             </p>
-            <div class="col-md-6 mx-auto ">
+            <div class="col-12 mx-auto gallery-main-img-container">
+            <div>
             <img src="http://localhost:3000/fetchImage/${
               data.images[0]
-            }" alt="profile img" class="gallery_main_img">
+            }" alt="profile img" id="gallery_main_img">
             </div>
-            <div class="col-md-6 mx-auto container-fluid">
-            <div class="row gallery_img_wrapper">
-            <div class="col-md-6 mx-auto"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
+            <div class="gallery_img_wrapper">
+            
+            <div class="gallery-img-container"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
               data.images[1]
             }" alt="profile img"></div>
-            <div class="col-md-6 mx-auto"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
               data.images[2]
             }" alt="profile img"></div>
-            <div class="w-100 mb-3"></div>
-            <div class="col-md-6 mx-auto"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
               data.images[3]
             }" alt="profile img"></div>
-            <div class="col-md-6 mx-auto"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="http://localhost:3000/fetchImage/${
               data.images[4]
             }" alt="profile img"></div>
+            
             </div>
             </div>
         </div>
@@ -186,9 +209,9 @@ const fetchPropertyById = async () => {
         <div class="col-md-7 mx-auto container-fluid" id="details-wrapper">
     
         <div>
-        <h3 id="profile-img-header">Hosted by ${
+        <h3 id="profile-img-header"><span>Hosted by <span id="owner-name">${
           data.owner
-        }<img class="user-profile-img" src="https://www.freecodecamp.org/news/content/images/2021/03/Quincy-Larson-photo.jpg" alt=""></h3>
+        }</span></span><img class="user-profile-img" src="https://www.freecodecamp.org/news/content/images/2021/03/Quincy-Larson-photo.jpg" alt=""></h3>
         <p>
         <span>${data.size} sq.ft.</span>
         <span>${data.maxGuests} guests</span>
@@ -197,7 +220,7 @@ const fetchPropertyById = async () => {
         </div>
     
         <div>
-        <h3>Know us better</h3>
+        <h3>More about us</h3>
         <p>${data.description}</p>
         </div>
     
@@ -220,33 +243,32 @@ const fetchPropertyById = async () => {
             <div class="col-md-5 mx-auto container-fluid" id="booking-form-wrapper">
             <div class="mb-3">
             <h3>Book your holiday NOW</h3></div>
-            <div class="mb-3">
+            <div class="mb-3 booking-form-container container">
             <h5>₹ ${data.price} night</h5>
-            </div>
-        
             ${renderBookingForm()}
+            </div>
   
             </div>
         </div>
             </div>
             `;
-      const childNodeFragment = document
-        .createRange()
-        .createContextualFragment(childNode);
-      main_feed_container.appendChild(childNodeFragment);
-      pricePerNight = data.price;
-      checkInDiv = document.querySelector("#checkInDate");
-      checkOutDiv = document.querySelector("#checkOutDate");
-      noOfRooms = document.querySelector("#numberOfRooms");
-      priceDiv = document.querySelector("#showPriceDays");
-      noOfNights = document.querySelector("#nights");
-      totalPrice = document.querySelector("#totalPrice");
-      if (checkOutDiv !== null) {
-        addEventToBookingForm();
-      }
-    } catch (error) {
-      console.log(error);
+    const childNodeFragment = document
+      .createRange()
+      .createContextualFragment(childNode);
+    main_feed_container.appendChild(childNodeFragment);
+    pricePerNight = data.price;
+    checkInDiv = document.querySelector("#checkInDate");
+    checkOutDiv = document.querySelector("#checkOutDate");
+    noOfRooms = document.querySelector("#numberOfRooms");
+    priceDiv = document.querySelector("#showPriceDays");
+    noOfNights = document.querySelector("#nights");
+    totalPrice = document.querySelector("#totalPrice");
+    if (checkOutDiv !== null) {
+      addEventToBookingForm();
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  window.onload = fetchPropertyById();
+window.onload = fetchPropertyById();

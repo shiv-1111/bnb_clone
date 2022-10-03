@@ -9,6 +9,17 @@
                     <h2>Property Registration:-</h2>
                 </div><br>
                 <input type="text" name="propertyname" placeholder="Enter Property Name" class="form-control">
+                <label for="propertyType">Property type</label>
+                <select name="propertyType" class="form-control">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="Tiny Homes">Tiny Home</option>
+                    <option value="Cabins">Cabin</option>
+                    <option value="Beach Houses">Beach House</option>
+                    <option value="Countryside">Countryside</option>
+                    <option value="Shared Homes">Shared Home</option>
+                    <option value="Lake House">Lake House</option>
+                    <option value="Others">Others</option>
+                </select>
                 <input type="text" name="city" placeholder="City" class="form-control">
                 <input type="text" name="country" placeholder="Country" class="form-control">
                 <input type="text" name="price" placeholder="Enter price/night" class="form-control">
@@ -109,6 +120,41 @@
         <p>Click anywhere to go to homepage.</p>
     </div>
 
+    {{!-- confirm modal  --}}
+
+    <div id="delete_property_modal_container" class="modal_content hidden">
+        <form action="post">
+            <input type="number" name="property-id" id="confirm-property-id" value="" class="hidden" required>
+            <label>Are you sure you wish to delete this property?</label>
+            <div>
+            <input type="button" value="Abort" class="btn btn-success">
+            <input type="submit" value="Confirm" class="btn btn-danger">
+            </div>
+        </form>
+    </div>
+
+    <div id="cancel_booking_modal_container" class="modal_content hidden">
+        <form action="post">
+            <input type="number" name="booking-id" id="confirm-booking-id" value="" class="hidden" required>
+            <label>Are you sure you wish to cancel this booking?</label>
+            <div>
+            <input type="reset" value="Abort" class="btn btn-success">
+            <input type="submit" value="Confirm" class="btn btn-danger">
+            </div>
+        </form>
+    </div>
+
+    <div id="delete_user_modal_container" class="modal_content hidden">
+        <form action="post">
+            <label>This will delete your account permanently:</label>
+            <input type="password" placeholder="Confirm Password" class="form-control" required>
+            <div>
+            <input type="reset" value="Abort" class="btn btn-success">
+            <input type="submit" value="Confirm" class="btn btn-danger">
+            </div>
+        </form>
+    </div>
+
     {{!-- add review modal --}}
     <div id="review_modal_container" class="modal_content hidden review_modal">
         <div class="form px-4 pt-5">
@@ -131,9 +177,9 @@
                     </span></div>
                 <input type="number" name="rating" id="rating" value="" class="hidden" required>
                 <input type="number" name="propertyID" id="review_property_id" value="" class="hidden" required>
-                <input type="text" name="header" class="form-control" placeholder="Add heading" required>
-                <label for="query">Your thoughts - </label>
-                <textarea name="query" id="review_textarea" rows="5" class="form-control" required></textarea>
+                <input type="text" name="heading" class="form-control" placeholder="Add heading" required>
+                <label for="description">Your thoughts - </label>
+                <textarea name="description" id="review_textarea" rows="5" class="form-control" required></textarea>
 
                 <button class="btn btn-block" type="submit">Post Review</button>
             </form>

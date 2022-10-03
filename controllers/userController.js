@@ -33,7 +33,6 @@ const postUserSignup = async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, 15);
     const user = new User({
       userID: tempId,
-      // userType: req.body.usertype,
       userName: req.body.username,
       fName:req.body.fName,
       mName: req.body.mName,
@@ -52,9 +51,10 @@ const postUserSignup = async (req, res) => {
       userID: user.userID,
       userType: user.userType,
       userName: user.userName,
+      fullName: user.fullName
     };
     const token = jwt.sign(tokenData, process.env.token_secret_key, {
-      expiresIn: "15m",
+      // expiresIn: "15m",
     });
     res.cookie("token", token, {
       httpOnly: true,
@@ -74,7 +74,8 @@ const postUserLogin = (req, res) => {
         const tokenData = {
           userID: user.userID,
           userType: user.userType,
-          userName: user.userName
+          userName: user.userName,
+          fullName: user.fullName
         };
 
         const token = jwt.sign(tokenData, process.env.token_secret_key);
@@ -109,7 +110,8 @@ const postProperty = async (req, res) => {
     propertyID: tempId,
     userID: req.user.userID,
     propertyName: req.body.propertyname,
-    owner: req.body.fullname,
+    propertyType: req.body.propertyType,
+    owner: req.user.fullName,
     city: req.body.city,
     country: req.body.country,
     price: req.body.price,
@@ -258,13 +260,15 @@ const getDetails = async (req, res) => {
 // 7
 const getUserAccount = async (req, res) => {
   if (req.user && req.user.userName === req.params.id) {
-    const picture = await User.findOne(
+    const user = await User.findOne(
       { userID: req.user.userID },
-      { profilePicture: 1, _id: 0 }
+      { profilePicture: 1,email:1,Mobile: 1, _id: 0 }
     );
     res.render("userdashboard", {
       name: req.user.userName,
-      img: picture.profilePicture,
+      img: user.profilePicture,
+      email: user.email,
+      phone: user.Mobile
     });
   } else {
     res.status(401).end();
@@ -273,28 +277,29 @@ const getUserAccount = async (req, res) => {
 
 // 8
 const postReview = async (req, res) => {
-  let tempId = 1;
-  if ((await Review.count({})) !== 0) {
-    tempId = (await Review.findOne().sort("-_id"));
+  try {
+    let tempId;
+  if ((await Review.count({})) === 0) {
+    tempId = 1;
+  } else {
+    tempId = await Review.findOne().sort("-_id");
     tempId = tempId.reviewID + 1;
   }
-  if (req.user) {
-    console.log(req.body.propertyID);
-    const review = new Review({
-      reviewID: tempId,
-      heading: req.body.header,
-      userID: req.user.userID,
-      userName:'shiv',
-      propertyID: req.body.propertyID,
-      reviewDate: Date.now(),
-      rating: req.body.rating,
-      description: req.body.query,
-    });
-
-    await review.save();
-    res.status(200).end();
-  } else {
-    res.status(401).end()
+  const review = new Review({
+    reviewID: tempId,
+    heading: req.body.heading,
+    rating: req.body.rating,
+    description: req.body.description,
+    userID: req.user.userID,
+    reviewDate: Date.now(),
+    reviewerName: req.user.fullName,
+    reviewerImg: await User.findOne({userID: req.user.userID},{profilePicture:1}).then(user => user.profilePicture),
+    propertyID: req.body.propertyID
+  });
+  await review.save();
+  res.status(200).json({"status":"success"});
+  } catch (error) {
+    console.log((error))
   }
 };
 

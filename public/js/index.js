@@ -41,7 +41,7 @@ const fetchData = async () => {
                 <ul class="list-group">
                     <li class="list-group-item"><span>${data[i].city}, ${data[i].country}</span><span><span class="star-icon material-symbols-outlined">
                     star
-                    </span>${data[i].rating}</span></li>
+                    </span>${data[i].rating.slice(0,3)}</span></li>
                 </ul>
                 <button class="btn price_btn" value="${data[i].propertyID}">₹ ${data[i].price} night  <span data-id="${data[i].propertyID}" class="price-icon material-symbols-outlined">
                 touch_app

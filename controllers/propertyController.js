@@ -30,10 +30,12 @@ const getAllProperty = (req, res) => {
 
 // 2
 const getPropertyById = async (req, res) => {
-  const propertById = await Property.findOne({ propertyID: parseInt(req.cookies.tempID)},{_id:0}).lean();
-  propertById.UserReviews = await Review.find({propertyID:req.cookies.tempID},{_id:0,userID:0})
+  const propertyById = await Property.findOne({ propertyID: parseInt(req.cookies.tempID)},{_id:0}).lean();
+  if (propertyById.userReviews !== null) {
+    propertyById.userReviews = await Review.find({propertyID:req.cookies.tempID},{_id:0,userID:0, reviewID:0});
+  }
   res.clearCookie("tempID");
-  res.status(200).json(propertById)
+  res.status(200).json(propertyById)
 };
 
 // 3
@@ -71,44 +73,10 @@ const postBooking = async (req, res) => {
 };
 
 //   4
-const postReview = async (req, res) => {
-  let tempId;
-  if ((await Review.count({})) === 0) {
-    tempId = 1;
-  } else {
-    tempId = await Review.findOne().sort("-_id");
-    tempId = tempId.reviewID + 1;
-  }
-  const review = new Review({
-    reviewID: tempId,
-    heading: req.body.heading,
-    rating: req.body.rating,
-    description: req.body.description,
-    userID: req.user.userID,
-    propertyID: await Booking.findOne(
-      { userID: req.user.userID },
-      (err, doc) => {
-        doc.rating = toString((parseInt(doc.rating) + parseInt(req.body.rating))/(doc.review + 1))
-        doc.save();
-        return doc.propertyID;
-      }
-    ),
-  });
 
-  review.save((err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("review added");
-    }
-  });
-  res.send("review added to database");
-};
 
 // 5
 const getPropertyPage = async (req,res) =>{
-  console.log(req.params.id)
-  
   if(req.user){
     res.cookie("tempID",req.params.id)
     const picture =await User.findOne({userID:req.user.userID},{profilePicture:1,_id:0})
@@ -120,4 +88,4 @@ const getPropertyPage = async (req,res) =>{
 }
 
 // export
-module.exports = { getAllProperty, getPropertyById, postBooking, postReview, getPropertyPage };
+module.exports = { getAllProperty, getPropertyById, postBooking, getPropertyPage };

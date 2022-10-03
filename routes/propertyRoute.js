@@ -28,9 +28,6 @@ router.get('/fetchproperty',validateJWT, getPropertyById)
 
 // booking request route
 router.post("/booking",validateJWT, postBooking);
-
-// review post request
-router.post("/review",validateJWT, postReview);
   
 
 // export 

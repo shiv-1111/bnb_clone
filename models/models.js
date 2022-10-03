@@ -1,10 +1,11 @@
+const async = require('hbs/lib/async');
 const mongoose = require('mongoose')
 
 // url 
 const mongoURI = "mongodb://127.0.0.1:27017/airbnb";
 
 // connecting to mongoDB
-mongoose.connect(mongoURI).then(res => 'db connected').catch(err => 'db connection error')
+mongoose.connect(mongoURI).then(res => console.log('db connected')).catch(err => console.log(err))
 
 // user schema 
 const userSchema = new mongoose.Schema({
@@ -14,6 +15,7 @@ const userSchema = new mongoose.Schema({
     fName:String,
     mName: String,
     lName: String,
+    fullName: String,
     email:String,
     password:String,
     Name:String,
@@ -28,6 +30,7 @@ const userSchema = new mongoose.Schema({
 const propertySchema = new mongoose.Schema({
     propertyID:{type:Number,required: true},
     propertyName:String,
+    propertyType: String,
     owner:String,
     ownerImg:String,
     userID:{type:Number,required: true},
@@ -105,8 +108,14 @@ userSchema.pre('save', function (next) {
             }
             let lname = this.lName.trim().toLowerCase();
             this.lName = lname.charAt(0).toUpperCase() + lname.slice(1);
+
+        if (this.mName !== undefined) {
+            this.fullName = `${this.fName} ${this.mName} ${this.lName}`
+        } else {
+            this.fullName = `${this.fName} ${this.lName}`
         }
-    console.log('pre-saving');
+        }
+    console.log('full name added');
     next();
 })
 
@@ -115,6 +124,17 @@ reviewSchema.post('save',async function () {
     propertyReviewed.reviews++;
     propertyReviewed.rating = ((propertyReviewed.rating == 'New' ? 0 : parseFloat(propertyReviewed.rating))*(propertyReviewed.reviews - 1)+this.rating) / propertyReviewed.reviews;
     await propertyReviewed.save();
+})
+
+propertySchema.post('save',async function () {
+    if (this.isNew) {
+        
+        let owner = await User.findOne({userID: this.userID},{userType:1})
+        if (owner.userType === "user") {
+            owner.userType = "host";
+            await owner.save();
+        }
+    }
 })
 
 // creating models

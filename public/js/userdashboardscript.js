@@ -11,6 +11,11 @@ const reviewModal = (id) => {
   toggleHide(document.getElementById("review_modal_container"));
 };
 
+const openRegistrationModal = () => {
+  toggleHide(modal_container);
+  toggleHide(registerPropertyModal)
+}
+
 // rating event listeners
 // and function for adding and removing color from star
 let starCounter = -1;
@@ -69,6 +74,17 @@ Array.from(editBtn).forEach((btn) => {
   });
 });
 
+// delete buttons event listeners 
+const openConfirmModal = () => {
+  Array.from(document.getElementsByClassName('delete_btn')).forEach(btn => {
+    btn.addEventListener('click',(e) => {
+      document.getElementById('confirm-property-id').value = e.target.value;
+      toggleHide(modal_container);
+      toggleHide(document.getElementById('delete_property_modal_container'));
+    })
+  })
+}
+
 // function to get user proper and booking details
 const getDetails = async () => {
   try {
@@ -76,7 +92,7 @@ const getDetails = async () => {
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);
-    if (data.properties !== "") {
+    if (data.properties.length !== 0) {
       toggleHide(document.getElementById("no-property-div"));
       data.properties.forEach((property, i) => {
         const tempData = `<div class="card">
@@ -87,7 +103,7 @@ const getDetails = async () => {
             <ul class="list-group">
                 <li class="list-group-item"><span>${property.city}, ${property.country}</span><span><span class="star-icon material-symbols-outlined">
                 star
-                </span>${property.rating}</span></li>
+                </span>${property.rating.slice(0,3)}</span></li>
             </ul>
             <button class="btn btn-danger delete_btn" value="${property.propertyID}">Delete Property<span data-id="${property.propertyID}" class="delete-icon material-symbols-outlined">
             delete
@@ -158,6 +174,7 @@ const getDetails = async () => {
         });
       }
     }
+    openConfirmModal();
   } catch (error) {
     console.log(error);
     alert("Error fetching data. Try Again.");

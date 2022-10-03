@@ -40,7 +40,7 @@
                         
                             <div id="top_middle_header" class="dashboard-nav-links">
                                 <div><a href="#user-added-properties">Properties</a></div>
-                                <div>← | →</div>
+                                <div><span>← </span><span>|</span><span> →</span></div>
                                 <div><a href="#user-bookings">Bookings</a></div>
                             </div>
                         <div id="top_end_header">
@@ -89,13 +89,13 @@
                         <label for="email" class="form-label">Change Email-id<button class="edit-btn"
                                 class="btn">Edit</button></label>
                         <input type="email" id="change-email" name="email" class="form-control" disabled value=""
-                            placeholder="Enter new email">
+                            placeholder="{{email}}">
                     </div>
                     <div>
                         <label for="phone" class="form-label">Change Phone No.<button class="edit-btn"
                                 class="btn">Edit</button></label>
                         <input type="text" name="phone" class="form-control" disabled value=""
-                            placeholder="Enter new number">
+                            placeholder="{{phone}}">
                     </div>
                     <div>
                         <label for="npassword" class="form-label" value="npassword">Change Password<button
@@ -120,7 +120,7 @@
             <div id="user-added-properties">
                 <h5><span>My properties-</span></h5>
                 <div class="no-data-container" id="no-property-div">
-                    No properties added. <span><button class="btn" id="add-property-btn">Click </button></span>to add
+                    No properties added. <span><button class="btn" id="add-property-btn" onclick="openRegistrationModal()">Click </button></span>to add
                     property.
                 </div>
                 <div id="my-property-container"></div>
