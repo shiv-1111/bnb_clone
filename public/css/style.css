@@ -16,11 +16,12 @@
 :root {
     --main-color: #ff385c;
     --main-shadow: rgb(198, 196, 196);
-    --main-bg: #41464b;
+    /* --main-shadow: #212529; */
+    --main-bg: #000;
     --main-card-color: #ff385d48;
-    --text-black: #000;
-    --text-white: #fff;
-    /* --main-shadow:#fff; */
+    --text-black:  #41464b;
+    --text-white:   var(--main-shadow);
+    /* --main-shadow:  var(--main-shadow); */
 }
 
 #showPriceDays {
@@ -466,12 +467,12 @@ select {
 .card {
     padding: 0.8rem;
     border: none;
-    box-shadow: 0 0.05rem 0.3rem gray;
+    box-shadow: 0 0.1rem 0.3rem var(--main-shadow);
     border-radius: 2rem;
     box-sizing: content-box;
     margin: 2rem;
     /* background-color: #ccc; */
-    background-color: var(--main-shadow);
+    background-color: #212529;
     display: flex;
     color: var(--text-white);
     flex-direction: column;
@@ -482,7 +483,7 @@ select {
     font-size: 2rem;
     font-family: 'Aref Ruqaa Ink', serif;
     font-weight: bold;
-    color: black;
+    color: var(--main-shadow);
 }
 
 /* .card-body h5:hover
@@ -497,7 +498,7 @@ select {
 
 .card ul li {
     background-color: var(--main-bg);
-    color: aliceblue;
+    color: var(--main-shadow);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -522,7 +523,7 @@ select {
 
 .price_btn {
     box-shadow: 0 0.05rem 0.3rem var(--main-bg);
-    background-color: var(--text-white);
+    background-color: var(--main-shadow);
     font-weight: bold;
     /* color: var(--main-color); */
     border-radius: 1.5rem;
@@ -687,7 +688,7 @@ code {
 }
 
 .star {
-    color: #fff;
+    color:   var(--main-shadow);
 }
 
 .modal_content {
@@ -1218,21 +1219,34 @@ input:disabled {
 } */
 #user_info_wrapper div {
     color: var(--main-bg);
-    border-radius: 0.5rem !important;
+    border-radius: 0.5rem;
 }
 
 #user_info_wrapper div h2 {
     color: var(--main-shadow);
-    font-family: 'Cookie', cursive;
-    font-size: 4rem;
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
-    /* text-align: center; */
     border-radius: 0.5rem !important;
+}
+
+#user_info_wrapper div h2 span {
     text-shadow: 0.1rem 0.1rem 0.1rem var(--text-black) !important;
-    /* width: 80%;
-    float: right; */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    font-size: 2rem !important;
+}
+
+#user-dashboard-img{
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50% !important;
+    background-color: var(--main-color);
+    background-position: top;
+    background-size: cover;
+    border: 0.2rem solid var(--main-color) !important;
 }
 
 .btn-danger {
@@ -1249,6 +1263,7 @@ input:disabled {
 #delete-acc-btn {
     font-size: 1.7rem !important;
     font-family: 'Montserrat', sans-serif;
+    color: var(--main-bg);
 }
 
 #user_info_wrapper div h5 {

@@ -45,8 +45,8 @@
                             </div>
                         <div id="top_end_header">
                             <div id="host_div" data-name={{name}}>
-                                <a href="http://localhost:3000/user/myaccount" id="user_info">
-                                    Hello {{name}}
+                                <a href="http://localhost:3000/user/#" id="user_info">
+                                    My Favourites
                                 </a>
                             </div>
                             <div id="dropdown_wrapper">
@@ -79,7 +79,7 @@
     <div class="col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="user_info_wrapper">
             <div>
-                <h2>Welcome to your dashboard, {{name}} <button class="btn btn-danger" id="delete-acc-btn">Delete
+                <h2><span><div id="user-dashboard-img" style="background-image: url('http://localhost:3000/fetchImage/{{img}}');"></div> Welcome, {{name}}</span> <button class="btn btn-danger" id="delete-acc-btn">Delete
                         Account</button> </h2>
             </div>
             <div id="edit-account-form">

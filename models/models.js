@@ -65,6 +65,7 @@ const bookingSchema = new mongoose.Schema({
     bookingDate: Date,
     userID:{type:Number,required: true},
     propertyID:{type:Number,required: true},
+    reviewStatus: Boolean,
     checkInDate:Date,
     checkOutDate:Date,
     totalPrice:Number,
@@ -79,6 +80,7 @@ const reviewSchema = new mongoose.Schema({
     heading:String,
     userID:{type:Number,required: true},
     propertyID:{type:Number,required: true},
+    bookingID:{type:Number,required: true},
     reviewerName:String,
     reviewerImg:String,
     reviewDate:Date,
@@ -97,6 +99,7 @@ const contactUsSchema = new mongoose.Schema({
 
 // mongoose hooks 
 userSchema.pre('save', function (next) {
+    // adding full name to every new user's data 
     if (this.isNew) {
         this.userType = 'user';
         let fname = this.fName.trim().toLowerCase();
@@ -115,20 +118,33 @@ userSchema.pre('save', function (next) {
             this.fullName = `${this.fName} ${this.lName}`
         }
         }
-    console.log('full name added');
+    next();
+})
+
+bookingSchema.pre('save',function (next) {
+    // setting review status to false by default 
+    if (this.isNew) {
+        this.reviewStatus = false;
+    }
     next();
 })
 
 reviewSchema.post('save',async function () {
+    // calculating property rating 
     let propertyReviewed = await Property.findOne({propertyID:this.propertyID});
     propertyReviewed.reviews++;
     propertyReviewed.rating = ((propertyReviewed.rating == 'New' ? 0 : parseFloat(propertyReviewed.rating))*(propertyReviewed.reviews - 1)+this.rating) / propertyReviewed.reviews;
     await propertyReviewed.save();
+
+    // changing review status of booking 
+    let booking = await Booking.findOne({bookingID: this.bookingID});
+    booking.reviewStatus = true;
+    await booking.save();
 })
 
 propertySchema.post('save',async function () {
+    // changing user type to host on property registration
     if (this.isNew) {
-        
         let owner = await User.findOne({userID: this.userID},{userType:1})
         if (owner.userType === "user") {
             owner.userType = "host";

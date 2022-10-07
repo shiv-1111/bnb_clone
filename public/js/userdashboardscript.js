@@ -3,10 +3,10 @@ const submitChange = document.getElementById("submit-changes");
 const myPropertyContainer = document.getElementById("my-property-container");
 
 // show add review modal
-const reviewModal = (id) => {
+const reviewModal = (p_id,b_id) => {
   toggleHide(modal_container);
-  console.log(id);
-  document.getElementById('review_property_id').value = id;
+  document.getElementById('review_property_id').value = p_id;
+  document.getElementById('review_booking_id').value = b_id;
   console.log(document.getElementById('review_property_id').value);
   toggleHide(document.getElementById("review_modal_container"));
 };
@@ -129,7 +129,7 @@ const getDetails = async () => {
         ) {
           return `<p><button class="btn btn-light nocancel-booking-btn">Cancellation Not Allowed</button></p>`;
         } else {
-          return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID})" value="${pID}">Add Review</button></p>`;
+          return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID},${bID})">Add Review</button></p>`;
         }
       };
 

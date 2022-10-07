@@ -294,7 +294,8 @@ const postReview = async (req, res) => {
     reviewDate: Date.now(),
     reviewerName: req.user.fullName,
     reviewerImg: await User.findOne({userID: req.user.userID},{profilePicture:1}).then(user => user.profilePicture),
-    propertyID: req.body.propertyID
+    propertyID: req.body.propertyID,
+    bookingID: req.body.bookingID
   });
   await review.save();
   res.status(200).json({"status":"success"});
