@@ -1,6 +1,21 @@
 const editBtn = document.getElementsByClassName("edit-btn");
 const submitChange = document.getElementById("submit-changes");
 const myPropertyContainer = document.getElementById("my-property-container");
+const abort = document.getElementsByClassName('abort-btn');
+
+
+// abort button function 
+Array.from(abort).forEach(btn => {
+  btn.addEventListener('click',() => {
+    Array.from(document.querySelector(".modal_container").children).forEach((ele) =>{
+      if (!ele.classList.contains('hidden')) {
+        ele.classList.add('hidden')
+      } 
+    }
+      );
+    toggleHide(modal_container)
+  })
+})
 
 // show add review modal
 const reviewModal = (p_id,b_id) => {
@@ -23,12 +38,12 @@ document.querySelectorAll(".star").forEach((star, i, arr) => {
   star.addEventListener("click", () => {
     if (i === starCounter) {
       arr.forEach((ele) => {
-        ele.style.color = "#fff";
+        ele.style.color = "#41464b";
       });
       starCounter = -1;
     } else {
       arr.forEach((ele) => {
-        ele.style.color = "#fff";
+        ele.style.color = "#41464b";
       });
       arr.forEach((ele, j) => {
         if (j <= i) {
@@ -41,6 +56,9 @@ document.querySelectorAll(".star").forEach((star, i, arr) => {
   });
 });
 
+const setStarColor = () => {
+  document.querySelectorAll(".star").forEach(star => star.style.color = "#41464b");
+}
 const getPropertyById = (id) => {
   const url = `http://localhost:3000/property/id/${id}`;
   window.location.href = url;
@@ -65,6 +83,7 @@ Array.from(editBtn).forEach((btn) => {
 
     if (counter === 0) {
       document.getElementById("confirm-password").classList.toggle("hidden");
+
       submitChange.classList.toggle("hidden");
     }
 
@@ -75,6 +94,12 @@ Array.from(editBtn).forEach((btn) => {
 });
 
 // delete buttons event listeners 
+const openDeleteAccountModal = () => {
+  toggleHide(modal_container);
+  toggleHide(document.getElementById("delete_user_modal_container"))
+}
+
+
 const openConfirmModal = () => {
   Array.from(document.getElementsByClassName('delete_btn')).forEach(btn => {
     btn.addEventListener('click',(e) => {
@@ -83,6 +108,12 @@ const openConfirmModal = () => {
       toggleHide(document.getElementById('delete_property_modal_container'));
     })
   })
+}
+
+const cancelBooking = (id) => {
+  document.getElementById('confirm-booking-id').value = id;
+  toggleHide(modal_container)
+  toggleHide(document.getElementById('cancel_booking_modal_container'));
 }
 
 // function to get user proper and booking details
@@ -116,20 +147,24 @@ const getDetails = async () => {
       });
 
       // function to determine which button to render, cancel or add review
-      const btnClass = (checkIn, bID, pID) => {
+      const btnClass = (checkIn, bID, pID,reviewStatus) => {
         const twoDays = 2 * (24 * 60 * 60 * 1000);
         if (
           new Date(checkIn).getTime() >=
           new Date(Date.now()).getTime() + twoDays
         ) {
-          return `<p><button class="btn btn-danger cancel-booking-btn" onclick="cancelBooking()" value="${bID}">Cancel</button></p>`;
+          return `<p><button class="btn btn-danger cancel-booking-btn" onclick="cancelBooking(${bID})" value="${bID}">Cancel Booking</button></p>`;
         } else if (
           new Date(checkIn).getTime() >= new Date(Date.now()).getTime() &&
           new Date(checkIn).getTime() < new Date(Date.now()).getTime() + twoDays
         ) {
-          return `<p><button class="btn btn-light nocancel-booking-btn">Cancellation Not Allowed</button></p>`;
+          return `<p><button class="btn fake-btn">Cancellation Not Allowed</button></p>`;
         } else {
-          return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID},${bID})">Add Review</button></p>`;
+          if (reviewStatus) {
+            return `<p><button class="btn fake-btn">Review Added</button></p>`;
+          } else {
+            return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID},${bID})">Add Review</button></p>`;
+          }
         }
       };
 
@@ -160,7 +195,8 @@ const getDetails = async () => {
                 ${btnClass(
                   booking.checkInDate,
                   booking.bookingID,
-                  booking.propertyID
+                  booking.propertyID,
+                  booking.reviewStatus
                 )}
                 </div>
             </div>`;

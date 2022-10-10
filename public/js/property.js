@@ -3,28 +3,75 @@ const propertyDiv = document.getElementById("property_div");
 const user_info = document.querySelector("#user_info");
 let checkOutDiv;
 let checkInDiv;
-let noOfRooms = 1;
+let noOfRooms;
 let priceDiv;
 let noOfNights;
 let totalPrice;
+let bookBtn;
 let pricePerNight = 0;
 
 const addEventToBookingForm = () => {
-  checkOutDiv.addEventListener("input", () => {
-    let date1 = new Date(checkInDiv.value);
-    let date2 = new Date(checkOutDiv.value);
-    let diff =
+// function for calculating price and days 
+  const calcBookingData = () => {
+    // bookBtn.style.visibility = "hidden";
+    bookBtn.classList.add('hidden')
+      let date1 = new Date(checkInDiv.value);
+      let date2 = new Date(checkOutDiv.value);
+      let diff =
       Math.round(date2.getTime() - date1.getTime()) / (60 * 60 * 24 * 1000);
-    let rooms = noOfRooms.value;
-    console.log(pricePerNight);
-    noOfNights.value = diff;
-    totalPrice.value = diff * pricePerNight * rooms;
-    priceDiv.innerHTML = `${diff} Days & ${rooms} Rooms  =>  Total Price = ₹${
-      diff * pricePerNight * rooms
-    }`;
-  });
+      let rooms = noOfRooms.value;
+      console.log(typeof rooms)
+      if (rooms>=noOfRooms.min && rooms <= noOfRooms.max) {
+        noOfNights.value = diff;
+      totalPrice.value = diff * pricePerNight * rooms;
+      priceDiv.innerHTML =`<p><span>No of days:</span><span>${diff} Days</span></p>
+      <p><span>No. of rooms:</span><span>${rooms} Rooms</span></p>
+      <p><span>Total price:</span><span>₹${
+        diff * pricePerNight * rooms
+      }</span></p>`;
+        // bookBtn.style.visibility = "visible";
+        bookBtn.classList.remove('hidden')
+      }
+      else if (rooms == "") {
+        priceDiv.innerHTML = ""
+      }
+      else if (rooms == 0) {
+        priceDiv.innerHTML = `<span id="book-form-alert" class="text-danger">Please select atleast 1 room.</span>`
+      }
+      else{
+        priceDiv.innerHTML = `<span id="book-form-alert" class="text-danger">Max rooms available is ${noOfRooms.max}.<br> Please enter again.</span>`
+      }
+  }
+
+  // to set min check out date
+  checkInDiv.addEventListener('input',() => {
+    let tempDate = new Date(new Date(checkInDiv.value).getTime() + (60 * 60 * 24 * 1000)).toISOString().slice(0,10);
+    console.log(tempDate)
+    checkOutDiv.setAttribute('min',`${tempDate}`)
+    if (priceDiv.innerHTML !== "") {
+      calcBookingData();
+    }
+  })
+  // to set max check in date in case user inputs checkout date first 
+  checkOutDiv.addEventListener('input',() => {
+    let tempDate = new Date(new Date(checkOutDiv.value).getTime() - (60 * 60 * 24 * 1000)).toISOString().slice(0,10);
+    console.log(tempDate)
+    checkInDiv.setAttribute('max',`${tempDate}`)
+    if (priceDiv.innerHTML !== "") {
+      calcBookingData();
+    }
+  })
+
+  noOfRooms.addEventListener("input", calcBookingData);
 };
 
+
+const expandReview = () => {
+  document.getElementById('reviews-container-wrapper').style.maxHeight = '100%';
+  toggleHide(document.getElementById("reviews-bottom-fade"))
+}
+
+// rendering property 
 const fetchPropertyById = async () => {
   try {
     const url = `http://localhost:3000/property/fetchproperty`;
@@ -88,11 +135,24 @@ const fetchPropertyById = async () => {
       return amenitiesNode;
     }
 
+    // show or hide faded div 
+    let showFadedBottom = false;
+    const showFade = () => {
+      console.log(showFadedBottom)
+      if (showFadedBottom) {
+        return "bottom-fade";
+      }
+      else{
+        return "bottom-fade hidden";
+      }
+    }
+    // render all reviews  
     let userReviews = ``;
     function getReviews() {
       if (data.reviews == 0) {
         return (userReviews = `<p>No reviews yet.</p>`);
       } else {
+        showFadedBottom = true;
         let reviewNode = ``;
         data.userReviews.forEach((review) => {
           userReviews += `<div class="single-review-wrapper">
@@ -120,7 +180,6 @@ const fetchPropertyById = async () => {
 
     let bookingFormNode = ``;
     function renderBookingForm() {
-      console.log(user_info.innerHTML);
       if (user_info.innerHTML == "Become a host") {
         bookingFormNode = `<input type="button" value="Sign in to book property" class="btn" id="book-signin-btn" onclick="showLoginPage()">`;
         return bookingFormNode;
@@ -129,16 +188,16 @@ const fetchPropertyById = async () => {
               <div class="mb-3" id="date-input-wrapper">
               <div>
               <label for="checkInDate" class="form-label">Check-in Date:</label><br>
-              <input type="date" class="form-control" id="checkInDate" name="checkInDate">
+              <input type="date" class="form-control" id="checkInDate" name="checkInDate" max="" min="${new Date(Date.now()).toISOString().slice(0,10)}" required>
               </div>
               <div>
               <label for="checkOutDate" class="form-label">Check-out Date:</label><br>
-              <input type="date" class="form-control" id="checkOutDate" name="checkOutDate">
+              <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" min="" required>
               </div>
               </div>
               <div class="mb-3">
                 <label for="numberOfRooms" class="form-label">Number of rooms:</label>
-                <input type="number" class="form-control" id="numberOfRooms" name="numberOfRooms" placeholder="Enter here">
+                <input type="number" class="form-control" id="numberOfRooms" name="numberOfRooms" placeholder="Max. room available is ${data.bedroom}" min="1" max="${data.bedroom}" required>
               </div>
               
               <div class="mb-3 hidden" id="bookingPrice">
@@ -147,7 +206,7 @@ const fetchPropertyById = async () => {
               <input type="number" class="form-control" name="propertyID" value="${data.propertyID}">
               </div>
               <div class="mb-3">
-                <select class="form-select" aria-label="Default select example" name="paymentMethod" id="paymentMethod">
+                <select class="form-select" aria-label="Default select example" name="paymentMethod" id="paymentMethod" required>
               <option selected disabled>Choose Payment Method</option>
               <option value="online">Pay Online</option>
               <option value="cash">Pay in Cash</option>
@@ -155,7 +214,7 @@ const fetchPropertyById = async () => {
               </div>
               <div className="mb-3" id="showPriceDays"></div>
               <div class="mb-3 book-btn-container">
-              <input type="submit" class="btn" id="book-btn" value="Book Now">
+              <input type="submit" class="btn hidden" id="book-btn" value="Book Now">
               </div>
             </form>`;
         return bookingFormNode;
@@ -165,7 +224,9 @@ const fetchPropertyById = async () => {
     let childNode = `
             <div id="property-details-wrapper">
             <div class="row mb-3 gallery-wrapper">
-            <h2>${data.propertyName}</h2>
+            <h2>${data.propertyName}<span class="material-symbols-outlined favourite-icon">
+            favorite
+            </span></h2>
             <p>
             <span>
               <span>
@@ -231,11 +292,14 @@ const fetchPropertyById = async () => {
         </div>
         </div>
         
-        <div>
+        <div id="reviews-container-wrapper">
         <h3>User Reviews</h3>
         <div id="reviews-container">
         ${getReviews()}
         </div>
+        <div id="reviews-bottom-fade" class=${showFade()}  onclick="expandReview()"><span class="material-symbols-outlined">
+        expand_more
+        </span></div>
         </div>
 
             </div>
@@ -259,13 +323,12 @@ const fetchPropertyById = async () => {
     pricePerNight = data.price;
     checkInDiv = document.querySelector("#checkInDate");
     checkOutDiv = document.querySelector("#checkOutDate");
-    noOfRooms = document.querySelector("#numberOfRooms");
-    priceDiv = document.querySelector("#showPriceDays");
+    noOfRooms = document.getElementById("numberOfRooms");
+    priceDiv = document.getElementById("showPriceDays");
     noOfNights = document.querySelector("#nights");
     totalPrice = document.querySelector("#totalPrice");
-    if (checkOutDiv !== null) {
+    bookBtn = document.getElementById('book-btn')
       addEventToBookingForm();
-    }
   } catch (error) {
     console.log(error);
   }
