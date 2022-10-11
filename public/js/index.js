@@ -32,7 +32,6 @@ const fetchData = async () => {
     console.log(data);
     const cities = [];
     for (let i = 0; i < data.length; i++) {
-      // console.log('upload\1663856367737menu2.svg')
       const newdata = `<div class="col-md-3 card mx-auto">
                 <img src="http://localhost:3000/fetchImage/${data[i].images[Math.floor(Math.random() * 5)]}" class="card-img-top" alt="img">
                 <div class="card-body">

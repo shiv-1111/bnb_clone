@@ -85,7 +85,7 @@
                 <h2><span><div id="user-dashboard-img" style="background-image: url('http://localhost:3000/fetchImage/{{img}}');"></div> Welcome, {{name}}</span> <button class="btn btn-danger" id="delete-acc-btn" onclick="openDeleteAccountModal()">Delete
                         Account</button> </h2>
             </div>
-            <div id="edit-account-form">
+            <div id="edit-account-form" class="sub-wrapper">
                 <h5><span>Edit Account Details-</span></h5>
                 <form action="#" method="post">
                     <div>
@@ -120,7 +120,7 @@
                 </form>
             </div>
 
-            <div id="user-added-properties">
+            <div id="user-added-properties" class="sub-wrapper">
                 <h5><span>My properties-</span></h5>
                 <div class="no-data-container" id="no-property-div">
                     No properties added. <span><button class="btn" id="add-property-btn" onclick="openRegistrationModal()">Click </button></span>to add
@@ -129,7 +129,7 @@
                 <div id="my-property-container" class="hidden"></div>
             </div>
 
-            <div id="user-bookings">
+            <div id="user-bookings" class="sub-wrapper">
                 <h5><span>My Bookings-</span></h5>
                 <div class="no-data-container" id="no-booking-div">
                     No bookings yet.

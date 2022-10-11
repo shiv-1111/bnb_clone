@@ -2,6 +2,7 @@ const editBtn = document.getElementsByClassName("edit-btn");
 const submitChange = document.getElementById("submit-changes");
 const myPropertyContainer = document.getElementById("my-property-container");
 const bookingsContainer = document.getElementById("my-bookings-container");
+const reviewForm = document.getElementById('review_modal_form');
 const abort = document.getElementsByClassName("abort-btn");
 
 // abort button function
@@ -67,11 +68,21 @@ const getPropertyById = (id) => {
   window.location.href = url;
 };
 
-// add review http call
-const addReview = function () {
-  
-  alert("Review Added");
-};
+// // add review http call
+// const addReview = async function (e) {
+//   console.log(e.target.action);
+//   let response = await fetch(e.target.action, {
+//     method: "POST",
+//     // headers: { "Content-Type": "application/json" },
+//     body: new FormData(e.target)
+//   });
+//   console.log(response);
+//   e.preventDefault();
+// };
+
+// reviewForm.addEventListener('submit',addReview);
+
+
 
 const cancelBookingFetch = async (e) => {
   e.preventDefault();

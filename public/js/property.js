@@ -269,7 +269,7 @@ const fetchPropertyById = async () => {
         <div class="row mb-3 ">
         <div class="col-md-7 mx-auto container-fluid" id="details-wrapper">
     
-        <div>
+        <div class="meta-detail-wrapper">
         <h3 id="profile-img-header"><span>Hosted by <span id="owner-name">${
           data.owner
         }</span></span><img class="user-profile-img" src="https://www.freecodecamp.org/news/content/images/2021/03/Quincy-Larson-photo.jpg" alt=""></h3>
@@ -280,19 +280,19 @@ const fetchPropertyById = async () => {
         <span>${data.bathroom} bathroom</span></p>
         </div>
     
-        <div>
+        <div class="meta-detail-wrapper">
         <h3>More about us</h3>
         <p>${data.description}</p>
         </div>
     
-        <div>
+        <div class="meta-detail-wrapper">
         <h3>What this place offers</h3>
         <div id="amenities-container">
         ${getAmenities()}
         </div>
         </div>
         
-        <div id="reviews-container-wrapper">
+        <div id="reviews-container-wrapper" class="meta-detail-wrapper">
         <h3>User Reviews</h3>
         <div id="reviews-container">
         ${getReviews()}
