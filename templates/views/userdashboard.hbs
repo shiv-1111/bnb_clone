@@ -20,8 +20,6 @@
 
 <body>
 
-
-
     {{>dashboardmodal}}
 
     <div class="container-fluid mb-2" id="header_container_wrapper">
@@ -75,6 +73,11 @@
         </div>
     </div>
 
+        <div id="status_alert_container" class="hidden">
+        <h2 id="status-container">Status</h2>
+    </div>
+
+
     <!-- main feed  -->
     <div class="col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="user_info_wrapper">
@@ -123,7 +126,7 @@
                     No properties added. <span><button class="btn" id="add-property-btn" onclick="openRegistrationModal()">Click </button></span>to add
                     property.
                 </div>
-                <div id="my-property-container"></div>
+                <div id="my-property-container" class="hidden"></div>
             </div>
 
             <div id="user-bookings">

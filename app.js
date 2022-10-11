@@ -50,7 +50,11 @@ app.get('/home',(req,res)=>{
 })
 
 app.get('/fetchImage/:id',(req,res)=>{
-  res.sendFile(__dirname + `/upload/${req.params.id}`)
+  if (req.params.id === "#") {
+    res.status(404).end();
+  } else {
+    res.sendFile(__dirname + `/upload/${req.params.id}`)
+  }
 })
 
 // listening to port

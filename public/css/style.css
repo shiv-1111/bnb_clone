@@ -794,7 +794,23 @@ code {
     padding: 1rem;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+  }
 
+#status_alert_container {
+    background-color: var(--secondary-color);
+    text-align: center;
+    color: #fff;
+    width: 82vw;
+    padding: 2rem;
+    position: fixed;
+    margin: 0;
+    top: 6rem;
+    left: 9vw;
+    z-index: 2;
+    box-shadow: 0 0 0.2rem 0.2rem var(--card-color) ;
+}
 
 #contact_modal_form {
     display: flex;
@@ -922,6 +938,11 @@ code {
     .gallery-main-img-container {
         grid-template-columns: 1fr !important;
         grid-template-rows: 1fr 1fr !important;
+    }
+
+    #status_modal_container {
+        width: 96vw;
+        left: 2vw;
     }
 
     .gallery_img_wrapper {

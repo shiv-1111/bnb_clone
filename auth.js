@@ -6,7 +6,7 @@ const validateJWT = (req,res,next) =>{
   try {
       const user = jwt.verify(token, process.env.token_secret_key);
       req.user = user;
-      console.log(req.user)
+      // console.log(req.user)
       next();
     } catch (error) {
       console.log('jwt token not found')

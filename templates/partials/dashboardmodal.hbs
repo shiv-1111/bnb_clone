@@ -120,39 +120,40 @@
         <p>Click anywhere to go to homepage.</p>
     </div>
 
+
     {{!-- confirm modal  --}}
 
     <div id="delete_property_modal_container" class="modal_content hidden">
-        <form action="#" method="delete">
-            <input type="number" name="property-id" id="confirm-property-id" value="" class="hidden" required>
+        <form action="/property/delete" method="post" id="delete-property-form">
+            <input type="number" name="propertyID" id="confirm-property-id" value="" class="hidden" required>
             <label>Are you sure you wish to delete this property?</label>
             <div class="abort-confirm-container">
             <input type="button" value="Abort" class="btn btn-success abort-btn">
-            <input type="submit" value="Confirm" class="btn btn-danger">
+            <input type="submit" value="Confirm" class="btn btn-danger" id="delete-property-confirm-btn">
             </div>
         </form>
     </div>
 
     <div id="cancel_booking_modal_container" class="modal_content hidden">
-        <form action="#" method="delete">
-            <input type="number" name="booking-id" id="confirm-booking-id" value="" class="hidden" required>
+        <form action="/user/booking/cancel" method="post" id="cancel-booking-form">
+            <input type="number" name="bookingID" id="confirm-booking-id" value="" class="hidden" required>
             <label>Are you sure you wish to cancel this booking?</label>
             <div class="abort-confirm-container">
             <input type="reset" value="Abort" class="btn btn-success abort-btn">
-            <input type="submit" value="Confirm" class="btn btn-danger">
+            <input type="submit" value="Confirm" class="btn btn-danger" id="cancel-confirm-btn">
             </div>
         </form>
     </div>
 
     <div id="delete_user_modal_container" class="modal_content hidden">
-        <form action="#" method="delete">
+        <form action="#" method="delete" >
             <label for="password"><span class="text-danger">Warning - </span>This will delete your account permanently:</label><br>
             <input type="password" placeholder="Confirm Password*" name="password" class="form-control" required>
             <p class="text-danger hidden" id="delete-user-alert-div">Wrong Password !</p>
             <br>
             <div class="abort-confirm-container">
             <input type="reset" value="Abort" class="btn btn-success abort-btn">
-            <input type="submit" value="Confirm" class="btn btn-danger">
+            <input type="submit" value="Confirm" class="btn btn-danger" id="delete-user-confirm-btn">
             </div>
         </form>
     </div>
@@ -161,7 +162,7 @@
     <div id="review_modal_container" class="modal_content hidden review_modal">
         <div class="form px-4 pt-5">
 
-            <form action="/user/review" method="post" class="modal-form" id="review_modal_form">
+            <form action="/user/review" method="post" class="modal-form" id="review_modal_form" onsubmit="addReview()">
                 <div>
                     <h2 style="color: #fff;">Add review</h2>
                 </div>

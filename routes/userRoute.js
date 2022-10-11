@@ -18,7 +18,7 @@ const router = express.Router();
 
 
 // importing functions from controller 
-const {postUserSignup, postUserLogin, postProperty, postReview, postContactUs, getDashboardPage, getDetails,getUserAccount}= require('../controllers/userController')
+const {postUserSignup, postUserLogin, postProperty, postReview, postContactUs, getDashboardPage, getDetails, getUserAccount, cancelBooking}= require('../controllers/userController')
 const {validateJWT} = require('../auth.js')
 
 // middlewares
@@ -86,6 +86,9 @@ router.get('/logout',(req,res)=>{
 // add review
 
 router.post('/review',validateJWT, postReview)
+
+// cancel booking 
+router.post('/booking/cancel', validateJWT, cancelBooking)
 
 // export 
 module.exports = router;

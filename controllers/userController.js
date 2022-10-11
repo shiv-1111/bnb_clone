@@ -236,13 +236,18 @@ const getDetails = async (req, res) => {
         for (let i = 0; i < result.length; i++) {
           // creating new properties in bookings object
           result[i].image = "";
-          result[i].propertyName = await Property.findOne(
-            { propertyID: result[i].propertyID },
-            { propertyName: 1, _id: 0, images: 1 }
-          ).then((property) => {
-            result[i].image = property.images[Math.floor(Math.random() * 5)];
-            return property.propertyName;
-          });
+          try {
+            result[i].propertyName = await Property.findOne(
+              { propertyID: result[i].propertyID },
+              { propertyName: 1, _id: 0, images: 1 }
+            ).then((property) => {
+              result[i].image = property.images[Math.floor(Math.random() * 5)];
+              return property.propertyName;
+            });
+          } catch (error) {
+            result[i].propertyName = "Property doesn't exist!"
+            result[i].image = "#";
+          }
         }
         return result;
       })
@@ -298,11 +303,25 @@ const postReview = async (req, res) => {
     bookingID: req.body.bookingID
   });
   await review.save();
-  res.status(200).json({"status":"success"});
+  res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
   } catch (error) {
     console.log((error))
   }
 };
+
+// 9
+const cancelBooking = async (req,res) => {
+  console.log('trying to cancel')
+  console.log("cancel",req.body.bookingID)
+   try {
+    await Booking.findOneAndDelete({bookingID: req.body.bookingID});
+    console.log("deleted")
+    // res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
+    res.status(200).end();
+   } catch (error) {
+    res.status(401).end();
+   }
+}
 
 // export
 module.exports = {
@@ -314,4 +333,5 @@ module.exports = {
   getDetails,
   getUserAccount,
   postReview,
+  cancelBooking
 };

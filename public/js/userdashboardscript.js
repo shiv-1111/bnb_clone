@@ -1,35 +1,36 @@
 const editBtn = document.getElementsByClassName("edit-btn");
 const submitChange = document.getElementById("submit-changes");
 const myPropertyContainer = document.getElementById("my-property-container");
-const abort = document.getElementsByClassName('abort-btn');
+const bookingsContainer = document.getElementById("my-bookings-container");
+const abort = document.getElementsByClassName("abort-btn");
 
-
-// abort button function 
-Array.from(abort).forEach(btn => {
-  btn.addEventListener('click',() => {
-    Array.from(document.querySelector(".modal_container").children).forEach((ele) =>{
-      if (!ele.classList.contains('hidden')) {
-        ele.classList.add('hidden')
-      } 
-    }
-      );
-    toggleHide(modal_container)
-  })
-})
+// abort button function
+Array.from(abort).forEach((btn) => {
+  btn.addEventListener("click", () => {
+    Array.from(document.querySelector(".modal_container").children).forEach(
+      (ele) => {
+        if (!ele.classList.contains("hidden")) {
+          ele.classList.add("hidden");
+        }
+      }
+    );
+    toggleHide(modal_container);
+  });
+});
 
 // show add review modal
-const reviewModal = (p_id,b_id) => {
+const reviewModal = (p_id, b_id) => {
   toggleHide(modal_container);
-  document.getElementById('review_property_id').value = p_id;
-  document.getElementById('review_booking_id').value = b_id;
-  console.log(document.getElementById('review_property_id').value);
+  document.getElementById("review_property_id").value = p_id;
+  document.getElementById("review_booking_id").value = b_id;
+  console.log(document.getElementById("review_property_id").value);
   toggleHide(document.getElementById("review_modal_container"));
 };
 
 const openRegistrationModal = () => {
   toggleHide(modal_container);
-  toggleHide(registerPropertyModal)
-}
+  toggleHide(registerPropertyModal);
+};
 
 // rating event listeners
 // and function for adding and removing color from star
@@ -57,12 +58,125 @@ document.querySelectorAll(".star").forEach((star, i, arr) => {
 });
 
 const setStarColor = () => {
-  document.querySelectorAll(".star").forEach(star => star.style.color = "#41464b");
-}
+  document
+    .querySelectorAll(".star")
+    .forEach((star) => (star.style.color = "#41464b"));
+};
 const getPropertyById = (id) => {
   const url = `http://localhost:3000/property/id/${id}`;
   window.location.href = url;
 };
+
+// add review http call
+const addReview = function () {
+  
+  alert("Review Added");
+};
+
+const cancelBookingFetch = async (e) => {
+  e.preventDefault();
+  try {
+    const form = document.getElementById("cancel-booking-form");
+    let data = {
+      bookingID: document.getElementById("confirm-booking-id").value,
+    };
+    data = JSON.stringify(data);
+    console.log(data);
+    let response = await fetch(form.action, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: data,
+    });
+    console.log(response);
+    const alertDiv = document.getElementById("status_alert_container");
+    const alertText = document.getElementById("status-container");
+    if (response.status === 200) {
+      toggleHide(document.getElementById("cancel_booking_modal_container"));
+      toggleHide(modal_container);
+      alertText.innerHTML = "Booking Cancelled Successfully.";
+      alertDiv.style.backgroundColor = "#4BB543";
+      toggleHide(alertDiv);
+      setTimeout(() => {
+        toggleHide(alertDiv);
+        getDetails();
+      }, 2000);
+    } else {
+      toggleHide(document.getElementById("cancel_booking_modal_container"));
+      toggleHide(modal_container);
+      alertText.innerHTML = "Booking Cancellation Unsuccessfull!";
+      alertDiv.style.backgroundColor = "#ff385c";
+      toggleHide(alertDiv);
+      setTimeout(() => toggleHide(alertDiv), 2000);
+    }
+  } catch (error) {
+    const alertDiv = document.getElementById("status_alert_container");
+    const alertText = document.getElementById("status-container");
+    toggleHide(document.getElementById("cancel_booking_modal_container"));
+    toggleHide(modal_container);
+    alertText.innerHTML = "Server unresponsive!";
+    alertText.style.color = "#ff385c";
+    toggleHide(alertDiv);
+    setTimeout(() => {
+      toggleHide(alertDiv);
+    }, 2000);
+  }
+};
+
+const deletePropertyFetch = async (e) => {
+  e.preventDefault();
+  try {
+    const form = document.getElementById("delete-property-form");
+    let data = {
+      propertyID: document.getElementById("confirm-property-id").value,
+    };
+    data = JSON.stringify(data);
+    let response = await fetch(form.action, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: data,
+    });
+    const alertDiv = document.getElementById("status_alert_container");
+    const alertText = document.getElementById("status-container");
+    if (response.status === 200) {
+      toggleHide(document.getElementById("delete_property_modal_container"));
+    toggleHide(modal_container);
+      alertText.innerHTML = "Property Removed Successfully.";
+      alertDiv.style.backgroundColor = "#4BB543";
+      toggleHide(alertDiv);
+      setTimeout(() => {
+        toggleHide(alertDiv);
+        getDetails();
+      }, 2000);
+    } else {
+      toggleHide(document.getElementById("delete_property_modal_container"));
+    toggleHide(modal_container);
+      alertText.innerHTML = "Unsuccessfull. Please try again!";
+      alertDiv.style.backgroundColor = "#ff385c";
+      toggleHide(alertDiv);
+      setTimeout(() => toggleHide(alertDiv), 2000);
+    }
+  } catch (error) {
+    const alertDiv = document.getElementById("status_alert_container");
+    const alertText = document.getElementById("status-container");
+    toggleHide(document.getElementById("delete_property_modal_container"));
+    toggleHide(modal_container);
+    alertText.innerHTML = "Server unresponsive!";
+    alertText.style.color = "#ff385c";
+    toggleHide(alertDiv);
+    setTimeout(() => {
+      toggleHide(alertDiv);
+    }, 2000);
+  }
+};
+
+// add Listeners
+document
+  .getElementById("cancel-confirm-btn")
+  .addEventListener("click", cancelBookingFetch);
+
+document
+  .getElementById("delete-property-confirm-btn")
+  .addEventListener("click", deletePropertyFetch);
 
 // update form edit button event listeners
 let counter = 0;
@@ -93,28 +207,27 @@ Array.from(editBtn).forEach((btn) => {
   });
 });
 
-// delete buttons event listeners 
+// delete buttons event listeners
 const openDeleteAccountModal = () => {
   toggleHide(modal_container);
-  toggleHide(document.getElementById("delete_user_modal_container"))
-}
-
+  toggleHide(document.getElementById("delete_user_modal_container"));
+};
 
 const openConfirmModal = () => {
-  Array.from(document.getElementsByClassName('delete_btn')).forEach(btn => {
-    btn.addEventListener('click',(e) => {
-      document.getElementById('confirm-property-id').value = e.target.value;
+  Array.from(document.getElementsByClassName("delete_btn")).forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      document.getElementById("confirm-property-id").value = e.target.value;
       toggleHide(modal_container);
-      toggleHide(document.getElementById('delete_property_modal_container'));
-    })
-  })
-}
+      toggleHide(document.getElementById("delete_property_modal_container"));
+    });
+  });
+};
 
 const cancelBooking = (id) => {
-  document.getElementById('confirm-booking-id').value = id;
-  toggleHide(modal_container)
-  toggleHide(document.getElementById('cancel_booking_modal_container'));
-}
+  document.getElementById("confirm-booking-id").value = id;
+  toggleHide(modal_container);
+  toggleHide(document.getElementById("cancel_booking_modal_container"));
+};
 
 // function to get user proper and booking details
 const getDetails = async () => {
@@ -123,20 +236,51 @@ const getDetails = async () => {
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);
+
+    if (data.properties.length === 0 && !myPropertyContainer.classList.contains('hidden')) {
+      document.getElementById("no-property-div").classList.remove('hidden');
+      while (myPropertyContainer.firstChild) {
+        myPropertyContainer.removeChild(myPropertyContainer.firstChild);
+      }
+      myPropertyContainer.classList.add('hidden');
+    }
+
+    if (data.bookings.length === 0 && !bookingsContainer.classList.contains('hidden')) {
+      document.getElementById("no-property-div").classList.remove('hidden');
+      while (bookingsContainer.firstChild) {
+        bookingsContainer.removeChild(bookingsContainer.firstChild);
+      }
+      bookingsContainer.classList.add('hidden');
+    }
+
     if (data.properties.length !== 0) {
-      toggleHide(document.getElementById("no-property-div"));
+      document.getElementById("no-property-div").classList.add('hidden');
+      myPropertyContainer.classList.remove('hidden');
+      while (myPropertyContainer.firstChild) {
+        myPropertyContainer.removeChild(myPropertyContainer.firstChild);
+      }
       data.properties.forEach((property, i) => {
         const tempData = `<div class="card">
-            <div class="card-body" onclick="getPropertyById(${property.propertyID})">
-            <img src="http://localhost:3000/fetchImage/${property.image}" class="card-img-top" alt="img">
+            <div class="card-body" onclick="getPropertyById(${
+              property.propertyID
+            })">
+            <img src="http://localhost:3000/fetchImage/${
+              property.image
+            }" class="card-img-top" alt="img">
                 <h5 class="card-title">${property.propertyName}</h5>
             </div>
             <ul class="list-group">
-                <li class="list-group-item"><span>${property.city}, ${property.country}</span><span><span class="star-icon material-symbols-outlined">
+                <li class="list-group-item"><span>${property.city}, ${
+          property.country
+        }</span><span><span class="star-icon material-symbols-outlined">
                 star
-                </span>${property.rating.slice(0,3)}</span></li>
+                </span>${property.rating.slice(0, 3)}</span></li>
             </ul>
-            <button class="btn btn-danger delete_btn" value="${property.propertyID}">Delete Property<span data-id="${property.propertyID}" class="delete-icon material-symbols-outlined">
+            <button class="btn btn-danger delete_btn" value="${
+              property.propertyID
+            }">Delete Property<span data-id="${
+          property.propertyID
+        }" class="delete-icon material-symbols-outlined">
             delete
             </span></button>
         </div>`;
@@ -145,9 +289,10 @@ const getDetails = async () => {
           .createContextualFragment(tempData);
         myPropertyContainer.appendChild(appendData);
       });
-
-      // function to determine which button to render, cancel or add review
-      const btnClass = (checkIn, bID, pID,reviewStatus) => {
+    }
+    // function to determine which button to render, cancel or add review
+    const btnClass = (name, checkIn, bID, pID, reviewStatus) => {
+      if (name !== "Property doesn't exist!") {
         const twoDays = 2 * (24 * 60 * 60 * 1000);
         if (
           new Date(checkIn).getTime() >=
@@ -163,16 +308,26 @@ const getDetails = async () => {
           if (reviewStatus) {
             return `<p><button class="btn fake-btn">Review Added</button></p>`;
           } else {
-            return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID},${bID})">Add Review</button></p>`;
+            return `<p><button class="btn btn-success review-btn" onclick="reviewModal(${pID},${bID})" value="${pID}">Add Review</button></p>`;
           }
         }
-      };
+      } else {
+        return "";
+      }
+    };
 
-      if (data.bookings.length != 0) {
-        toggleHide(document.getElementById("no-booking-div"));
-        toggleHide(document.getElementById('my-bookings-container'));
-        data.bookings.forEach((booking, i) => {
-          const tempData = `<div class="booking-card">
+    console.log("bookings");
+    if (data.bookings.length !== 0) {
+      // toggleHide(document.getElementById("no-booking-div"));
+      document.getElementById("no-booking-div").classList.add("hidden");
+      // toggleHide(document.getElementById("my-bookings-container"));
+      while (bookingsContainer.firstChild) {
+        bookingsContainer.removeChild(bookingsContainer.firstChild);
+      }
+      bookingsContainer.classList.remove("hidden");
+
+      data.bookings.forEach((booking, i) => {
+        const tempData = `<div class="booking-card">
                 <div>
                 <img src="http://localhost:3000/fetchImage/${booking.image}">
                 </div>
@@ -193,6 +348,7 @@ const getDetails = async () => {
                 } nights</span></p>
                 <p>Price:<span>₹ ${booking.totalPrice} total</span></p>
                 ${btnClass(
+                  booking.propertyName,
                   booking.checkInDate,
                   booking.bookingID,
                   booking.propertyID,
@@ -201,15 +357,14 @@ const getDetails = async () => {
                 </div>
             </div>`;
 
-          const appendData = document
-            .createRange()
-            .createContextualFragment(tempData);
-          document
-            .getElementById("my-bookings-container")
-            .appendChild(appendData);
-        });
-      }
+        const appendData = document
+          .createRange()
+          .createContextualFragment(tempData);
+
+        bookingsContainer.appendChild(appendData);
+      });
     }
+
     openConfirmModal();
   } catch (error) {
     console.log(error);

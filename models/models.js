@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     city:String,
     gender:String,
     profilePicture:String,
+    favourites:[Number]
 })
 
 // property schema 
@@ -151,6 +152,37 @@ propertySchema.post('save',async function () {
             await owner.save();
         }
     }
+})
+
+propertySchema.pre('findOneAndDelete',async function (next) {
+    console.log(this.propertyID);
+    const property = await Property.findOne(this.getQuery());
+    console.log(property.propertyID)
+    try {
+        await Booking.updateMany({propertyID:property.propertyID},{"$set":{propertyID:null}},(err,docs)=> {
+            if(err) {
+                console.log(err)
+            }else{
+                console.log('Updated Booking:', docs)
+            }
+        });
+    } catch (error) {
+        console.log("No bookings found")
+    }
+
+    try {
+        await Review.updateMany({propertyID:property.propertyID},{"$set":{propertyID:null}},(err,docs) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Updated reviews:", docs)
+            }
+        });
+    } catch (error) {
+        console.log("No reviews found")
+    }
+
+    next();
 })
 
 // creating models

@@ -87,5 +87,20 @@ const getPropertyPage = async (req,res) =>{
   }
 }
 
+// 6
+const deleteProperty = async (req,res) => {
+  if(req.user){
+    console.log(req.body.propertyID)
+    try {
+      await Property.findOneAndDelete({propertyID:req.body.propertyID});
+      res.status(200).json({status:"property deleted"})
+    } catch (error) {
+      res.status(500).end()
+    }
+  } else {
+    res.status(401).end()
+  }
+}
+
 // export
-module.exports = { getAllProperty, getPropertyById, postBooking, getPropertyPage };
+module.exports = { getAllProperty, getPropertyById, postBooking, getPropertyPage, deleteProperty};
