@@ -312,7 +312,7 @@ const postReview = async (req, res) => {
 // 9
 const cancelBooking = async (req,res) => {
   console.log('trying to cancel');
-  console.log("cancel",req.body.bookingID)
+  console.log("cancel",req.body.bookingID);
    try {
     await Booking.findOneAndDelete({bookingID: req.body.bookingID});
     console.log("deleted")

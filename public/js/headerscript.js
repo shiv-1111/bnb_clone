@@ -2,8 +2,8 @@
 
 // const user_info = document.querySelector("#user_info");
 const bottom_header = document.getElementById("bottom_header");
-const price_count_container = document.getElementById("price_count_container");
-const price_count = document.getElementById("price_count");
+const room_count_container = document.getElementById("room_count_container");
+const room_count = document.getElementById("room_count");
 const dropdownBtns = document.querySelectorAll(".header_dropdown_btn");
 const modal_container = document.querySelector(".modal_container");
 const loginModal = document.querySelector("#login_modal_container");
@@ -118,8 +118,8 @@ window.onclick = (e) => {
     if (!bottom_header.classList.contains("hidden")) {
       toggleHide(bottom_header);
     }
-    if (!price_count_container.classList.contains("hidden")) {
-      toggleHide(price_count_container);
+    if (!room_count_container.classList.contains("hidden")) {
+      toggleHide(room_count_container);
     }
   }
 };
@@ -133,13 +133,13 @@ const toggleSearchContainer = () => {
 };
 
 // functions for adding guests in search bar
-const selectGuests = () => {
-  toggleHide(price_count_container);
+const selectFilters = () => {
+  toggleHide(room_count_container);
 };
 
 const plusOne = () => {
-  price_count.value = parseInt(price_count.value) + 500;
+  room_count.value = parseInt(room_count.value) + 1;
 };
 const minusOne = () => {
-  if (price_count.value != 0) price_count.value = parseInt(price_count.value) - 500;
+  if (room_count.value != 0) room_count.value = parseInt(room_count.value) - 1;
 };
