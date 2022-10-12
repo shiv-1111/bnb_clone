@@ -309,7 +309,7 @@ const postReview = async (req, res) => {
   }
 };
 
-// 9
+// cancel booking
 const cancelBooking = async (req,res) => {
   console.log('trying to cancel');
   console.log("cancel",req.body.bookingID);
@@ -323,6 +323,36 @@ const cancelBooking = async (req,res) => {
    }
 }
 
+// user update function 
+
+const userUpdate = async (req,res) => {
+  try {
+    if(req.user){
+      console.log(req.body)
+      await User.findOne({userID:req.user.userID}).then(async (profile) => {
+        if (bcrypt.compare(req.body.password, profile.password)) {
+          if (req.body.email) {
+            profile.email = req.body.email;
+          }
+          if (req.body.phone) {
+            profile.Mobile = req.body.phone;
+          }
+          if (req.body.npassword) {
+            const hashPassword = await bcrypt.hash(req.body.npassword, 15);
+            profile.password = hashPassword;
+          }
+          await profile.save();
+          res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
+        } else {
+          res.status(401).json({"status":"Unauthorised request !"})      
+        }
+      })
+    }
+  } catch (error) {
+    res.status(401).json({"status":"Unauthorised request !"})
+  }
+}
+
 // export
 module.exports = {
   postUserSignup,
@@ -333,5 +363,6 @@ module.exports = {
   getDetails,
   getUserAccount,
   postReview,
-  cancelBooking
+  cancelBooking,
+  userUpdate
 };
