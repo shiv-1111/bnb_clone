@@ -536,6 +536,19 @@ header #bottom_header #bottom_end_header {
     gap: 0.8rem;
 }
 
+.error-svg-container{
+    text-align: center;
+}
+
+.error-svg-container svg{
+    max-height:50vh ;
+}
+
+#error-div {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
 
 #room_count_container input[type=text] {
     color: rgb(23, 22, 22);

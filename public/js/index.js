@@ -24,18 +24,63 @@ function addBtn() {
 const renderPage = (data) => {
   const cities = [];
 
-while (propertyDiv.firstChild) {
-  propertyDiv.removeChild(propertyDiv.firstChild)
-}
+  while (propertyDiv.firstChild) {
+    propertyDiv.removeChild(propertyDiv.firstChild);
+  }
 
   if (data.length === 0) {
-    const newdata = `<div>No such properties.</div>`
+    const newdata = `<div class="col-md-10 col-12 mx-auto">
+    <div class="error-svg-container"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+ <path style="fill:#FF877F;" d="M9.694,468.335L256,30.865l246.306,437.47H9.694z"/>
+ <g>
+   <path style="fill:#573A32;" d="M243.2,140.8v204.8c0,7.074,5.726,12.8,12.8,12.8c7.074,0,12.8-5.726,12.8-12.8V140.8
+     c0-7.074-5.726-12.8-12.8-12.8C248.926,128,243.2,133.726,243.2,140.8z"/>
+   <path style="fill:#573A32;" d="M508.57,442.735L278.17,43.674c-4.574-7.919-13.022-12.8-22.17-12.8
+     c-9.148,0-17.596,4.881-22.17,12.8L3.43,442.735c-4.574,7.919-4.574,17.681,0,25.6s13.022,12.8,22.17,12.8h460.8
+     c9.148,0,17.596-4.881,22.17-12.8C513.143,460.416,513.143,450.654,508.57,442.735z M25.6,455.535L256,56.474l230.4,399.061H25.6z"
+     />
+   <circle style="fill:#573A32;" cx="256" cy="409.6" r="25.6"/>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ <g>
+ </g>
+ </svg>
+ </div>
+    <div id="error-div">No such properties. Try other options.</div>
+    </div>`;
     const dataRangeFragment = document
-        .createRange()
-        .createContextualFragment(newdata);
-      propertyDiv.appendChild(dataRangeFragment);
-  }
-  else {
+      .createRange()
+      .createContextualFragment(newdata);
+    propertyDiv.appendChild(dataRangeFragment);
+  } else {
     for (let i = 0; i < data.length; i++) {
       const newdata = `<div class="col-md-3 card mx-auto">
                   <img src="http://localhost:3000/fetchImage/${
@@ -51,9 +96,9 @@ while (propertyDiv.firstChild) {
                       star
                       </span>${data[i].rating.slice(0, 3)}</span></li>
                   </ul>
-                  <button class="btn price_btn" value="${data[i].propertyID}">₹ ${
-        data[i].price
-      } night  <span data-id="${
+                  <button class="btn price_btn" value="${
+                    data[i].propertyID
+                  }">₹ ${data[i].price} night  <span data-id="${
         data[i].propertyID
       }" class="price-icon material-symbols-outlined">
                   touch_app
@@ -67,7 +112,7 @@ while (propertyDiv.firstChild) {
         .createRange()
         .createContextualFragment(newdata);
       propertyDiv.appendChild(dataRangeFragment);
-  
+
       if (!cities.includes(data[i].city)) {
         cities.push(data[i].city);
       }
@@ -95,13 +140,19 @@ const fetchData = async () => {
     const response = await fetch(url);
     let data = await response.json();
     console.log(data);
-    document
-      .querySelectorAll(".type-container")
-      .forEach((div) => div.addEventListener("click", (e) => {
-        console.log(e.currentTarget.dataset.type)
-        data = data.filter(item => item.propertyType === e.currentTarget.dataset.type)
-        renderPage(data);
-      },true));
+    document.querySelectorAll(".type-container").forEach((div) =>
+      div.addEventListener(
+        "click",
+        (e) => {
+          console.log(e.currentTarget.dataset.type);
+          const filterData = data.filter(
+            (item) => item.propertyType === e.currentTarget.dataset.type
+          );
+          console.log(filterData)
+          renderPage(filterData);
+        }
+      )
+    );
     renderPage(data);
   } catch {
     console.log("error fetching");
