@@ -24,13 +24,10 @@ function addBtn() {
   priceIcon.forEach((icon) => icon.addEventListener("click", getPropertyById));
 }
 
-const fetchData = async () => {
-  try {
-    const url = "http://localhost:3000/property/all";
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data);
-    const cities = [];
+// render page function 
+const renderPage = (data) => {
+  const cities = [];
+
     for (let i = 0; i < data.length; i++) {
       const newdata = `<div class="col-md-3 card mx-auto">
                 <img src="http://localhost:3000/fetchImage/${data[i].images[Math.floor(Math.random() * 5)]}" class="card-img-top" alt="img">
@@ -69,6 +66,16 @@ const fetchData = async () => {
       .createContextualFragment(cityData);
     document.getElementById("destination").appendChild(cityRangeFragment);
     addBtn();
+}
+
+// fetch hotels 
+const fetchData = async () => {
+  try {
+    const url = "http://localhost:3000/property/all";
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    renderPage(data);
   } catch {
     console.log("error fetching");
   }

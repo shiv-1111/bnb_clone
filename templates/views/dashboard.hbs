@@ -56,7 +56,8 @@
                                         <span class="material-symbols-outlined dropdown_icon">
                                             menu
                                         </span>
-                                        <span id="account_icon_wrapper" style="background-image:url('http://localhost:3000/fetchImage/{{img}}')">
+                                        <span id="account_icon_wrapper"
+                                            style="background-image:url('http://localhost:3000/fetchImage/{{img}}')">
                                         </span>
                                     </div>
                                     <div id="dropdown_button_container" class="hidden">
@@ -90,8 +91,7 @@
                                         </span>
                                         <input type="text" name="price_count" id="price_count" placeholder="0"
                                             value="0">
-                                            <span class="material-symbols-outlined" id="plus_icon"
-                                            onclick="plusOne()">
+                                        <span class="material-symbols-outlined" id="plus_icon" onclick="plusOne()">
                                             add
                                         </span>
                                     </div>
@@ -100,9 +100,9 @@
                                     <label for="pet">Traveling with your pet?</label><br>
                                     <div id="pet_radio_wrapper">
                                         <input type="radio" name="pet" id="pet_yes" value="yes">
-                                    <label for="pet_yes">Yes</label>
-                                    <input type="radio" name="pet" id="pet_no" value="no">
-                                    <label for="pet_no">No</label>
+                                        <label for="pet_yes">Yes</label>
+                                        <input type="radio" name="pet" id="pet_no" value="no">
+                                        <label for="pet_no">No</label>
                                     </div>
                                 </div>
                             </div>
@@ -120,6 +120,38 @@
     </div>
 
     <!-- main feed  -->
+    <div class="container-fluid col-md-10 col-12 mx-auto" id="filter-wrapper">
+        <div id="filter-icons-container">
+            <div><span class="material-symbols-outlined">
+                    cottage
+                </span><span>Tiny Homes</span></div>
+            <div><span class="material-symbols-outlined">
+                    cabin
+                </span><span>Cabins</span></div>
+            <div><span class="material-symbols-outlined">
+                    surfing
+                </span><span>Beach House</span></div>
+            <div><span class="material-symbols-outlined">
+                    landscape
+                </span><span>Countryside</span></div>
+            <div><span class="material-symbols-outlined">
+                    diversity_2
+                </span><span>Shared Homes</span></div>
+            <div><span class="material-symbols-outlined">
+                    houseboat
+                </span><span>Lake Side</span></div>
+        </div>
+        <div id="filter-sort-container">
+            <select class="form-select" aria-label="Default select example">
+                <option selected disabled>Sort By :</option>
+                <option value="Favourites">Favourites</option>
+                <option value="highRating">Highest Rated</option>
+                <option value="HighReviews">Most Reviewed</option>
+                <option value="priceLow">Price: Low to High</option>
+            </select>
+        </div>
+    </div>
+
     <div class="container-fluid col-md-10 col-12 mx-auto" id="main_feed_container">
         <div class="row" id="property_div">
 

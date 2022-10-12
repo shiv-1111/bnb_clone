@@ -37,11 +37,11 @@ html {
 }
 
 body {
-    min-height: 100vh;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    min-height: 100vh !important;
     background-color: var(--secondary-color);
     /* to disable text selection */
     user-select: none;
@@ -106,6 +106,77 @@ input::placeholder {
     font-size: 3rem !important;
 }
 
+#filter-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    gap: 2rem;
+    margin: 1rem 0;
+    align-items: center;
+    position: sticky;
+    top: 5.8rem;
+    z-index: 1;
+    background-color: var(--secondary-color);
+    /* border-bottom: 0.05rem solid #ccc; */
+    box-shadow: 0 0 0.3rem var(--text-black);
+    border-radius: 1rem;
+    border: none;
+}
+
+#filter-wrapper select {
+    background-color: var(--secondary-color);
+    border-radius: 0.7rem;
+    font-size: 1.4rem;
+    padding: 00.5rem 0.5rem;
+    color: var(--text-black);
+    font-weight: 600;
+    text-align: left;
+}
+
+#filter-wrapper select option {
+    padding: 1rem !important;
+    border: 0.1rem solid var(--card-color) !important;
+    background-color: var(--main-bg);
+    color: var(--secondary-color);
+}
+
+#filter-wrapper select:focus {
+    box-shadow: none;
+}
+
+#filter-icons-container {
+    display: flex;
+    /* gap: 2rem; */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#filter-icons-container div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+#filter-icons-container div span:first-child {
+    font-size: 3rem !important;
+    color: var(--main-color);
+}
+
+#filter-icons-container div:hover span:first-child{
+    color: var(--text-black);
+}
+
+#filter-icons-container div:hover span:last-child{
+    color: var(--main-color);
+}
+
+#filter-icons-container div span:last-child {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+}
+
 .dropdown_icon,
 .account_icon {
     padding: 0;
@@ -168,7 +239,8 @@ input::placeholder {
     border: none;
     background-color: var(--secondary-color) !important;
     /* border-bottom: 0.1rem solid var(--main-bg); */
-    box-shadow: 0 0 0.1rem var(--main-bg) !important;
+    box-shadow: 0 0 0.3rem var(--main-bg) !important;
+    z-index: 2 !important;
 }
 
 header {
@@ -229,9 +301,6 @@ header a {
         padding: 0 1rem;
     }
 
-    #footer-container {
-        position: static !important;
-    }
 
 
 
@@ -611,8 +680,8 @@ footer {
 }
 
 code {
-    color: black;
-    font-size: 1.5rem;
+    color: var(--text-black);
+    font-size: 1.4rem;
 }
 
 #contactBtn {
@@ -631,8 +700,10 @@ code {
 
 #footer-container {
     background-color: var(--secondary-color) !important;
-    position: sticky;
-    bottom: 0;
+    position: sticky !important;
+    bottom: 0 !important;
+    /* justify-self: flex-end !important; */
+    margin-top: auto;
     box-shadow: 0 0 0.1rem var(--main-bg) !important;
 }
 
@@ -698,7 +769,7 @@ code {
     color: var(--main-color);
 }
 
-/* modal styling  */
+/*  l styling  */
 .modal_container {
     width: 100%;
     height: 100%;
