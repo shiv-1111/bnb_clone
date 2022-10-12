@@ -142,6 +142,7 @@ input::placeholder {
 
 #filter-wrapper select:focus {
     box-shadow: none;
+    border-color: var(--text-black);
 }
 
 #filter-icons-container {
@@ -157,6 +158,7 @@ input::placeholder {
     flex-direction: column;
     gap: 0.5rem;
     align-items: center;
+    cursor: pointer;
 }
 
 #filter-icons-container div span:first-child {
@@ -166,6 +168,8 @@ input::placeholder {
 
 #filter-icons-container div:hover span:first-child{
     color: var(--text-black);
+    transform: translateY(-0.2rem);
+    transition: 0.2s ease-out;
 }
 
 #filter-icons-container div:hover span:last-child{
