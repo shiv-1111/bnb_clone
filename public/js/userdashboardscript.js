@@ -68,19 +68,65 @@ const getPropertyById = (id) => {
   window.location.href = url;
 };
 
-// // add review http call
-// const addReview = async function (e) {
-//   console.log(e.target.action);
-//   let response = await fetch(e.target.action, {
-//     method: "POST",
-//     // headers: { "Content-Type": "application/json" },
-//     body: new FormData(e.target)
-//   });
-//   console.log(response);
-//   e.preventDefault();
-// };
+// add review http call
+const showAlert = async function (e) {
+  submitChange.innerHTML = "Submitting..";
+  submitChange.style.backgroundColor = 'gray';
+  e.preventDefault();
+  let submitBtn = document.getElementById('submit-changes')
+  let npassword = document.getElementById('npassword')
+  let rpassword = document.getElementById('rpassword')
+  if(!document.getElementById("reenter-password").classList.contains('hidden') && npassword.value !== rpassword.value) {
+    submitBtn.innerHTML = "Retry";
+      submitBtn.style.backgroundColor = 'red';
+    rpassword.value = "";
+    rpassword.classList.add('errorInputStyle');
+    rpassword.setAttribute('placeholder','Password do not match !');
+    setTimeout(()=>{
+      rpassword.classList.remove('errorInputStyle');
+      rpassword.setAttribute('placeholder','Re-enter new password');
+    },1800)
+    return;
+  }
+  // NOTE:- FormData uses the same format a form uses while sending multipart/formdata 
+  //        so to send formdata as body either specify body as url-encoded string or pass a URLSearchParams object 
+  const formData = new URLSearchParams(new FormData(editForm));
+  // for (const item of data) {
+  //   console.log(item[0],item[1])
+  // }
+  let response = await fetch(editForm.action, {
+    method: "POST",
+    body: formData,
+  });
 
-// editForm.addEventListener('submit',showAlert);
+  console.log(response);
+  const alertDiv = document.getElementById("status_alert_container");
+    const alertText = document.getElementById("status-container");
+    if (response.status === 200) {
+      submitBtn.style.backgroundColor = 'green';
+      submitBtn.innerHTML = 'Submitted';
+      alertText.innerHTML = "User information updated.";
+      alertDiv.style.backgroundColor = "#4BB543";
+      toggleHide(alertDiv);
+      setTimeout(() => {
+        toggleHide(alertDiv);
+        window.location.reload(true);
+      }, 2000);
+    } else if(response.status === 401){
+      submitBtn.innerHTML = "Retry";
+      submitBtn.style.backgroundColor = 'red';
+      let ele = editForm.querySelector('#confirmPassword');
+      ele.value = "";
+      ele.setAttribute('placeholder','Wrong Password Entered !');
+      ele.classList.add('errorInputStyle');
+      setTimeout(()=>{
+        ele.classList.remove('errorInputStyle');
+        ele.setAttribute('placeholder','Enter current password to confirm');
+      }, 1800)
+    }
+};
+
+editForm.addEventListener('submit',showAlert);
 
 
 
@@ -204,7 +250,7 @@ Array.from(editBtn).forEach((btn) => {
     }
     if (e.target.value === "npassword") {
       document.getElementById("reenter-password").classList.toggle("hidden");
-      document.getElementById("cpassword").toggleAttribute("disabled");
+      document.getElementById("rpassword").toggleAttribute("disabled");
     }
     e.target.parentElement.nextElementSibling.toggleAttribute("disabled");
 

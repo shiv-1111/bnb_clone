@@ -102,18 +102,18 @@
                     </div>
                     <div>
                         <label for="npassword" class="form-label" value="npassword">Change Password<button
-                                class="edit-btn" class="btn">Edit</button></label>
-                        <input type="password" name="npassword" class="form-control" disabled
+                                class="edit-btn" class="btn" value="npassword">Edit</button></label>
+                        <input type="password" name="npassword" class="form-control" id="npassword" disabled
                             placeholder="Enter new password">
                     </div>
                     <div id="reenter-password" class="hidden">
                         <label for="cpassword" class="form-label">Confirm New Password</label>
-                        <input type="password" id="cpassword" name="cpassword" class="form-control" disabled
+                        <input type="password" id="rpassword" name="rpassword" class="form-control" disabled
                             placeholder="Re-enter new password">
                     </div>
                     <div id="confirm-password" class="hidden">
                         <label for="password" class="form-label"><span>Enter Password <sup>*</sup></span></label>
-                        <input type="password" name="password" class="form-control"
+                        <input type="password" name="password" id="confirmPassword" class="form-control"
                             placeholder="Enter current password to confirm" required>
                     </div>
                     <button type="submit" class="btn hidden" id="submit-changes">Save Changes</button>

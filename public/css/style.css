@@ -48,10 +48,25 @@ body {
 }
 
 
-/* declaring a hidden class to dynamically add with js */
+/* declaring classes to dynamically add with js */
 .hidden {
     display: none !important;
     transition: 500ms ease-in;
+}
+
+.errorInputStyle {
+    border-color: red !important;
+    color: var(--text-black);
+    font-weight: 600 !important;
+    background-color: whitesmoke !important;
+}
+
+.errorInputStyle::placeholder {
+    color: red !important;
+}
+
+#submit-changes:focus {
+    box-shadow: none;
 }
 
 /* icon style  */

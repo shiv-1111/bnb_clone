@@ -339,7 +339,6 @@ const cancelBooking = async (req, res) => {
 const userUpdate = async (req, res) => {
   try {
     if (req.user) {
-      console.log(req.body);
       await User.findOne({ userID: req.user.userID }).then(async (profile) => {
         if (await bcrypt.compare(req.body.password, profile.password)) {
           if (req.body.email) {
@@ -353,9 +352,11 @@ const userUpdate = async (req, res) => {
             profile.password = hashPassword;
           }
           await profile.save();
-          res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
+          // res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
+          res.status(200).json({status:"updated"})
         } else {
-          res.status(401).json({ status: "Unauthorised request !" });
+          // console.log(req.body);
+          res.status(401).json({ status: "wrong ps !" });
         }
       });
     }

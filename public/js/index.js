@@ -153,6 +153,9 @@ const fetchData = async () => {
         }
       )
     );
+
+      
+
     renderPage(data);
   } catch {
     console.log("error fetching");

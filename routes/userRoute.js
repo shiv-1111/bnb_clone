@@ -31,7 +31,7 @@ const { validateJWT } = require("../auth.js");
 // middlewares
 router.use(cookieParser());
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.urlencoded({ extended: true }));
 const { request } = require("https");
 
 // multer code

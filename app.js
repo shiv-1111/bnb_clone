@@ -8,9 +8,11 @@ const propertyRoute = require("./routes/propertyRoute");
 const cookieParser = require('cookie-parser')
 const hbs = require('hbs')
 const {validateJWT} = require('./auth')
+const cors = require('cors')
 
 // express app instance 
 const app = express();
+app.use(cors({origin:'*'}))
 app.use(cookieParser())
 // static path, if undefined, app won't know the path to static content like css
 const root_path = path.join(__dirname, "./public/");
