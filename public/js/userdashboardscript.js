@@ -2,7 +2,7 @@ const editBtn = document.getElementsByClassName("edit-btn");
 const submitChange = document.getElementById("submit-changes");
 const myPropertyContainer = document.getElementById("my-property-container");
 const bookingsContainer = document.getElementById("my-bookings-container");
-const reviewForm = document.getElementById('review_modal_form');
+const editForm = document.getElementById('edit-form');
 const abort = document.getElementsByClassName("abort-btn");
 
 // abort button function
@@ -80,7 +80,9 @@ const getPropertyById = (id) => {
 //   e.preventDefault();
 // };
 
-// reviewForm.addEventListener('submit',addReview);
+// editForm.addEventListener('submit',showAlert);
+
+
 
 
 

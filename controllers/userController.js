@@ -34,7 +34,7 @@ const postUserSignup = async (req, res) => {
     const user = new User({
       userID: tempId,
       userName: req.body.username,
-      fName:req.body.fName,
+      fName: req.body.fName,
       mName: req.body.mName,
       lName: req.body.lName,
       email: req.body.email,
@@ -51,7 +51,7 @@ const postUserSignup = async (req, res) => {
       userID: user.userID,
       userType: user.userType,
       userName: user.userName,
-      fullName: user.fullName
+      fullName: user.fullName,
     };
     const token = jwt.sign(tokenData, process.env.token_secret_key, {
       // expiresIn: "15m",
@@ -70,27 +70,33 @@ const postUserSignup = async (req, res) => {
 const postUserLogin = (req, res) => {
   try {
     User.findOne({ userName: req.body.username }, (err, user) => {
-      if (bcrypt.compare(req.body.password, user.password)) {
-        const tokenData = {
-          userID: user.userID,
-          userType: user.userType,
-          userName: user.userName,
-          fullName: user.fullName
-        };
-
-        const token = jwt.sign(tokenData, process.env.token_secret_key);
-        // res.setHeader('authorization',token)
-        res.cookie("token", token, {
-          httpOnly: true,
-        });
-        res.redirect(`/user/account/${user.userName}`);
-        // res.render('dashboard',{name:user.userName})
+      if (err) {
+        res.status(401).render("error401");
       } else {
-        res.send("Invalid login credentials. Please try again");
+        console.log(user)
+        console.log(req.body.password)
+        if (user !== null && bcrypt.compare(req.body.password, user.password)) {
+          const tokenData = {
+            userID: user.userID,
+            userType: user.userType,
+            userName: user.userName,
+            fullName: user.fullName,
+          };
+
+          const token = jwt.sign(tokenData, process.env.token_secret_key);
+          // res.setHeader('authorization',token)
+          res.cookie("token", token, {
+            httpOnly: true,
+          });
+          res.redirect(`/user/account/${user.userName}`);
+          // res.render('dashboard',{name:user.userName})
+        } else {
+          res.status(401).render("error401");
+        }
       }
     });
   } catch (err) {
-    res.status(404).send(err);
+    res.status(401).render("error401");
   }
 };
 
@@ -245,7 +251,7 @@ const getDetails = async (req, res) => {
               return property.propertyName;
             });
           } catch (error) {
-            result[i].propertyName = "Property doesn't exist!"
+            result[i].propertyName = "Property doesn't exist!";
             result[i].image = "#";
           }
         }
@@ -267,13 +273,13 @@ const getUserAccount = async (req, res) => {
   if (req.user && req.user.userName === req.params.id) {
     const user = await User.findOne(
       { userID: req.user.userID },
-      { profilePicture: 1,email:1,Mobile: 1, _id: 0 }
+      { profilePicture: 1, email: 1, Mobile: 1, _id: 0 }
     );
     res.render("userdashboard", {
       name: req.user.userName,
       img: user.profilePicture,
       email: user.email,
-      phone: user.Mobile
+      phone: user.Mobile,
     });
   } else {
     res.status(401).end();
@@ -284,52 +290,55 @@ const getUserAccount = async (req, res) => {
 const postReview = async (req, res) => {
   try {
     let tempId;
-  if ((await Review.count({})) === 0) {
-    tempId = 1;
-  } else {
-    tempId = await Review.findOne().sort("-_id");
-    tempId = tempId.reviewID + 1;
-  }
-  const review = new Review({
-    reviewID: tempId,
-    heading: req.body.heading,
-    rating: req.body.rating,
-    description: req.body.description,
-    userID: req.user.userID,
-    reviewDate: Date.now(),
-    reviewerName: req.user.fullName,
-    reviewerImg: await User.findOne({userID: req.user.userID},{profilePicture:1}).then(user => user.profilePicture),
-    propertyID: req.body.propertyID,
-    bookingID: req.body.bookingID
-  });
-  await review.save();
-  res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
+    if ((await Review.count({})) === 0) {
+      tempId = 1;
+    } else {
+      tempId = await Review.findOne().sort("-_id");
+      tempId = tempId.reviewID + 1;
+    }
+    const review = new Review({
+      reviewID: tempId,
+      heading: req.body.heading,
+      rating: req.body.rating,
+      description: req.body.description,
+      userID: req.user.userID,
+      reviewDate: Date.now(),
+      reviewerName: req.user.fullName,
+      reviewerImg: await User.findOne(
+        { userID: req.user.userID },
+        { profilePicture: 1 }
+      ).then((user) => user.profilePicture),
+      propertyID: req.body.propertyID,
+      bookingID: req.body.bookingID,
+    });
+    await review.save();
+    res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
   } catch (error) {
-    console.log((error))
+    console.log(error);
   }
 };
 
 // cancel booking
-const cancelBooking = async (req,res) => {
-  console.log('trying to cancel');
-  console.log("cancel",req.body.bookingID);
-   try {
-    await Booking.findOneAndDelete({bookingID: req.body.bookingID});
-    console.log("deleted")
+const cancelBooking = async (req, res) => {
+  console.log("trying to cancel");
+  console.log("cancel", req.body.bookingID);
+  try {
+    await Booking.findOneAndDelete({ bookingID: req.body.bookingID });
+    console.log("deleted");
     // res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
     res.status(200).end();
-   } catch (error) {
+  } catch (error) {
     res.status(401).end();
-   }
-}
+  }
+};
 
-// user update function 
+// user update function
 
-const userUpdate = async (req,res) => {
+const userUpdate = async (req, res) => {
   try {
-    if(req.user){
-      console.log(req.body)
-      await User.findOne({userID:req.user.userID}).then(async (profile) => {
+    if (req.user) {
+      console.log(req.body);
+      await User.findOne({ userID: req.user.userID }).then(async (profile) => {
         if (bcrypt.compare(req.body.password, profile.password)) {
           if (req.body.email) {
             profile.email = req.body.email;
@@ -344,14 +353,14 @@ const userUpdate = async (req,res) => {
           await profile.save();
           res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
         } else {
-          res.status(401).json({"status":"Unauthorised request !"})      
+          res.status(401).json({ status: "Unauthorised request !" });
         }
-      })
+      });
     }
   } catch (error) {
-    res.status(401).json({"status":"Unauthorised request !"})
+    res.status(401).json({ status: "Unauthorised request !" });
   }
-}
+};
 
 // export
 module.exports = {
@@ -364,5 +373,5 @@ module.exports = {
   getUserAccount,
   postReview,
   cancelBooking,
-  userUpdate
+  userUpdate,
 };

@@ -550,6 +550,24 @@ header #bottom_header #bottom_end_header {
 }
 
 
+.error-401-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+.error-401-container svg{
+    height: 70vh;
+}
+.error-401-container button{
+    max-width: fit-content;
+}
+.error-401-container div{
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+
 #room_count_container input[type=text] {
     color: rgb(23, 22, 22);
     font-size: 1rem;
