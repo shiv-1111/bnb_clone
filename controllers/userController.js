@@ -62,36 +62,38 @@ const postUserSignup = async (req, res) => {
     // res.status(201).send("user added in database");
     res.status(201).redirect(`/user/account/${user.userName}`);
   } catch (err) {
-    res.status(401).send(err);
+    res.status(500).send(err);
   }
 };
 
 // 2
 const postUserLogin = (req, res) => {
   try {
-    User.findOne({ userName: req.body.username }, (err, user) => {
+    User.findOne({ userName: req.body.username }, async (err, user) => {
       if (err) {
-        res.status(401).render("error401");
+        res.status(500).render("error500");
       } else {
-        console.log(user)
-        console.log(req.body.password)
-        if (user !== null && bcrypt.compare(req.body.password, user.password)) {
-          const tokenData = {
-            userID: user.userID,
-            userType: user.userType,
-            userName: user.userName,
-            fullName: user.fullName,
-          };
-
-          const token = jwt.sign(tokenData, process.env.token_secret_key);
-          // res.setHeader('authorization',token)
-          res.cookie("token", token, {
-            httpOnly: true,
-          });
-          res.redirect(`/user/account/${user.userName}`);
-          // res.render('dashboard',{name:user.userName})
-        } else {
+        // checking "user === null" because findOne returns null if it doesn't find anything
+        if (user === null) {
           res.status(401).render("error401");
+        } else {
+          if (await bcrypt.compare(req.body.password, user.password)) {
+            const tokenData = {
+              userID: user.userID,
+              userType: user.userType,
+              userName: user.userName,
+              fullName: user.fullName,
+            };
+
+            const token = jwt.sign(tokenData, process.env.token_secret_key);
+            // res.setHeader('authorization',token)
+            res.cookie("token", token, {
+              httpOnly: true,
+            });
+            res.redirect(`/user/account/${user.userName}`);
+          } else {
+            res.status(401).render("error401");
+          }
         }
       }
     });
@@ -177,7 +179,7 @@ const postContactUs = async (req, res) => {
       console.log("contact us query added");
     }
   });
-  res.send("contact us added to database");
+  res.status(200).render("contactUsAdded");
 };
 
 // 5
@@ -282,7 +284,7 @@ const getUserAccount = async (req, res) => {
       phone: user.Mobile,
     });
   } else {
-    res.status(401).end();
+    res.status(500).end();
   }
 };
 
@@ -328,7 +330,7 @@ const cancelBooking = async (req, res) => {
     // res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
     res.status(200).end();
   } catch (error) {
-    res.status(401).end();
+    res.status(500).end();
   }
 };
 
@@ -339,7 +341,7 @@ const userUpdate = async (req, res) => {
     if (req.user) {
       console.log(req.body);
       await User.findOne({ userID: req.user.userID }).then(async (profile) => {
-        if (bcrypt.compare(req.body.password, profile.password)) {
+        if (await bcrypt.compare(req.body.password, profile.password)) {
           if (req.body.email) {
             profile.email = req.body.email;
           }

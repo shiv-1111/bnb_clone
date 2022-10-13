@@ -550,19 +550,19 @@ header #bottom_header #bottom_end_header {
 }
 
 
-.error-401-container {
+.status-svg-container {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     align-items: center;
 }
-.error-401-container svg{
+.status-svg-container svg{
     height: 70vh;
 }
-.error-401-container button{
+.status-svg-container button{
     max-width: fit-content;
 }
-.error-401-container div{
+.status-svg-container div{
     text-align: center;
     font-size: 1.5rem;
 }
