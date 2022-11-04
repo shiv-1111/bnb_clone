@@ -356,12 +356,12 @@ const userUpdate = async (req, res) => {
           res.status(200).json({status:"updated"})
         } else {
           // console.log(req.body);
-          res.status(401).json({ status: "wrong ps !" });
+          res.status(401).json({ status: "wrong password!" });
         }
       });
     }
   } catch (error) {
-    res.status(401).json({ status: "Unauthorised request !" });
+    res.status(500).json({ status: "Internal server error!" });
   }
 };
 

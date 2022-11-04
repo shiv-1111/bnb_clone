@@ -76,6 +76,7 @@ const showAlert = async function (e) {
   let submitBtn = document.getElementById('submit-changes')
   let npassword = document.getElementById('npassword')
   let rpassword = document.getElementById('rpassword')
+  
   if(!document.getElementById("reenter-password").classList.contains('hidden') && npassword.value !== rpassword.value) {
     submitBtn.innerHTML = "Retry";
       submitBtn.style.backgroundColor = 'red';
