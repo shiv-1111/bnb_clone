@@ -44,7 +44,7 @@ const postUserSignup = async (req, res) => {
       country: req.body.country,
       city: req.body.city,
       gender: req.body.gender,
-      // profilePicture: req.file.filename,
+      profilePicture: req.file.filename,
     });
     await user.save();
     const tokenData = {
