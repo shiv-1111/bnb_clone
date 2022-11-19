@@ -35,9 +35,12 @@ router.use(bodyParser.urlencoded({ extended: true }));
 const { request } = require("https");
 
 // multer code
+
+// let tempStore = "./upload";
+let tempStore = "./tmp";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./upload");
+    cb(null, tempStore);
   },
   filename: (req, file, cb) => {
     console.log(file);
