@@ -19,15 +19,15 @@ const e = require("express");
 const postUserSignup = async (req, res) => {
   try {
     // let idCount = await User.count({});
-    let tempId = 1;
+    let tempId;
     // checking if number of documents inside Collection is 0
-    // if ((await User.count({})) === 0) {
-    //   tempId = 1;
-    // } else {
-    //   // getting the last inserted document
-    //   tempId = await User.findOne().sort("-_id");
-    //   tempId = tempId.userID + 1;
-    // }
+    if ((await User.count({})) === 0) {
+      tempId = 1;
+    } else {
+      // getting the last inserted document
+      tempId = await User.findOne().sort("-_id");
+      tempId = tempId.userID + 1;
+    }
     // const salt = await bcrypt.genSalt()
 
     const hashPassword = await bcrypt.hash(req.body.password, 10);
@@ -44,7 +44,7 @@ const postUserSignup = async (req, res) => {
       country: req.body.country,
       city: req.body.city,
       gender: req.body.gender,
-      profilePicture: req.file.filename,
+      // profilePicture: req.file.filename,
     });
     await user.save();
     const tokenData = {
