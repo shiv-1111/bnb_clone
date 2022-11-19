@@ -19,15 +19,15 @@ const e = require("express");
 const postUserSignup = async (req, res) => {
   try {
     // let idCount = await User.count({});
-    let tempId;
+    let tempId = 1;
     // checking if number of documents inside Collection is 0
-    if ((await User.count({})) === 0) {
-      tempId = 1;
-    } else {
-      // getting the last inserted document
-      tempId = await User.findOne().sort("-_id");
-      tempId = tempId.userID + 1;
-    }
+    // if ((await User.count({})) === 0) {
+    //   tempId = 1;
+    // } else {
+    //   // getting the last inserted document
+    //   tempId = await User.findOne().sort("-_id");
+    //   tempId = tempId.userID + 1;
+    // }
     // const salt = await bcrypt.genSalt()
 
     const hashPassword = await bcrypt.hash(req.body.password, 10);
@@ -53,9 +53,7 @@ const postUserSignup = async (req, res) => {
       userName: user.userName,
       fullName: user.fullName,
     };
-    const token = jwt.sign(tokenData, process.env.token_secret_key, {
-      // expiresIn: "15m",
-    });
+    const token = jwt.sign(tokenData, process.env.token_secret_key);
     res.cookie("token", token, {
       httpOnly: true,
     });
