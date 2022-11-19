@@ -57,8 +57,8 @@ const upload = multer({ storage: storage });
 // defining routes =>
 
 // signup route
-router.post("/signup", upload.single("profile_img"), postUserSignup);
-
+router.post("/signup", postUserSignup);
+// upload.single("profile_img")
 // login post route
 router.post("/login", postUserLogin);
 
