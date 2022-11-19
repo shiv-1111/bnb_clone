@@ -30,7 +30,7 @@ const postUserSignup = async (req, res) => {
     }
     // const salt = await bcrypt.genSalt()
 
-    const hashPassword = await bcrypt.hash(req.body.password, 15);
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       userID: tempId,
       userName: req.body.username,

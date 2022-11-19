@@ -1,3 +1,4 @@
+require("dotenv").config();
 const async = require("hbs/lib/async");
 const mongoose = require("mongoose");
 
@@ -6,10 +7,22 @@ const mongoose = require("mongoose");
 const mongoURI = process.env.DB;
 
 // connecting to mongoDB
+
 mongoose
-  .connect(mongoURI)
-  .then((res) => console.log("db connected"))
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // useCreateIndex: true
+  })
+  .then(() => {
+    console.log(`db connection successful`);
+  })
   .catch((err) => console.log(err));
+
+// mongoose
+//   .connect(mongoURI)
+//   .then((res) => console.log("db connected"))
+//   .catch((err) => console.log(err));
 
 // user schema
 const userSchema = new mongoose.Schema({
