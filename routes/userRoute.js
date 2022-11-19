@@ -36,8 +36,8 @@ const { request } = require("https");
 
 // multer code
 
-// let tempStore = "./upload";
-let tempStore = "./tmp";
+let tempStore = "./upload";
+// let tempStore = "/tmp";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, tempStore);
