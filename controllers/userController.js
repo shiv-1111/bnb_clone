@@ -62,7 +62,7 @@ const postUserSignup = async (req, res) => {
     // res.status(201).send("user added in database");
     res.status(201).redirect(`/user/account/${user.userName}`);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send("internal server err !");
   }
 };
 
@@ -353,7 +353,7 @@ const userUpdate = async (req, res) => {
           }
           await profile.save();
           // res.status(200).redirect(`./account/${req.user.userName}/dashboard`);
-          res.status(200).json({status:"updated"})
+          res.status(200).json({ status: "updated" });
         } else {
           // console.log(req.body);
           res.status(401).json({ status: "wrong password!" });
