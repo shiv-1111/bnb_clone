@@ -44,7 +44,7 @@ const postUserSignup = async (req, res) => {
       country: req.body.country,
       city: req.body.city,
       gender: req.body.gender,
-      // profilePicture: req.file.filename,
+      profilePicture: req.file.filename,
     });
     await user.save();
     const tokenData = {
@@ -53,7 +53,7 @@ const postUserSignup = async (req, res) => {
       userName: user.userName,
       fullName: user.fullName,
     };
-    const token = jwt.sign(tokenData, process.env.token_secret_key);
+    const token = await jwt.sign(tokenData, process.env.token_secret_key);
     res.cookie("token", token, {
       httpOnly: true,
     });
