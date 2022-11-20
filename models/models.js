@@ -40,8 +40,8 @@ const userSchema = new mongoose.Schema({
   country: String,
   city: String,
   gender: String,
-  profilePicture: String,
-  favourites: [Number],
+  // profilePicture: String,
+  // favourites: [Number],
 });
 
 // property schema
