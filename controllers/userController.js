@@ -58,7 +58,8 @@ const postUserSignup = async (req, res) => {
     //   httpOnly: true,
     // });
     // res.status(201).send("user added in database");
-    res.status(201).redirect(`/user/account/${user.userName}`);
+    // res.status(201).redirect(`/user/account/${user.userName}`);
+    res.status(200).render("contactUsAdded");
   } catch (err) {
     res.status(500).send("internal server err !");
   }
