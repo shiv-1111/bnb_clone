@@ -19,6 +19,7 @@ const e = require("express");
 const postUserSignup = async (req, res) => {
   try {
     // let idCount = await User.count({});
+    console.log(req.body);
     let tempId;
     // checking if number of documents inside Collection is 0
     if ((await User.count({})) === 0) {
