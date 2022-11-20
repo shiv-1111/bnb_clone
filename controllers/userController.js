@@ -47,16 +47,16 @@ const postUserSignup = async (req, res) => {
       // profilePicture: req.file.filename,
     });
     await user.save();
-    const tokenData = {
-      userID: user.userID,
-      userType: user.userType,
-      userName: user.userName,
-      fullName: user.fullName,
-    };
-    const token = await jwt.sign(tokenData, process.env.token_secret_key);
-    res.cookie("token", token, {
-      httpOnly: true,
-    });
+    // const tokenData = {
+    //   userID: user.userID,
+    //   userType: user.userType,
+    //   userName: user.userName,
+    //   fullName: user.fullName,
+    // };
+    // const token = await jwt.sign(tokenData, process.env.token_secret_key);
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    // });
     // res.status(201).send("user added in database");
     res.status(201).redirect(`/user/account/${user.userName}`);
   } catch (err) {
