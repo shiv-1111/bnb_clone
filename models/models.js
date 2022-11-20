@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
   fName: String,
   mName: String,
   lName: String,
-  // fullName: String,
+  fullName: String,
   email: String,
   password: String,
   Name: String,
@@ -116,28 +116,28 @@ const contactUsSchema = new mongoose.Schema({
 });
 
 // mongoose hooks
-// userSchema.pre("save", function (next) {
-//   // adding full name to every new user's data
-//   if (this.isNew) {
-//     this.userType = "user";
-//     let fname = this.fName.trim().toLowerCase();
-//     this.fName = fname.charAt(0).toUpperCase() + fname.slice(1);
+userSchema.pre("save", function (next) {
+  // adding full name to every new user's data
+  if (this.isNew) {
+    this.userType = "user";
+    let fname = this.fName.trim().toLowerCase();
+    this.fName = fname.charAt(0).toUpperCase() + fname.slice(1);
 
-//     if (this.mName !== undefined) {
-//       let mname = this.mName.trim().toLowerCase();
-//       this.mName = mname.charAt(0).toUpperCase() + mname.slice(1);
-//     }
-//     let lname = this.lName.trim().toLowerCase();
-//     this.lName = lname.charAt(0).toUpperCase() + lname.slice(1);
+    if (this.mName !== undefined) {
+      let mname = this.mName.trim().toLowerCase();
+      this.mName = mname.charAt(0).toUpperCase() + mname.slice(1);
+    }
+    let lname = this.lName.trim().toLowerCase();
+    this.lName = lname.charAt(0).toUpperCase() + lname.slice(1);
 
-//     if (this.mName !== undefined) {
-//       this.fullName = `${this.fName} ${this.mName} ${this.lName}`;
-//     } else {
-//       this.fullName = `${this.fName} ${this.lName}`;
-//     }
-//   }
-//   next();
-// });
+    if (this.mName !== undefined) {
+      this.fullName = `${this.fName} ${this.mName} ${this.lName}`;
+    } else {
+      this.fullName = `${this.fName} ${this.lName}`;
+    }
+  }
+  next();
+});
 
 bookingSchema.pre("save", function (next) {
   // setting review status to false by default

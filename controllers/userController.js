@@ -18,8 +18,8 @@ const e = require("express");
 // 1
 const postUserSignup = async (req, res) => {
   try {
-    // let idCount = await User.count({});
     console.log(req.body);
+    // let idCount = await User.count({});
     let tempId;
     // checking if number of documents inside Collection is 0
     if ((await User.count({})) === 0) {
@@ -31,7 +31,7 @@ const postUserSignup = async (req, res) => {
     }
     // const salt = await bcrypt.genSalt()
 
-    // const hashPassword = await bcrypt.hash(req.body.password, 10);
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       userID: tempId,
       userName: req.body.username,
@@ -39,8 +39,7 @@ const postUserSignup = async (req, res) => {
       mName: req.body.mName,
       lName: req.body.lName,
       email: req.body.email,
-      // password: hashPassword,
-      password: req.body.password,
+      password: hashPassword,
       Name: req.body.name,
       Mobile: req.body.phone,
       country: req.body.country,
@@ -49,19 +48,18 @@ const postUserSignup = async (req, res) => {
       // profilePicture: req.file.filename,
     });
     await user.save();
-    // const tokenData = {
-    //   userID: user.userID,
-    //   userType: user.userType,
-    //   userName: user.userName,
-    //   fullName: user.fullName,
-    // };
-    // const token = await jwt.sign(tokenData, process.env.token_secret_key);
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    // });
+    const tokenData = {
+      userID: user.userID,
+      userType: user.userType,
+      userName: user.userName,
+      fullName: user.fullName,
+    };
+    const token = await jwt.sign(tokenData, process.env.token_secret_key);
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
     // res.status(201).send("user added in database");
-    // res.status(201).redirect(`/user/account/${user.userName}`);
-    res.status(200).render("contactUsAdded");
+    res.status(201).redirect(`/user/account/${user.userName}`);
   } catch (err) {
     res.status(500).send("internal server err !");
   }
