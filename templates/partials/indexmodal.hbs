@@ -8,10 +8,11 @@
                 <div>
                     <h2 style="color: #fff;">Login to your account:-</h2>
                 </div>
-                <input type="text" name="username" class="form-control" placeholder="Username" autocomplete="off"
-                    required>
+                <input type="text" name="username" class="form-control" placeholder="Enter your Username"
+                    autocomplete="off" required>
 
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <input type="password" name="password" class="form-control" placeholder="Password" autocomplete="off"
+                    required>
                 <button class="btn" type="submit">Login</button>
             </form>
 
@@ -21,8 +22,7 @@
     <!-- signup modal -->
     <div class="modal_content hidden" id="signup_modal_container">
         <div class="form px-4">
-            <form action="/user/signup" id="signup_form" class="modal-form" method="post">
-                {{!-- enctype="multipart/form-data" --}}
+            <form action="/user/signup" id="signup_form" class="modal-form" method="post" enctype="multipart/form-data">
                 <div>
                     <h2>User Registration:-</h2>
                 </div>
@@ -55,9 +55,10 @@
                 <input type="text" name="phone" class="form-control" placeholder="Phone" required>
 
                 <label for="profile_img">Upload your picture</label>
-                <input type="file" name="profile_img" id="profile_img">
+                <input type="file" name="profile_img" id="profile_img" required>
 
-                <input name="password" class="form-control" type="text" placeholder="Password" required>
+                <input name="password" class="form-control" type="text" placeholder="Password" autocomplete="off"
+                    required>
 
                 <button class="btn btn-block" type="submit">Signup</button>
 

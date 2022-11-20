@@ -83,7 +83,7 @@ const renderPage = (data) => {
   } else {
     for (let i = 0; i < data.length; i++) {
       const newdata = `<div class="col-md-3 card mx-auto">
-                  <img src="/fetchImage/${
+                  <img src="${
                     data[i].images[Math.floor(Math.random() * 5)]
                   }" class="card-img-top" alt="img">
                   <div class="card-body">

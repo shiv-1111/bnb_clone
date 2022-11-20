@@ -48,13 +48,13 @@ app.get("/home", (req, res) => {
   res.render("index");
 });
 
-app.get("/fetchImage/:id", (req, res) => {
-  if (req.params.id === "#") {
-    res.status(404).end();
-  } else {
-    res.sendFile(__dirname + `/upload/${req.params.id}`);
-  }
-});
+// app.get("/fetchImage/:id", (req, res) => {
+//   if (req.params.id === "#") {
+//     res.status(404).end();
+//   } else {
+//     res.sendFile(__dirname + `/upload/${req.params.id}`);
+//   }
+// });
 
 // listening to PORT
-app.listen(PORT, () => console.log("server started at PORT 3000"));
+app.listen(PORT, () => console.log(`server started at ${PORT}`));

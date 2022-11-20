@@ -4,11 +4,9 @@
 
 // imports
 const express = require("express");
-const multer = require("multer");
 const bodyParser = require("body-parser");
-const path = require("path");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
+const { upload } = require("../middlewares/multerConfig");
 
 // creating an express router
 const router = express.Router();
@@ -29,36 +27,21 @@ const {
 const { validateJWT } = require("../auth.js");
 
 // middlewares
+// const {
+//   cloudinaryConfig,
+//   cloudinary,
+// } = require("../middlewares/cloudinaryConfig");
 router.use(cookieParser());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+// router.use("*", cloudinaryConfig);
 const { request } = require("https");
-
-// multer code
-
-let tempStore = "./upload";
-// let tempStore = "/tmp";
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, tempStore);
-  },
-  filename: (req, file, cb) => {
-    console.log(file);
-    cb(
-      null,
-      Date.now() +
-        path.parse(file.originalname).name +
-        path.extname(file.originalname)
-    );
-  },
-});
-const upload = multer({ storage: storage });
 
 // defining routes =>
 
 // signup route
-router.post("/signup", postUserSignup);
-// upload.single("profile_img")
+router.post("/signup", upload.single("profile_img"), postUserSignup);
+
 // login post route
 router.post("/login", postUserLogin);
 

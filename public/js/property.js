@@ -161,7 +161,7 @@ const fetchPropertyById = async () => {
           userReviews += `<div class="single-review-wrapper">
               <div class="reviewer-details-wrapper">
                 <div>
-                  <div class="reviewer-img" style="background-image:url('/fetchImage/${
+                  <div class="reviewer-img" style="background-image:url('${
                     review.reviewerImg
                   }')"></div>
                   <span>${review.reviewerName}</span><span>${new Date(
@@ -260,22 +260,22 @@ const fetchPropertyById = async () => {
             </p>
             <div class="col-12 mx-auto gallery-main-img-container">
             <div>
-            <img src="/fetchImage/${
+            <img src="${
               data.images[0]
             }" alt="profile img" id="gallery_main_img">
             </div>
             <div class="gallery_img_wrapper">
             
-            <div class="gallery-img-container"><img class="gallery-img" src="/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="${
               data.images[1]
             }" alt="profile img"></div>
-            <div class="gallery-img-container"><img class="gallery-img" src="/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="${
               data.images[2]
             }" alt="profile img"></div>
-            <div class="gallery-img-container"><img class="gallery-img" src="/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="${
               data.images[3]
             }" alt="profile img"></div>
-            <div class="gallery-img-container"><img class="gallery-img" src="/fetchImage/${
+            <div class="gallery-img-container"><img class="gallery-img" src="${
               data.images[4]
             }" alt="profile img"></div>
             

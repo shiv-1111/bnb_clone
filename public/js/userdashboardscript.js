@@ -329,9 +329,7 @@ const getDetails = async () => {
             <div class="card-body" onclick="getPropertyById(${
               property.propertyID
             })">
-            <img src="/fetchImage/${
-              property.image
-            }" class="card-img-top" alt="img">
+            <img src="${property.image}" class="card-img-top" alt="img">
                 <h5 class="card-title">${property.propertyName}</h5>
             </div>
             <ul class="list-group">
@@ -394,7 +392,7 @@ const getDetails = async () => {
       data.bookings.forEach((booking, i) => {
         const tempData = `<div class="booking-card">
                 <div>
-                <img src="/fetchImage/${booking.image}">
+                <img src="${booking.image}">
                 </div>
                 <div id="booking-details">
                 <p id="booking-header">${booking.propertyName}</p>
